@@ -10,14 +10,15 @@ modules:
     parameters:
       disk-quota: 256M
       memory: 256M
+      host: 'w4form-${space}'
     requires:
-      - name: valvoline_hr_w4_html5_repo_runtime
-      - name: uaa_valvoline_hr_w4
-  - name: valvoline_hr_w4_ui_deployer
+      - name: hr_htlm5_runtime
+      - name: hr_xsuaa
+  - name: hr_ui_deployer
     type: com.sap.html5.application-content
     path: valvoline_hr_w4_ui_deployer
     requires:
-      - name: valvoline_hr_w4_html5_repo_host
+      - name: hr_html5_repo_host
     build-parameters:
       requires:
         - name: hrw4
@@ -46,23 +47,23 @@ modules:
           url: ${default-url}
 
 resources:
-  - name: valvoline_hr_w4_html5_repo_runtime
+  - name: hr_htlm5_runtime
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
     type: org.cloudfoundry.managed-service
-  - name: valvoline_hr_w4_html5_repo_host
+  - name: hr_html5_repo_host
     parameters:
       service-plan: app-host
       service: html5-apps-repo
     type: org.cloudfoundry.managed-service
-  - name: uaa_valvoline_hr_w4
+  - name: hr_xsuaa
     parameters:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
     type: org.cloudfoundry.managed-service
-  - name: dest_valvoline_hr_w4
+  - name: hr_destinations
     parameters:
       service-plan: lite
       service: destination
