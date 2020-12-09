@@ -1,0 +1,69 @@
+ID: valvoline_hr_w4
+_schema-version: '2.1'
+parameters:
+  deploy_mode: html5-repo
+version: 0.0.1
+modules:
+  - name: valvoline-hr-w4-approuter
+    type: approuter.nodejs
+    path: valvoline-hr-w4-approuter
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: valvoline_hr_w4_html5_repo_runtime
+      - name: uaa_valvoline_hr_w4
+  - name: valvoline_hr_w4_ui_deployer
+    type: com.sap.html5.application-content
+    path: valvoline_hr_w4_ui_deployer
+    requires:
+      - name: valvoline_hr_w4_html5_repo_host
+    build-parameters:
+      requires:
+        - name: hrw4
+          artifacts:
+            - './*'
+          target-path: resources/hrw4
+  - name: hrw4
+    type: html5
+    path: hrw4
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+
+  - name: service_layer
+    type: java
+    path: service_layer
+    parameters:
+       memory: 1024M
+    provides:
+     - name: service_layer_api
+       properties:
+          url: ${default-url}
+
+resources:
+  - name: valvoline_hr_w4_html5_repo_runtime
+    parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: valvoline_hr_w4_html5_repo_host
+    parameters:
+      service-plan: app-host
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: uaa_valvoline_hr_w4
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: dest_valvoline_hr_w4
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service

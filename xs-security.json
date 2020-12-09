@@ -1,0 +1,93 @@
+{
+	"xsappname": "hr_xsuaa",
+	"tenant-mode": "dedicated",
+	"scopes": [
+	{
+		"name":"$XSAPPNAME.W4User"
+	},
+	{
+		"name": "uaa.user",
+		"description": "UAA Token Exchange"
+	}],
+	"attributes": [
+	{
+		"name": "Role",
+		"valueType": "string",
+		"valueRequired": true
+	},
+	{
+		"name": "lastName",
+		"valueType": "string",
+		"valueRequired": true
+	},
+	{
+		"name": "UserName",
+		"valueType": "string",
+		"valueRequired": true
+	}, 
+	{
+		"name": "email",
+		"valueType": "string",
+		"valueRequired": true
+	},
+	{
+		"name": "Groups",
+		"valueType": "string",
+		"valueRequired": true
+	}, 
+	{
+		"name": "givenName",
+		"valueType": "string",
+		"valueRequired": true
+	},
+	{
+		"name": "frID",
+		"valueType": "string",
+		"valueRequired": true
+	},
+	{
+		"name": "userType",
+		"valueType": "string",
+		"valueRequired": true
+	}],
+	"role-templates": [{
+		"name": "HR2U",
+		"description": "HR App User Role",
+		"scope-references": [
+			"$XSAPPNAME.W4User"
+		],
+		"attribute-references": [
+					{
+						"name": "Role"
+					},	
+					{
+						"name": "lastName"
+					},
+					{
+						"name": "UserName"
+					}, 
+					{
+						"name": "email"
+					},
+					{
+						"name": "Groups"
+					}, 
+					{
+						"name": "givenName"
+					},
+					{
+						"name": "frID"
+					},
+					{
+						"name": "userType"
+					}
+		]
+	},
+	{
+		"name": "Token_Exchange",
+		"description": "UAA",
+		"scope-references": [
+			"uaa.user"
+		]
+	}]
+}
