@@ -15,6 +15,7 @@ modules:
       - name: hr_ui_runtime
       - name: hr_xsuaa
       - name: hr_destinations
+      - name: valvoline_hr_w4_ui_deployer
   - name: valvoline_hr_w4_ui_deployer
     type: com.sap.html5.application-content
     path: valvoline_hr_w4_ui_deployer
@@ -32,7 +33,7 @@ modules:
     build-parameters:
       builder: grunt
       supported-platforms: []
-      build-result: dest
+      build-result: dist
 resources:
   - name: hr_ui_runtime
     parameters:
