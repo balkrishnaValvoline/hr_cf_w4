@@ -1,4 +1,11 @@
 {
-  "authenticationMethod": "none",
-  "routes": []
+  "welcomeFile": "valvhrw4_ui/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+  		{
+		"source":"/backend/(.*)$",
+		"target":"/$1",
+		"destination":"HR_SERVICE_LAYER",
+		"csrfProtection": false
+	}]
 }

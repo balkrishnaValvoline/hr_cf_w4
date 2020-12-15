@@ -4,7 +4,7 @@ parameters:
   deploy_mode: html5-repo
 version: 0.0.1
 modules:
-  - name: valvoline-hr-w4-approuter
+  - name: w4-approuter
     type: approuter.nodejs
     path: valvoline-hr-w4-approuter
     parameters:
@@ -12,13 +12,14 @@ modules:
       memory: 256M
       host: 'w4form-${space}'
     requires:
-      - name: hr_htlm5_runtime
+      - name: hr_ui_runtime
       - name: hr_xsuaa
-  - name: hr_ui_deployer
+      - name: hr_destinations
+  - name: valvoline_hr_w4_ui_deployer
     type: com.sap.html5.application-content
     path: valvoline_hr_w4_ui_deployer
     requires:
-      - name: hr_html5_repo_host
+      - name: hr2u-ui-host
     build-parameters:
       requires:
         - name: hrw4
@@ -29,42 +30,28 @@ modules:
     type: html5
     path: hrw4
     build-parameters:
-      builder: custom
-      commands:
-        - npm install
-        - npm run build
+      builder: grunt
       supported-platforms: []
-      build-result: dist
-
-  - name: service_layer
-    type: java
-    path: service_layer
-    parameters:
-       memory: 1024M
-    provides:
-     - name: service_layer_api
-       properties:
-          url: ${default-url}
-
+      build-result: dest
 resources:
-  - name: hr_htlm5_runtime
+  - name: hr_ui_runtime
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
-    type: org.cloudfoundry.managed-service
-  - name: hr_html5_repo_host
+    type: org.cloudfoundry.existing-service
+  - name: hr2u-ui-host
     parameters:
       service-plan: app-host
       service: html5-apps-repo
-    type: org.cloudfoundry.managed-service
+    type: org.cloudfoundry.existing-service
   - name: hr_xsuaa
     parameters:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
-    type: org.cloudfoundry.managed-service
+    type: org.cloudfoundry.existing-service
   - name: hr_destinations
     parameters:
       service-plan: lite
       service: destination
-    type: org.cloudfoundry.managed-service
+    type: org.cloudfoundry.existing-service

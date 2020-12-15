@@ -8,6 +8,20 @@ sap.ui.define([
 	return Controller.extend("valvoline.ui.hrw4.controller.Main", {
 		onInit: function () {
 			_oController = this;
+			_oController.loginSvc();
+		},
+		
+		loginSvc: function(){
+			
+			$.ajax({
+				url:"/backend/hrservices/w4/loginSvc",
+				success:function(data){
+					console.log(data);
+				},
+				error:function(err,xhr){
+					console.log(err);
+				}
+			});	
 		},
 		handleDeleteOverview: function (oEvent) {
 			this.getView().byId("idEditTab").setEnabled(true);
