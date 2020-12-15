@@ -20,7 +20,7 @@ modules:
     type: com.sap.html5.application-content
     path: valvoline_hr_w4_ui_deployer
     requires:
-      - name: hr2u-ui-host
+      - name: w4ui_host
     build-parameters:
       requires:
         - name: hrw4
@@ -40,7 +40,7 @@ resources:
       service-plan: app-runtime
       service: html5-apps-repo
     type: org.cloudfoundry.existing-service
-  - name: hr2u-ui-host
+  - name: w4ui_host
     parameters:
       service-plan: app-host
       service: html5-apps-repo
