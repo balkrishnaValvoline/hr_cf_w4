@@ -25,12 +25,14 @@
 						</HBox>-->
 					<ScrollContainer height="200%" width="100%" focusable="true">
 						<content>
+							<Label text="Hi"></Label>
 							<IconTabBar id="idIconTabBar" select="onFilterSelect" class="sapUiResponsiveContentPadding W4iconTabBar" showOverflowSelectList="true"
 								expanded="true" expandable="false" stretchContentHeight="true">
 								<items>
 									<IconTabFilter icon="sap-icon://activity-items" iconColor="Positive" design="Horizontal" text="{i18n>OverviewText}" key="1"
 										class="sapUiLargeMargin customFontItemTable" id="idOverViewTab">
 										<!-- Table to display the details -->
+										<Label text="Hi"></Label>
 										<Table id="idCustomJobTable" inset="false">
 											<columns>
 												<Column>

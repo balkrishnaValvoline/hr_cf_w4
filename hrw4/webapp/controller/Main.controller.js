@@ -10,18 +10,20 @@ sap.ui.define([
 			_oController = this;
 			_oController.loginSvc();
 		},
-		
-		loginSvc: function(){
-			
+
+		loginSvc: function () {
+
 			$.ajax({
-				url:"/backend/hrservices/w4/loginSvc",
-				success:function(data){
+				url: "/backend/hrservices/w4/loginSvc",
+				success: function (data) {
 					console.log(data);
 				},
-				error:function(err,xhr){
+				error: function (err, xhr) {
+				//	_oController.getView().byId("idIconTabBar").setVisible(false);
+					console.log("Heeeeeelo");
 					console.log(err);
 				}
-			});	
+			});
 		},
 		handleDeleteOverview: function (oEvent) {
 			this.getView().byId("idEditTab").setEnabled(true);
