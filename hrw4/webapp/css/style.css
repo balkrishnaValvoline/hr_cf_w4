@@ -1,1 +1,267 @@
 /* Enter your custom styles here */
+.reusable-header-container {
+    background-image: url("../resources/headers/H2_HR2U.png");
+    background-color: #2870a2;
+    background-size: 100% 100%;
+}
+
+.reusable-header-width {
+    width: 100%;
+    height: 170px;
+}
+
+.customIcon .sapMBtnIcon {
+    font-size: 24px;
+    width: 24px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    max-height: 1.5rem;
+    margin-top: 8px;
+    color: white;
+}
+
+/*Mobile*/
+@media screen and (min-width: 768px) {
+    .W4iconTabBar {
+        width: 1280px;
+    }
+}
+
+@media screen and (min-width:280px) and (max-width:540px) {
+    .W4iconTabBar {
+        width: 950px;
+    }
+}
+
+.customIcon--header .sapMBtnIcon {
+    margin-top: 0;
+    color: white
+}
+
+.user-button .sapMBtnDefault,
+.help-button .sapMBtnDefault,
+.logoutButton .sapMBtnDefault {
+    background-color: transparent;
+    border: 0;
+    color: #fff;
+    font-size: 16px;
+    font-family: 'Roboto';
+    font-weight: 300;
+    height: auto;
+    padding-left: 1.2rem;
+    padding-right: 1.8rem !important;
+}
+
+.user-button__pressed .sapMBtnDefault,
+.help-button__pressed .sapMBtnDefault,
+.logoutButtonPressed .sapMBtnDefault {
+    background-color: white;
+    color: #fff;
+    font-size: 16px;
+    font-family: 'Roboto';
+    font-weight: 300;
+    height: auto;
+}
+
+.user-button .sapMBtnHoverable:hover,
+.help-button .sapMBtnHoverable:hover,
+.logoutButton .sapMBtnHoverable:hover {
+    background-color: white;
+}
+
+.reusable-valvolineButtonDialogCancel {
+    background-color: #fff;
+    border: 1px solid #979797;
+    color: #303030;
+    display: block;
+    font-weight: bold;
+    height: 48px;
+    width: 7.05rem;
+    text-transform: uppercase;
+}
+
+
+.reusable-valvolineButtonDialogMoreInfo .sapMBtnInner {
+    background-color: white !important;
+    border: none !important;
+    border-radius: .2rem;
+    color: white !important;
+    font-family: 'Roboto';
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.reusable-valvolineButtonDialogCancel .sapMBtnInner {
+    background-color: white !important;
+    border: none !important;
+    border-radius: .2rem;
+    color: #303030 !important;
+    font-family: 'Roboto';
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+
+.bringBack {
+    z-index: 1;
+}
+
+.logButtonFixHeight {
+    flex-direction: row;
+    height: 55px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logButtonFixHeight_Impersonate {
+    flex-direction: row;
+    height: 55px;
+    align-items: center;
+}
+
+@media screen and (max-width: 767.9px) {
+    .header-page-title-container {
+        margin-bottom: 15px;
+    }
+}
+
+/* helper class to allow selective hiding elements from printing  */
+.notPrintable {
+    display: none !important;
+}
+
+.force-printing {
+    display: flex !important;
+}
+
+/* fix overflow scrolling */
+
+.sapMApp {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
+/*********************************************
+Fonts and colors
+*********************************************/
+
+.reusable-color-white {
+    color: white !important;
+}
+
+.reusable-color-header-gray {
+    color: #303030 !important;
+}
+
+.reusable-font-page-title-h1 {
+    font-family: 'Roboto';
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 65px;
+
+}
+
+.sapMITBSelected .sapMITBFilterPositive {
+    background: #8bb4d7;
+    color: #fff;
+}
+
+.sapMITBFilterPositive {
+    color: black;
+    border-color: white;
+}
+
+.sapMITH {
+    vertical-align: top;
+    font-size: .75rem;
+    display: flex;
+    align-items: flex-start;
+    border-bottom: .125rem solid #eff4f9;
+    box-shadow: inset 0 -0.25rem 0 -0.125rem #d1e0ee;
+    position: relative;
+    padding: 0 2rem;
+    background-color: lightgray;
+}
+
+.sapMITBSelected .sapMITBContentArrow {
+    border-bottom-color: #8bb4d7;
+}
+
+.sapMITBSelected.sapMITBFilterPositive .sapMITBContentArrow {
+    border-bottom-color: #8bb4d7;
+}
+
+.customFontHeadingTable {
+    font-weight: bold !important;
+    font-size: 1.15rem !important;
+    text-shadow: 1px 1px #8bb4d7 !important
+}
+
+.customFontItemTable {
+    font-weight: 900 !important;
+    font-size: 0.922rem !important;
+    color: black !important;
+
+}
+
+.grabbing {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+
+.sapMITH {
+    vertical-align: top;
+    font-size: 0.922rem;
+    display: flex;
+    align-items: flex-start;
+    border-bottom: .125rem solid #eff4f9;
+    box-shadow: inset 0 -0.25rem 0 -0.125rem #d1e0ee;
+    position: relative;
+    padding: 0 2rem;
+    background-color: lightgray;
+    font-weight: bold;
+    color: black;
+}
+
+.sapUiForm .sapUiFormTitle {
+    border-width: 1px;
+    border-color: #ccc;
+    font-family: "72fallback", "72", "72full", Arial, Helvetica, sans-serif;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-shadow: 1px 1px #8bb4d7 !important
+}
+.sapMLabel {
+    color: black;
+    font-size: 0.99rem;
+    font-family: "72fallback","72","72full",Arial,Helvetica,sans-serif;
+    font-weight: normal;
+    display: inline-block;
+    white-space: nowrap;
+    cursor: text;
+    overflow: hidden;
+    text-shadow: none;
+}
+.sapUiFormM:not(.sapUiFormEdit)>.sapUiFormResGrid>div:not(.sapMTB) {
+     padding-bottom: 0rem; 
+    
+}
+.iconTabBarSize:{
+	height:900px;
+	border-bottom:0px;
+}
+.AddressMargin{
+	margin-left: 500px;
+}
+.UseTextMargin{
+	    margin-top: 7px !important;
+}
+.ClaimBordr{
+	border:1px solid black;
+}
+.DateLabel{
+	margin-left: 1100px;
+}

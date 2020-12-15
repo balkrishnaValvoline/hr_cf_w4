@@ -7,7 +7,7 @@ sap.ui.define([
 
 	Opa5.extendConfig({
 		arrangements: new Startup(),
-		viewNamespace: "ui.hrw4.view.",
+		viewNamespace: "valvoline.ui.hrw4.view.",
 		autoWait: true
 	});
 });

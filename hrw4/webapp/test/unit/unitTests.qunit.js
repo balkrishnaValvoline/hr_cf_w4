@@ -5,7 +5,7 @@ sap.ui.getCore().attachInit(function () {
 	"use strict";
 
 	sap.ui.require([
-		"ui/hrw4/test/unit/AllTests"
+		"valvoline/ui/hrw4/test/unit/AllTests"
 	], function () {
 		QUnit.start();
 	});

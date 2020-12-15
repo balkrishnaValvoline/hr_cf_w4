@@ -1,11 +1,11 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
-	"ui/hrw4/model/models"
+	"valvoline/ui/hrw4/model/models"
 ], function (UIComponent, Device, models) {
 	"use strict";
 
-	return UIComponent.extend("ui.hrw4.Component", {
+	return UIComponent.extend("valvoline.ui.hrw4.Component", {
 
 		metadata: {
 			manifest: "json"

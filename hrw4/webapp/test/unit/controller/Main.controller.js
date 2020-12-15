@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"ui/hrw4/controller/Main.controller"
+	"valvoline/ui/hrw4/controller/Main.controller"
 ], function (Controller) {
 	"use strict";
 

@@ -1,0 +1,183 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<!--	<FlexBox alignItems="Start">
+		<HBox>
+			<Panel headerText="{i18n>PersonalText}" class="customFontHeaderTable">
+				<HBox>
+					<Label text="{i18n>FText}"/>
+					<Text text=""></Text>
+				</HBox>
+			</Panel>
+		</HBox>
+		<HBox>
+			<Panel headerText="{i18n>AddressText}" class="customFontHeaderTable AddressMargin"/>
+		</HBox>
+	</FlexBox>
+	<FlexBox alignItems="Start">
+		<HBox>
+			<Panel headerText="{i18n>W4WText}" class="customFontHeaderTable"/>
+		</HBox>
+	</FlexBox>-->
+	<OverflowToolbar>
+		<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
+		<ToolbarSpacer></ToolbarSpacer>
+		<!--	<HBox>
+			<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDelete" tooltip="{i18n>deleteText}" class="grabbing"/>
+			<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
+		</HBox>-->
+		<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="onPrevToSave"></Button>
+		<Button type="Accept" text="{i18n>SaveConText}" icon="sap-icon://accept" class="customFontHeadingTable" press="onConfirm"></Button>
+	</OverflowToolbar>
+	<f:SimpleForm id="SaveRecord" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+		adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="2" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
+		singleContainerFullSize="true">
+		<f:content>
+			<core:Title text="{i18n>PersonalText}" class="customFontItemTable"/>
+			<Label text="{i18n>FText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>MText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>LText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>InitialsText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>SSNText}"/>
+			<Text text=""></Text>
+			<!--
+			<Label text="{i18n>W4WText}" class="customFontItemTable"></Label>
+			<Label text="{i18n>TaxText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>ExemptionsText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>AdditionalText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>TaxExText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
+			<CheckBox></CheckBox>
+			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
+			<CheckBox></CheckBox>
+				<Label text="{i18n>Check1Text}" class="sapUiTinyMarginTop"></Label>
+			<HBox>
+				<CheckBox select="onCheckChangeEdit"></CheckBox>
+				<MessageStrip id="idMessageCallEdit" type="Success" visible="false" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>
+			</HBox>-->
+			<core:Title text="{i18n>AddressText}" class="customFontItemTable"/>
+			<Label text="{i18n>StreetText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>CityText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>StateText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>ZIPText}"/>
+			<Text text=""></Text>
+			<!--<core:Title text="{i18n>W4WText}" class="customFontItemTable"/>
+			<Label text="{i18n>TaxText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>ExemptionsText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>AdditionalText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>TaxExText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
+			<CheckBox></CheckBox>
+			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
+			<CheckBox></CheckBox>-->
+		</f:content>
+	</f:SimpleForm>
+	<VBox>
+		<f:Form id="FormSave" editable="false">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+					emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer title="{i18n>W4WTextInfo}">
+					<f:formElements>
+						<f:FormElement label="{i18n>TotalText}">
+							<f:fields>
+								<HBox>
+									<Text text=""></Text>
+									<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>DeductionsText}">
+							<f:fields>
+								<HBox>
+									<Text text=""></Text>
+									<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>StatusText}">
+							<f:fields>
+								<HBox>
+									<Select width="290px" enabled="false"></Select>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="">
+							<f:fields>
+								<HBox>
+									<MessageStrip id="idMessageCallTextSave" type="Success" visible="true" text="{i18n>StatusMandtText}" showIcon="false"
+										showCloseButton="false" class="sapUiSmallMarginLeft"></MessageStrip>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>AdditionalAmountText}">
+							<f:fields>
+								<HBox>
+									<Text text=""></Text>
+									<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>UseText}" class="sapUiSmallMarginTop">
+							<f:fields>
+								<CheckBox class="sapUiTinyMargin" enabled="false"></CheckBox>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</VBox>
+	<VBox>
+		<f:Form id="FormClaimSave" editable="false">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+					emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer title="{i18n>ClaimTextInfo}">
+					<f:formElements></f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</VBox>
+	<VBox>
+		<VBox class="ClaimBordr">
+			<HBox id="textAreaClaimSave">
+				<Label text="{i18n>textAreaClaimText}" class="sapUiTinyMargin"></Label>
+			</HBox>
+			<VBox>
+				<MessageStrip type="None" visible="true" text="{i18n>textAreaClaimTMandt1Text}" showIcon="false" class="sapUiTinyMargin"></MessageStrip>
+				<MessageStrip type="Information" visible="true" text="{i18n>textAreaClaimTMandt2Text}" showIcon="false" class="sapUiTinyMargin"></MessageStrip>
+				<HBox>
+					<Label text="{i18n>conditionText}" class="sapUiTinyMargin"></Label>
+					<Select class="sapUiTinyMargin" width="200px" enabled="false"></Select>
+				</HBox>
+			</VBox>
+		</VBox>
+		<HBox>
+			<Label text="" required="true" class="sapUiSmallMarginTop"></Label>
+			<Label text="{i18n>declareText}" class="sapUiSmallMarginTop"></Label>
+			<CheckBox class="sapUiTinyMargin" enabled="false"></CheckBox>
+			<Label text="{i18n>declareNextText}" class="sapUiSmallMarginTop"></Label>
+		</HBox>
+		<HBox>
+			<Label id="idDateSave" class="DateLabel"></Label>
+		</HBox>
+	</VBox>
+</core:FragmentDefinition>

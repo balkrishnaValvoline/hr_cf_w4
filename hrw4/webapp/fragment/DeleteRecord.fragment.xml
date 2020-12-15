@@ -1,0 +1,158 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<!--	<FlexBox alignItems="Start">
+		<HBox>
+			<Panel headerText="{i18n>PersonalText}" class="customFontHeaderTable">
+				<HBox>
+					<Label text="{i18n>FText}"/>
+					<Text text=""/>
+				</HBox>
+			</Panel>
+		</HBox>
+		<HBox>
+			<Panel headerText="{i18n>AddressText}" class="customFontHeaderTable AddressMargin"/>
+		</HBox>
+	</FlexBox>
+	<FlexBox alignItems="Start">
+		<HBox>
+			<Panel headerText="{i18n>W4WText}" class="customFontHeaderTable"/>
+		</HBox>
+	</FlexBox>-->
+	<OverflowToolbar>
+		<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
+		<ToolbarSpacer></ToolbarSpacer>
+		<!--	<HBox>
+			<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDelete" tooltip="{i18n>deleteText}" class="grabbing"/>
+			<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
+		</HBox>-->
+		<Button type="Reject" text="{i18n>deleteText}" icon="sap-icon://delete" class="customFontHeadingTable" press="onDeleteRecord"></Button>
+	</OverflowToolbar>
+	<f:SimpleForm id="DeleteRecord" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+		adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="2" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
+		singleContainerFullSize="true">
+		<f:content>
+			<core:Title text="{i18n>PersonalText}" class="customFontItemTable"/>
+			<Label text="{i18n>FText}"/>
+			<Text text=""/>
+			<Label text="{i18n>MText}"/>
+			<Text text=""/>
+			<Label text="{i18n>LText}"/>
+			<Text text=""/>
+			<Label text="{i18n>InitialsText}"/>
+			<Text text=""/>
+			<Label text="{i18n>SSNText}"/>
+			<Text text=""/>
+			<core:Title text="{i18n>AddressText}" class="customFontItemTable"/>
+			<Label text="{i18n>StreetText}"/>
+			<Text text="{Url}"/>
+			<Label text="{i18n>CityText}"/>
+			<Text text="{Twitter}"/>
+			<Label text="{i18n>StateText}"/>
+			<Text text="{Email}"/>
+			<Label text="{i18n>ZIPText}"/>
+			<!--<core:Title text="{i18n>W4WText}" class="customFontItemTable"/>
+			<Label text="{i18n>TaxText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>ExemptionsText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>AdditionalText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>TaxExText}"/>
+			<Text text=""></Text>
+			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
+			<CheckBox></CheckBox>
+			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
+			<CheckBox></CheckBox>-->
+		</f:content>
+	</f:SimpleForm>
+	<VBox>
+		<f:Form id="FormDisplay354wideDual" editable="false">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+					emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer title="{i18n>W4WText}">
+					<f:formElements>
+						<f:FormElement label="{i18n>TaxText}">
+							<f:fields>
+								<Text text="{SupplierName}" id="nameText"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>ExemptionsText}">
+							<f:fields>
+								<Text text="{Street} {HouseNumber}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>AdditionalText}">
+							<f:fields>
+								<Text text="{ZIPCode} {City}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>TaxExText}">
+							<f:fields>
+								<Text text="{Country}" id="countryText"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>StatusText}" class="sapUiLargeMarginTop">
+							<f:fields>
+								<CheckBox></CheckBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>Status1Text}" class="sapUiLargeMarginTop">
+							<f:fields>
+								<CheckBox></CheckBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>Check1Text}" class="sapUiLargeMarginTop">
+							<f:fields>
+								<HBox>
+									<CheckBox select="onCheckChange"></CheckBox>
+									<MessageStrip id="idMessageCall" type="Success" visible="false" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="">
+							<f:fields>
+								<!--<MessageStrip id="idMessageCallu" type="Success" visible="true" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>-->
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="">
+							<f:fields>
+								<!--<Button text="Delete"></Button>-->
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="">
+							<f:fields>
+								<Text text=""></Text>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<!--<f:SimpleForm id="SimpleFormDisplay354" editable="false" layout="ResponsiveGridLayout" title="{i18n>W4WText}" labelSpanXL="3" labelSpanL="3"
+			labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+			columnsL="1" columnsM="1" singleContainerFullSize="false">
+			<f:content>
+				<Label text="{i18n>TaxText}"/>
+				<Text text=""></Text>
+				<Label text="{i18n>ExemptionsText}"/>
+				<Text text=""></Text>
+				<Label text="{i18n>AdditionalText}"/>
+				<Text text=""></Text>
+				<Label text="{i18n>TaxExText}"/>
+				<Text text=""></Text>
+				<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
+				<CheckBox></CheckBox>
+				<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
+				<CheckBox></CheckBox>
+				<Label text="{i18n>Check1Text}" class="sapUiTinyMarginTop"></Label>
+				<CheckBox select="onCheckChange"></CheckBox>
+			</f:content>
+		</f:SimpleForm>-->
+	</VBox>
+</core:FragmentDefinition>
