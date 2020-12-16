@@ -12,18 +12,95 @@ sap.ui.define([
 		},
 
 		loginSvc: function () {
+	//		var xsURL = "/loginSvc";
+				$.ajax({
+					url: "/backend/hrservices/w4/loginSvc",
+					success: function (data) {
+						_oController.getView().byId("idIconTabBar").setVisible(true);
+						_oController.getView().byId("idNotFound").setVisible(false);
+					},
+					error: function (err, xhr) {
+						_oController.getView().byId("idIconTabBar").setVisible(false);
+
+						if (err.statusText === "Unauthorized") {
+							_oController.getView().byId("idNotFound").setText(_oController.getResourceBundle().getText("unAuthorized"));
+
+						} else {
+							_oController.getView().byId("idNotFound").setText(_oController.getResourceBundle().getText("notFound"));
+						}
+						_oController.getView().byId("idNotFound").setVisible(true);
+					}
+				});
+		/*	_oController.handleAjaxJSONCall(_oController, false, xsURL, "GET", _oController.onLoginSuccess,
+				_oController.onLoginError);*/
+		},
+		handleAjaxJSONCall: function (oController, aSync, sEndPoint, sCallType, fSuccess, fError, oDataToSend, oPiggyBack) {
+			var oReturn;
 
 			$.ajax({
-				url: "/backend/hrservices/w4/loginSvc",
-				success: function (data) {
-					console.log(data);
+				beforeSend: function (request) {
+					//requesting the CSRF token on every call
+					request.setRequestHeader("X-CSRF-Token", "Fetch");
+					//POST AND PUT CALLS REQUIRE CSRF TOKEN TO BE SENT
+					if (sCallType.toUpperCase() === "POST" || sCallType.toUpperCase() === "PUT" || sCallType.toUpperCase() === "DELETE") {
+						request.setRequestHeader("X-CSRF-Token", sap.ui.getCore().getModel("oToken").getData().csrfToken);
+					}
+					request.setRequestHeader("Content-Type", "application/json");
+					// Enables XSS filtering. Rather than sanitizing the page, the browser will prevent rendering of the page if an attack is detected.
+					request.setRequestHeader("X-Xss-Protection", " 1; mode=block");
+					//Stops the browser from trying to MIME-sniff the content type and forces it to stick with the declared content-type
+					request.setRequestHeader("X-Content-Type-Options", "nosniff");
 				},
-				error: function (err, xhr) {
-				//	_oController.getView().byId("idIconTabBar").setVisible(false);
-					console.log("Heeeeeelo");
-					console.log(err);
+				type: sCallType,
+				data: oDataToSend,
+				url: "/backend/hrservices/w4/" + sEndPoint,
+				async: aSync,
+				success: function (oData, textStatus, xhr) {
+
+					if (xhr.getResponseHeader('X-Csrf-Token') !== undefined && xhr.getResponseHeader('X-Csrf-Token') !== null) {
+
+					}
+					if (oPiggyBack === undefined) {
+						oPiggyBack = {};
+					}
+					oPiggyBack.textStatus = textStatus;
+					oPiggyBack.xhr = xhr;
+					oReturn = fSuccess(oController, oData, oPiggyBack);
+				},
+				error: function (oError) {
+				
+					if (oError.status === 401 && (oError.getResponseHeader("x-csrf-token") === null || oError.getResponseHeader("x-csrf-token") ===
+							undefined || oError.getResponseHeader(
+								"x-csrf-token") === "")) {
+						//Session was lost triggering logout flow
+						//location.reload();
+					}
+
+					oReturn = fError(oController, oError, oPiggyBack);
 				}
+
 			});
+			if (!aSync) {
+				return oReturn;
+			}
+
+			return oReturn;
+
+		},
+		onLoginSuccess: function (oController, oData, oPiggyBack) {
+			_oController.getView().byId("idIconTabBar").setVisible(true);
+			_oController.getView().byId("idNotFound").setVisible(false);
+		},
+		onLoginError: function (oController, oError, oPiggyBack) {
+			_oController.getView().byId("idIconTabBar").setVisible(false);
+
+			if (oError.statusText === "Unauthorized") {
+				_oController.getView().byId("idNotFound").setText(_oController.getResourceBundle().getText("unAuthorized"));
+
+			} else {
+				_oController.getView().byId("idNotFound").setText(_oController.getResourceBundle().getText("notFound"));
+			}
+			_oController.getView().byId("idNotFound").setVisible(true);
 		},
 		handleDeleteOverview: function (oEvent) {
 			this.getView().byId("idEditTab").setEnabled(true);
@@ -115,6 +192,9 @@ sap.ui.define([
 				this.getView().byId("idEditTab").setEnabled(false);
 				this.getView().byId("saveTab").setEnabled(false);
 			}
+		},
+		getResourceBundle: function () {
+			return _oController.getOwnerComponent().getModel("i18n").getResourceBundle();
 		}
 
 	});

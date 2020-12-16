@@ -265,3 +265,10 @@ Fonts and colors
 .DateLabel{
 	margin-left: 1100px;
 }
+.iNotAuthorized{
+	margin-top: 50px;    
+	font-size: x-large;
+    font-weight: bolder;
+    margin-left: 70px;
+
+}

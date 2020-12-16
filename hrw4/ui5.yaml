@@ -15,7 +15,7 @@ builder:
     - name: webide-extension-task-resources
       afterTask: generateVersionInfo
       configuration:
-        nameSpace: ui 
+        nameSpace: valvoline/ui
     - name: webide-extension-task-copyFile
       afterTask: webide-extension-task-resources
       configuration:
@@ -26,4 +26,4 @@ builder:
       configuration:
         destDir: dist
         appFolder: webapp
-        nameSpace: ui
+        nameSpace: valvoline/ui

@@ -39,20 +39,20 @@ resources:
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
-    type: org.cloudfoundry.existing-service
+    type: org.cloudfoundry.managed-service
   - name: w4ui_host
     parameters:
       service-plan: app-host
       service: html5-apps-repo
-    type: org.cloudfoundry.existing-service
+    type: org.cloudfoundry.managed-service
   - name: hr_xsuaa
     parameters:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
-    type: org.cloudfoundry.existing-service
+    type: org.cloudfoundry.managed-service
   - name: hr_destinations
     parameters:
       service-plan: lite
       service: destination
-    type: org.cloudfoundry.existing-service
+    type: destination
