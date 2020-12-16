@@ -1,5 +1,5 @@
 {
-  "welcomeFile": "valvhrw4_ui/index.html",
+  "welcomeFile": "index.html",
   "authenticationMethod": "route",
   "routes": [
   		{

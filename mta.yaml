@@ -15,7 +15,6 @@ modules:
       - name: hr_ui_runtime
       - name: hr_xsuaa
       - name: hr_destinations
-      - name: valvoline_hr_w4_ui_deployer
   - name: valvoline_hr_w4_ui_deployer
     type: com.sap.html5.application-content
     path: valvoline_hr_w4_ui_deployer
@@ -39,20 +38,20 @@ resources:
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
-    type: org.cloudfoundry.managed-service
+    type: org.cloudfoundry.existing-service
   - name: w4ui_host
     parameters:
       service-plan: app-host
       service: html5-apps-repo
     type: org.cloudfoundry.managed-service
-  - name: hr_xsuaa
-    parameters:
-      path: ./xs-security.json
-      service-plan: application
-      service: xsuaa
-    type: org.cloudfoundry.managed-service
   - name: hr_destinations
     parameters:
       service-plan: lite
       service: destination
-    type: destination
+    type: org.cloudfoundry.existing-service
+  - name: hr_xsuaa
+    parameters:
+      service-name: hr_xsuaa
+      service: xsuaa
+      service-plan: application
+    type: org.cloudfoundry.existing-service
