@@ -1,63 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.valvoline.hr_portal</groupId>
 	<artifactId>service_layer</artifactId>
-	<version>0.0.1</version>
 	<packaging>war</packaging>
 	<name>com.valvoline.hr_portal:service_layer</name>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jersey.api.version>2.31</jersey.api.version>
+		<olingo.version>2.0.10</olingo.version>
+		<httpmime.version>4.1.3</httpmime.version>
+		<httpclient.version>4.3.6</httpclient.version>
+		<sap.cf.security.version>2.7.5</sap.cf.security.version>
+		<eclipselink.version>2.6.4</eclipselink.version>
+		<javax.ws.version>2.1.1</javax.ws.version>
+		<jerseyConnector.version>2.31</jerseyConnector.version>
+		<apache.commons.version>1.4</apache.commons.version>
+		<quartz.api.version>2.3.0</quartz.api.version>
+		<cf-logging-version>2.1.5</cf-logging-version>
+		<log4j2.version>2.8.2</log4j2.version>
+		<slf4j.version>1.7.24</slf4j.version>
 		<java.source.level>1.8</java.source.level>
 		<java.target.level>${java.source.level}</java.target.level>
 	</properties>
+
 	<dependencies>
+
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20200518</version>
+		</dependency>
+
+		<!-- Persistence -->
+		<!-- https://mvnrepository.com/artifact/javax.ejb/javax.ejb-api -->
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>javax.ejb-api</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+
+		<!-- Jersey Dependencies -->
+
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
+			<version>${jerseyConnector.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${jersey.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>${jersey.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.9.0</version>
+		</dependency>
+		<!-- For SAP JCo API -->
+		<dependency>
+			<groupId>com.sap.cloud</groupId>
+			<artifactId>neo-java-web-api</artifactId>
+			<version>3.118.5</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- HDB support dependencies: remove comment if required     <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>eclipselink</artifactId>
-      <version>2.6.4</version>
-    </dependency>
- -->
-		<!-- test dependencies -->
+
+		<!-- SAP CF Dependencies -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
+			<groupId>com.sap.cloud.security</groupId>
+			<artifactId>java-api</artifactId>
+			<version>${sap.cf.security.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sap.cloud.security.xsuaa</groupId>
+			<artifactId>token-client</artifactId>
+			<version>2.7.5</version>
+		</dependency>
+
+		<!-- CF Logging Libraries -->
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>2.7.15</version>
-			<scope>test</scope>
+			<groupId>com.sap.hcp.cf.logging</groupId>
+			<artifactId>cf-java-logging-support-log4j2</artifactId>
+			<version>${cf-logging-version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-junit</artifactId>
-			<version>2.0.0.0</version>
-			<scope>test</scope>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j2.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sap.hcp.cf.logging</groupId>
+			<artifactId>cf-java-logging-support-servlet</artifactId>
+			<version>${cf-logging-version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
+			<version>4.12</version> <scope>test</scope> </dependency> <dependency> <groupId>org.mockito</groupId> 
+			<artifactId>mockito-core</artifactId> <version>2.7.15</version> <scope>test</scope> 
+			</dependency> <dependency> <groupId>org.hamcrest</groupId> <artifactId>hamcrest-junit</artifactId> 
+			<version>2.0.0.0</version> <scope>test</scope> </dependency> -->
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
+				<version>3.7.0</version>
 				<configuration>
-					<source>${java.source.level}</source>
-					<target>${java.target.level}</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.0</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
@@ -73,7 +173,7 @@
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
-					<execution >
+					<execution>
 						<id>jacoco-report</id>
 						<phase>test</phase>
 						<goals>
@@ -109,4 +209,9 @@
 			</build>
 		</profile>
 	</profiles>
+	<version>1.0.0</version>
+	<description>Investment Management Java Project</description>
+	<organization>
+		<name>Valvoline</name>
+	</organization>
 </project>
