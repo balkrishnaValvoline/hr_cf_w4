@@ -2,12 +2,15 @@
 	displayBlock="true" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:unified="sap.ui.unified">
 	<HBox width="100%" id="logButtonContainer" class="logButtonFixHeight logButtonFixHeight_Impersonate huserinfo-frag-container"
 		justifyContent="SpaceBetween">
-		<HBox>
-			<Button icon="sap-icon://sys-help" iconFirst="false" id="helpButton" class="customIcon customIcon--header help-button"
-				text="{i18n>HelpBTN}" press="toHelp"></Button>
-			<Button icon="sap-icon://customer"
-				visible="{parts: ['oAccounts>/firstname', 'oModelImpersonate>/impersonateStatus'], formatter : '.checkImpersonate'}" iconFirst="false"
-				id="logButton" class="customIcon customIcon--header logoutButton" text="{i18n>LogoutBTN}" press="logUserOut"></Button>
-		</HBox>
+		<VBox>
+			<HBox>
+				<Text id="idUserFName" class="customIcon customIcon--header help-button headerUserF"></Text>
+				<Text id="idUserLName" class="customIcon customIcon--header help-button headerUserL"></Text>
+			</HBox>
+			<HBox>
+				<Button icon="sap-icon://customer" iconFirst="false" id="logButton" class="customIcon customIcon--header logoutButton headerLogin"
+					text="{i18n>LogoutBTN}" press="logoutPress"></Button>
+			</HBox>
+		</VBox>
 	</HBox>
 </core:FragmentDefinition>

@@ -1,22 +1,4 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
-	<!--	<FlexBox alignItems="Start">
-		<HBox>
-			<Panel headerText="{i18n>PersonalText}" class="customFontHeaderTable">
-				<HBox>
-					<Label text="{i18n>FText}"/>
-					<Text text=""/>
-				</HBox>
-			</Panel>
-		</HBox>
-		<HBox>
-			<Panel headerText="{i18n>AddressText}" class="customFontHeaderTable AddressMargin"/>
-		</HBox>
-	</FlexBox>
-	<FlexBox alignItems="Start">
-		<HBox>
-			<Panel headerText="{i18n>W4WText}" class="customFontHeaderTable"/>
-		</HBox>
-	</FlexBox>-->
 	<OverflowToolbar>
 		<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
 		<ToolbarSpacer></ToolbarSpacer>
@@ -24,11 +6,12 @@
 			<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDelete" tooltip="{i18n>deleteText}" class="grabbing"/>
 			<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
 		</HBox>-->
-		<Button type="Reject" text="{i18n>deleteText}" icon="sap-icon://delete" class="customFontHeadingTable" press="onDeleteRecord"></Button>
+		<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="handlePrevDelete"></Button>
+		<Button type="Reject" text="{i18n>deleteText}" icon="sap-icon://delete" class="customFontHeadingTable" press="handleDelete"></Button>
 	</OverflowToolbar>
 	<f:SimpleForm id="DeleteRecord" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
 		adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="2" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
-		singleContainerFullSize="true">
+		singleContainerFullSize="true" visible="false">
 		<f:content>
 			<core:Title text="{i18n>PersonalText}" class="customFontItemTable"/>
 			<Label text="{i18n>FText}"/>
@@ -49,23 +32,10 @@
 			<Label text="{i18n>StateText}"/>
 			<Text text="{Email}"/>
 			<Label text="{i18n>ZIPText}"/>
-			<!--<core:Title text="{i18n>W4WText}" class="customFontItemTable"/>
-			<Label text="{i18n>TaxText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>ExemptionsText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>AdditionalText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>TaxExText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
-			<CheckBox></CheckBox>
-			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
-			<CheckBox></CheckBox>-->
 		</f:content>
 	</f:SimpleForm>
 	<VBox>
-		<f:Form id="FormDisplay354wideDual" editable="false">
+		<f:Form id="FormDisplay354wideDual" editable="true">
 			<f:layout>
 				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
 					emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
@@ -75,39 +45,42 @@
 					<f:formElements>
 						<f:FormElement label="{i18n>TaxText}">
 							<f:fields>
-								<Text text="{SupplierName}" id="nameText"/>
+								<Text text="{w4DataModel>/deleteTabRecords/0/recordTAURT}" id="nameText"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>ExemptionsText}">
 							<f:fields>
-								<Text text="{Street} {HouseNumber}"/>
+								<Text text="{w4DataModel>/deleteTabRecords/0/recordNBREX}"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>AdditionalText}">
 							<f:fields>
-								<Text text="{ZIPCode} {City}"/>
+								<HBox>
+									<Text text="{w4DataModel>/deleteTabRecords/0/recordEXAMT}"/>
+									<Text text="USD" class="ValidDate"/>
+								</HBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>TaxExText}">
 							<f:fields>
-								<Text text="{Country}" id="countryText"/>
+								<Text text="{w4DataModel>/deleteTabRecords/0/recordEXIND}"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>StatusText}" class="sapUiLargeMarginTop">
 							<f:fields>
-								<CheckBox></CheckBox>
+								<Text text="{w4DataModel>/deleteTabRecords/0/recordFilingStatus}"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>Status1Text}" class="sapUiLargeMarginTop">
 							<f:fields>
-								<CheckBox></CheckBox>
+								<CheckBox editable="false"></CheckBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>Check1Text}" class="sapUiLargeMarginTop">
 							<f:fields>
 								<HBox>
-									<CheckBox select="onCheckChange"></CheckBox>
-									<MessageStrip id="idMessageCall" type="Success" visible="false" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>
+									<CheckBox select="onCheckChange" editable="false"></CheckBox>
+									<MessageStrip id="idMessageCall" type="Success" visible="true" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>
 								</HBox>
 							</f:fields>
 						</f:FormElement>

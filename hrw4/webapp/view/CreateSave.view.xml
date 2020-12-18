@@ -1,0 +1,194 @@
+<mvc:View controllerName="valvoline.ui.hrw4.controller.CreateSave" xmlns:html="httpst/www.w3.org/1999/xhtml" xmlns:u="sap.ui.unified"
+	xmlns:f="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" displayBlock="true" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core"
+	class="sapUiSizeCompact">
+	<Page showHeader="false">
+		<VBox id="vbox" alignItems="Center" width="100%" height="auto">
+			<!-- Header -->
+			<VBox width="100%" id="hbox" class="reusable-header-container" alignItems="Center">
+				<VBox class="reusable-header-width" alignItems="Center">
+					<!-- Dash User Information -->
+					<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.HeaderUserInformation" type="XML"/>
+					<!-- Page Title  -->
+					<HBox width="100%" alignItems="Center" justifyContent="SpaceBetween">
+						<VBox>
+							<Text id="title" text="{i18n>W4PageTitleTXT}" class="reusable-font-page-title-h1 reusable-color-white"/>
+						</VBox>
+					</HBox>
+				</VBox>
+			</VBox>
+		</VBox>
+		<content>
+			<VBox class="CreateSave">
+				<OverflowToolbar>
+					<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
+					<ToolbarSpacer></ToolbarSpacer>
+					<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="onPrevToMain"></Button>
+					<Button type="Accept" text="{i18n>SaveConText}" icon="sap-icon://accept" class="customFontHeadingTable" press="onConfirm"></Button>
+				</OverflowToolbar>
+				<f:SimpleForm id="EditRecord" editable="fa " layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="2" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
+					singleContainerFullSize="true">
+					<f:content>
+						<core:Title text="{i18n>PersonalText}" class="customFontItemTable"/>
+						<Label text="{i18n>FText}"/>
+						<Input id="idFname" editable="false" value="{w4DataModel>/editRecords/personalData/0/fName}"></Input>
+						<Label text="{i18n>MText}"/>
+						<Input id="idMname" editable="false" value="{w4DataModel>/editRecords/personalData/0/MName}"></Input>
+						<Label text="{i18n>LText}"/>
+						<Input id="idLname" editable="false" value="{w4DataModel>/editRecords/personalData/0/LName}"></Input>
+						<Label text="{i18n>InitialsText}"/>
+						<Input id="idInitials" editable="false" value=""></Input>
+						<Label text="{i18n>SSNText}"/>
+						<Input id="idSSN" editable="false" value="{w4DataModel>/editRecords/personalData/0/serialNumber}"></Input>
+						<core:Title text="{i18n>AddressText}" class="customFontItemTable"/>
+						<Label text="{i18n>StreetText}"/>
+						<Input id="idStreet" editable="false" value="{w4DataModel>/editRecords/addressData/0/street}"></Input>
+						<Label text="{i18n>CityText}"/>
+						<Input id="idCity" editable="false" value="{w4DataModel>/editRecords/addressData/0/city}"></Input>
+						<Label text="{i18n>StateText}"/>
+						<Input id="idState" editable="false" value="{w4DataModel>/editRecords/addressData/0/state}"></Input>
+						<Label text="{i18n>ZIPText}"/>
+						<Input id="idZIP" editable="false" value="{w4DataModel>/editRecords/addressData/0/ZIP}"></Input>
+					</f:content>
+				</f:SimpleForm>
+				<VBox>
+					<f:Form id="FormEdit" editable="true">
+						<f:layout>
+							<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+								emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+						</f:layout>
+						<f:formContainers>
+							<f:FormContainer title="{i18n>W4WTextInfo}">
+								<f:formElements>
+									<f:FormElement label="{i18n>begText}">
+										<f:fields>
+											<DatePicker id="idbegDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
+												value="{w4DataModel>/editRecords/W4Data/0/beginDate}"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="">
+										<f:fields>
+											<MessageStrip type="Warning" visible="true" text="{i18n>warningDate}" showIcon="false" showCloseButton="false" class="sapUiSmallMarginLeft"></MessageStrip>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>endText}">
+										<f:fields>
+											<DatePicker id="idendDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
+												value="{w4DataModel>/editRecords/W4Data/0/endDate}"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>TotalText}">
+										<f:fields>
+											<HBox>
+												<Input id="totalCredits" value="{w4DataModel>/editRecords/W4Data/0/totalCredits}"></Input>
+												<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+											</HBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>OtherText}">
+										<f:fields>
+											<HBox>
+												<Input id="otherCredits" value="{w4DataModel>/editRecords/W4Data/0/otherCredits}"></Input>
+												<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+											</HBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>DeductionsText}">
+										<f:fields>
+											<HBox>
+												<Input id="deductionCredits" value="{w4DataModel>/editRecords/W4Data/0/deductionAmt}"></Input>
+												<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+											</HBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>StatusText}">
+										<f:fields>
+											<HBox>
+												<ComboBox width="290px" items="{w4DataModel>/editFilingStatusData}" id="filingStatus" visible="true">
+													<core:Item key="{w4DataModel>filingKey}" text="{w4DataModel>filingValue}"/>
+												</ComboBox>
+											</HBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="">
+										<f:fields>
+											<HBox>
+												<MessageStrip id="idMessageCallText" type="Success" visible="true" text="{i18n>StatusMandtText}" showIcon="false" showCloseButton="false"
+													class="sapUiSmallMarginLeft"></MessageStrip>
+											</HBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>AdditionalAmountText}">
+										<f:fields>
+											<HBox>
+												<Input id="idAdditional" value="{w4DataModel>/editRecords/W4Data/0/examt}"></Input>
+												<Text text=" {i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+											</HBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>UseText}" class="sapUiSmallMarginTop">
+										<f:fields>
+											<CheckBox id="idUseCheck" class="sapUiTinyMargin" selected="{w4DataModel>/editRecords/W4Data/0/useHoldings}"></CheckBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="{i18n>Check1Text}" class="sapUiSmallMarginTop">
+										<f:fields>
+											<CheckBox id="idNamediffer" class="sapUiTinyMargin" selected="{w4DataModel>/editRecords/W4Data/0/lnmch}"></CheckBox>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="">
+										<f:fields>
+											<HBox>
+												<MessageStrip id="idMessageCallText1" type="Success" visible="true" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"
+													class="sapUiSmallMarginLeft"></MessageStrip>
+											</HBox>
+										</f:fields>
+									</f:FormElement>
+								</f:formElements>
+							</f:FormContainer>
+						</f:formContainers>
+					</f:Form>
+				</VBox>
+				<VBox>
+					<f:Form id="FormClaim" editable="true">
+						<f:layout>
+							<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+								emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+						</f:layout>
+						<f:formContainers>
+							<f:FormContainer title="{i18n>ClaimTextInfo}">
+								<f:formElements></f:formElements>
+							</f:FormContainer>
+						</f:formContainers>
+					</f:Form>
+				</VBox>
+				<VBox>
+					<VBox class="ClaimBordr">
+						<HBox id="textAreaClaim">
+							<Label text="{i18n>textAreaClaimText}" class="sapUiTinyMargin"></Label>
+						</HBox>
+						<VBox>
+							<MessageStrip type="None" visible="true" text="{i18n>textAreaClaimTMandt1Text}" showIcon="false" class="sapUiTinyMargin"></MessageStrip>
+							<MessageStrip type="Information" visible="true" text="{i18n>textAreaClaimTMandt2Text}" showIcon="false" class="sapUiTinyMargin"></MessageStrip>
+							<HBox>
+								<Label text="{i18n>conditionText}" class="sapUiTinyMargin"></Label>
+								<Select width="200px" items="{w4DataModel>/editExemptionData}" id="idExemption" class="sapUiTinyMargin">
+									<core:ListItem key="{w4DataModel>exemptionKey}" text="{w4DataModel>exemptionValue}"/>
+								</Select>
+							</HBox>
+						</VBox>
+					</VBox>
+					<HBox>
+						<Label text="" required="true" class="sapUiSmallMarginTop"></Label>
+						<Label text="{i18n>declareText}" class="sapUiSmallMarginTop"></Label>
+						<CheckBox class="sapUiTinyMargin" id="idDeclare" select="onDeclareSelect" selected="{w4DataModel>/editRecords/W4Data/0/declare}"></CheckBox>
+						<Label text="{i18n>declareNextText}" class="sapUiSmallMarginTop"></Label>
+					</HBox>
+					<HBox>
+						<Label id="idDate" class="DateLabel"></Label>
+					</HBox>
+				</VBox>
+			</VBox>
+		</content>
+	</Page>
+</mvc:View>

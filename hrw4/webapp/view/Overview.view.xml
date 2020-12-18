@@ -1,0 +1,114 @@
+<mvc:View controllerName="valvoline.ui.hrw4.controller.Overview" xmlns:html="httpst/www.w3.org/1999/xhtml" xmlns:u="sap.ui.unified"
+	xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" displayBlock="true" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page showHeader="false" id="idOverviewPage">
+					<VBox id="vbox" alignItems="Center" width="100%" height="auto">
+						<!-- Header -->
+						<VBox width="100%" id="hbox" class="reusable-header-container" alignItems="Center">
+							<VBox class="reusable-header-width" alignItems="Center">
+								<!-- Dash User Information -->
+								<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.HeaderUserInformation" type="XML"/>
+								<!-- Page Title  -->
+								<HBox width="100%" alignItems="Center" justifyContent="SpaceBetween">
+									<VBox>
+										<Text id="title" text="{i18n>W4PageTitleTXT}" class="reusable-font-page-title-h1 reusable-color-white"/>
+									</VBox>
+								</HBox>
+							</VBox>
+						</VBox>
+					</VBox>
+					<!--	<HBox alignContent="End">
+							<Image src="./resources/img/ValvolineLogo.png"></Image>
+						</HBox>-->
+					<ScrollContainer height="200%" width="100%" focusable="true">
+						<content>
+							<Title id="idNotFound" class="iNotAuthorized" visible="false"></Title>
+							<IconTabBar id="idIconTabBar" select="onFilterSelect" class="sapUiResponsiveContentPadding W4iconTabBar" showOverflowSelectList="true"
+								expanded="true" expandable="false" stretchContentHeight="true" visible="false">
+								<items>
+									<IconTabFilter icon="sap-icon://activity-items" iconColor="Positive" design="Horizontal" text="{i18n>OverviewText}" key="1"
+										class="sapUiLargeMargin customFontItemTable" id="idOverViewTab">
+										<!-- Table to display the details -->
+										<Toolbar>
+											<ToolbarSpacer></ToolbarSpacer>
+											<Button id="idCreate" type="Accept" text="{i18n>CreateText}" icon="sap-icon://add" class="customFontHeadingTable" press="onCreate"
+												enabled="false"></Button>
+										</Toolbar>
+										<Table id="idCustomJobTable" inset="false" items="{w4DataModel>/tableRecords}">
+											<columns>
+												<Column>
+													<Text text="{i18n>DateText}" class="customFontHeadingTable"/>
+												</Column>
+												<Column>
+													<Text text="{i18n>FilingStatusText}" class="customFontHeadingTable"/>
+												</Column>
+												<Column>
+													<Text text="{i18n>ExemptionsText}" class="customFontHeadingTable"/>
+												</Column>
+												<Column>
+													<Text text="{i18n>LastDateText}" class="customFontHeadingTable"/>
+												</Column>
+												<Column>
+													<HBox>
+														<Text text="{i18n>editText}" class="customFontHeadingTable"></Text>
+													</HBox>
+												</Column>
+												<Column>
+													<HBox>
+														<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
+													</HBox>
+												</Column>
+											</columns>
+											<items>
+												<ColumnListItem vAlign="Middle">
+													<cells>
+														<!--	<Text text="Valid until 12/9/2020" class="customFontItemTable"/>
+														<Text text="Single" class="customFontItemTable"/>
+														<Text text="06" class="customFontItemTable"/>
+														<core:Icon src="sap-icon://edit" color="#00FF00" press="handleEditOverview" tooltip="{i18n>editText}" class="grabbing"/>-->
+														<HBox>
+															<Text text="{w4DataModel>recordValid}" class="customFontItemTable"/>
+															<Text text="{w4DataModel>recordDate}" class="customFontItemTable ValidDate"/>
+														</HBox>
+														<Text text="{w4DataModel>recordFilingStatus}" class="customFontItemTable"/>
+														<Text text="{w4DataModel>recordExemption}" class="customFontItemTable"/>
+														<Text text="{w4DataModel>recordLast}" class="customFontItemTable"/>
+														<core:Icon src="sap-icon://edit" color="#00FF00" press="handleEditClick" tooltip="{i18n>editText}" class="grabbing"/>
+														<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDeleteClick" tooltip="{i18n>deleteText}" class="grabbing"
+															visible="{w4DataModel>recordDelete}"/>
+													</cells>
+												</ColumnListItem>
+											</items>
+										</Table>
+									</IconTabFilter>
+									<IconTabSeparator icon="sap-icon://open-command-field" class="sapUiLargeMargin"/>
+									<IconTabFilter icon="sap-icon://edit" iconColor="Positive" design="Horizontal"
+										count="{/ProductCollectionStats/Counts/Weight/Heavy} of {/ProductCollectionStats/Counts/Total}" text="{i18n>EditText}" key="2"
+										class="sapUiLargeMargin customFontItemTable iconTabBarSize" id="idEditTab" enabled="false">
+										<VBox visible="false" id="idDelRecord">
+											<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.DeleteRecord" type="XML"/>
+										</VBox>
+										<VBox visible="false" id="idEditRecord">
+											<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.EditRecord" type="XML"/>
+										</VBox>
+									</IconTabFilter>
+								<!--	<IconTabSeparator icon="sap-icon://open-command-field" class="sapUiLargeMargin"/>-->
+	<!--								<IconTabFilter icon="sap-icon://save" iconColor="Positive" design="Horizontal"
+										count="{/ProductCollectionStats/Counts/Weight/Overweight} of {/ProductCollectionStats/Counts/Total}" text="{i18n>SaveConText}" key="3"
+										class="sapUiLargeMargin" enabled="false" id="saveTab">
+										<VBox visible="true" id="idSaveRecord">
+											<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.SaveRecord" type="XML"/>
+										</VBox>
+									</IconTabFilter>-->
+								</items>
+							</IconTabBar>
+						</content>
+					</ScrollContainer>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

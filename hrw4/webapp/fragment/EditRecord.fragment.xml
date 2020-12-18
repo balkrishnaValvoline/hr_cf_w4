@@ -24,68 +24,37 @@
 			<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDelete" tooltip="{i18n>deleteText}" class="grabbing"/>
 			<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
 		</HBox>-->
-		<Button type="Accept" text="{i18n>NextText}" icon="sap-icon://open-command-field" class="customFontHeadingTable" press="onNextToSave"></Button>
+		<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="handlePrevEdit"></Button>
+		<Button type="Accept" text="{i18n>SaveConText}" icon="sap-icon://accept" class="customFontHeadingTable" press="onConfirm"></Button>
 	</OverflowToolbar>
-	<f:SimpleForm id="EditRecord" editable="fa   " layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+	<f:SimpleForm id="EditRecord" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
 		adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="2" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 		singleContainerFullSize="true">
 		<f:content>
 			<core:Title text="{i18n>PersonalText}" class="customFontItemTable"/>
 			<Label text="{i18n>FText}"/>
-			<Input></Input>
+			<Input id="idFname" editable="false" value="{w4DataModel>/editBindings/0/PERS_DATA/VORNA}"></Input>
 			<Label text="{i18n>MText}"/>
-			<Input></Input>
+			<Input id="idMname" editable="false" value="{w4DataModel>/editBindings/0/PERS_DATA/MIDNM}"></Input>
 			<Label text="{i18n>LText}"/>
-			<Input></Input>
+			<Input id="idLname" editable="false" value="{w4DataModel>/editBindings/0/PERS_DATA/NACHN}"></Input>
 			<Label text="{i18n>InitialsText}"/>
-			<Input></Input>
+			<Input id="idInitials" editable="false" value=""></Input>
 			<Label text="{i18n>SSNText}"/>
-			<Input></Input>
-			<!--
-			<Label text="{i18n>W4WText}" class="customFontItemTable"></Label>
-			<Label text="{i18n>TaxText}"/>
-			<Input></Input>
-			<Label text="{i18n>ExemptionsText}"/>
-			<Input></Input>
-			<Label text="{i18n>AdditionalText}"/>
-			<Input></Input>
-			<Label text="{i18n>TaxExText}"/>
-			<Input></Input>
-			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
-			<CheckBox></CheckBox>
-			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
-			<CheckBox></CheckBox>
-				<Label text="{i18n>Check1Text}" class="sapUiTinyMarginTop"></Label>
-			<HBox>
-				<CheckBox select="onCheckChangeEdit"></CheckBox>
-				<MessageStrip id="idMessageCallEdit" type="Success" visible="false" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>
-			</HBox>-->
+			<Input id="idSSN" editable="false" value="{w4DataModel>/editBindings/0/PERS_DATA/PERID}"></Input>
 			<core:Title text="{i18n>AddressText}" class="customFontItemTable"/>
 			<Label text="{i18n>StreetText}"/>
-			<Input></Input>
+			<Input id="idStreet" editable="false" value="{w4DataModel>/editBindings/0/ADDRS_DATA/STREET}"></Input>
 			<Label text="{i18n>CityText}"/>
-			<Input></Input>
+			<Input id="idCity" editable="false" value="{w4DataModel>/editBindings/0/ADDRS_DATA/CITY}"></Input>
 			<Label text="{i18n>StateText}"/>
-			<Input></Input>
+			<Input id="idState" editable="false" value="{w4DataModel>/editBindings/0/ADDRS_DATA/STATE}"></Input>
 			<Label text="{i18n>ZIPText}"/>
-			<Input></Input>
-			<!--<core:Title text="{i18n>W4WText}" class="customFontItemTable"/>
-			<Label text="{i18n>TaxText}"/>
-			<Input></Input>
-			<Label text="{i18n>ExemptionsText}"/>
-			<Input></Input>
-			<Label text="{i18n>AdditionalText}"/>
-			<Input></Input>
-			<Label text="{i18n>TaxExText}"/>
-			<Input></Input>
-			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
-			<CheckBox></CheckBox>
-			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
-			<CheckBox></CheckBox>-->
+			<Input id="idZIP" editable="false" value="{w4DataModel>/editBindings/0/ADDRS_DATA/ZIPCODE}"></Input>
 		</f:content>
 	</f:SimpleForm>
 	<VBox>
-		<f:Form id="FormEdit" editable="false">
+		<f:Form id="FormEdit" editable="true">
 			<f:layout>
 				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
 					emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
@@ -96,23 +65,33 @@
 						<f:FormElement label="{i18n>TotalText}">
 							<f:fields>
 								<HBox>
-									<Input></Input>
-									<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+									<Input id="totalCredits" value="{w4DataModel>/editSaveRecords/0/recordDEPS_TOTAL_AMT}"></Input>
+									<Text text="{i18n>usdText}" class="ValidDate"></Text>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>OtherText}">
+							<f:fields>
+								<HBox>
+									<Input id="otherCredits" value="{w4DataModel>/editSaveRecords/0/recordOTHER_INC_AMT}"></Input>
+									<Text text="{i18n>usdText}" class="ValidDate"></Text>
 								</HBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>DeductionsText}">
 							<f:fields>
 								<HBox>
-									<Input></Input>
-									<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+									<Input id="deductionCredits" value="{w4DataModel>/editSaveRecords/0/recordDEDUCT_AMT}"></Input>
+									<Text text="{i18n>usdText}" class="ValidDate"></Text>
 								</HBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>StatusText}">
 							<f:fields>
 								<HBox>
-									<Select width="290px"></Select>
+									<ComboBox width="290px" items="{w4DataModel>/editBindingsFilingStatusData/0}" id="filingStatus" visible="true">
+										<core:Item key="{w4DataModel>VALUEKEY}" text="{w4DataModel>VALUETEXT}"/>
+									</ComboBox>
 								</HBox>
 							</f:fields>
 						</f:FormElement>
@@ -127,14 +106,27 @@
 						<f:FormElement label="{i18n>AdditionalAmountText}">
 							<f:fields>
 								<HBox>
-									<Input></Input>
-									<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
+									<Input value="{w4DataModel>/editSaveRecords/0/recordEXAMT}" id="idAdditional"></Input>
+									<Text text="{i18n>usdText}" class="ValidDate"></Text>
 								</HBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>UseText}" class="sapUiSmallMarginTop">
 							<f:fields>
-								<CheckBox class="sapUiTinyMargin"></CheckBox>
+								<CheckBox id="idUseCheck" class="sapUiTinyMargin" selected="{w4DataModel>/editSaveRecords/0/recordMULT_JOBS_IND}"></CheckBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>Check1Text}" class="sapUiSmallMarginTop">
+							<f:fields>
+								<CheckBox id="idNamediffer" class="sapUiTinyMargin" selected="{w4DataModel>/editRecords/W4Data/0/lnmch}"></CheckBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="">
+							<f:fields>
+								<HBox>
+									<MessageStrip id="idMessageCallText1" type="Success" visible="true" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"
+										class="sapUiSmallMarginLeft"></MessageStrip>
+								</HBox>
 							</f:fields>
 						</f:FormElement>
 					</f:formElements>
@@ -165,14 +157,16 @@
 				<MessageStrip type="Information" visible="true" text="{i18n>textAreaClaimTMandt2Text}" showIcon="false" class="sapUiTinyMargin"></MessageStrip>
 				<HBox>
 					<Label text="{i18n>conditionText}" class="sapUiTinyMargin"></Label>
-					<Select class="sapUiTinyMargin" width="200px"></Select>
+					<Select width="200px" items="{w4DataModel>/editBindingsExemptionData/0}" id="idExemption" class="sapUiTinyMargin">
+						<core:ListItem key="{w4DataModel>VALUEKEY}" text="{w4DataModel>VALUETEXT}"/>
+					</Select>
 				</HBox>
 			</VBox>
 		</VBox>
 		<HBox>
 			<Label text="" required="true" class="sapUiSmallMarginTop"></Label>
 			<Label text="{i18n>declareText}" class="sapUiSmallMarginTop"></Label>
-			<CheckBox class="sapUiTinyMargin"></CheckBox>
+			<CheckBox id="idDeclare" class="sapUiTinyMargin" selected="{w4DataModel>/editSaveRecords/0/recordDeclare}"></CheckBox>
 			<Label text="{i18n>declareNextText}" class="sapUiSmallMarginTop"></Label>
 		</HBox>
 		<HBox>

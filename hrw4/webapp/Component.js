@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
-	"valvoline/ui/hrw4/model/models"
-], function (UIComponent, Device, models) {
+	"valvoline/ui/hrw4/model/models",
+	'sap/ui/model/json/JSONModel'
+], function (UIComponent, Device, models, JSONModel) {
 	"use strict";
 
 	return UIComponent.extend("valvoline.ui.hrw4.Component", {
@@ -25,6 +26,11 @@ sap.ui.define([
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
+			if (this.getModel("w4DataModel") === undefined) {
+				var oW4dataModel = new JSONModel();
+				oW4dataModel.setDefaultBindingMode(sap.ui.model.BindingMode.OneWay);
+				this.setModel(oW4dataModel, "w4DataModel");
+			}
 		}
 	});
 });
