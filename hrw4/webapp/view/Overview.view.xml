@@ -92,14 +92,6 @@
 											<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.EditRecord" type="XML"/>
 										</VBox>
 									</IconTabFilter>
-									<!--	<IconTabSeparator icon="sap-icon://open-command-field" class="sapUiLargeMargin"/>-->
-									<!--								<IconTabFilter icon="sap-icon://save" iconColor="Positive" design="Horizontal"
-										count="{/ProductCollectionStats/Counts/Weight/Overweight} of {/ProductCollectionStats/Counts/Total}" text="{i18n>SaveConText}" key="3"
-										class="sapUiLargeMargin" enabled="false" id="saveTab">
-										<VBox visible="true" id="idSaveRecord">
-											<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.SaveRecord" type="XML"/>
-										</VBox>
-									</IconTabFilter>-->
 								</items>
 							</IconTabBar>
 						</content>

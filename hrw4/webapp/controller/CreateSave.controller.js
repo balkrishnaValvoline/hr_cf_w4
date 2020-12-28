@@ -9,26 +9,35 @@ sap.ui.define([
 	var _oRouter;
 
 	return Controller.extend("valvoline.ui.hrw4.controller.CreateSave", {
+		/**
+		 * This function is called on the initial load of page. 
+		 * @function onInit
+		 */
 		onInit: function () {
 			_oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			_oRouter.getRoute("RouteCreateSave").attachPatternMatched(this._onObjectMatched, this);
 			_oController = this;
 
 		},
-		onAfterRendering: function () {
-
-		},
+		/**
+		 * This function is called everytime this page is called. 
+		 * @function _onObjectMatched
+		 */
 		_onObjectMatched: function (oEvent) {
 
 			if (!_oController.dialog) {
 				_oController.dialog = sap.ui.xmlfragment("valvoline.ui.hrw4.fragment.BusyDialog", this);
 			}
-			_oController.getView().byId("idbegDate").setMinDate(new Date());
-			_oController.getView().byId("idendDate").setMinDate(new Date());
+			_oController.getView().byId("idbegDateSave").setMinDate(new Date());
+			_oController.getView().byId("idendDateSave").setMinDate(new Date());
 			_oController.dialog.open();
 			_oController.getEditDetails();
 
 		},
+		/**
+		 * This function is called for the createNew Service. 
+		 * @function getEditDetails
+		 */
 		getEditDetails: function (oEvent) {
 
 			$.ajax({
@@ -125,9 +134,10 @@ sap.ui.define([
 					_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4oldRecord.push({
 						oldRec: data.W4_DATA
 					});
-					var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-						pattern: "MM/dd/yyyy"
-					});
+			
+						var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+							pattern: "MM/dd/yyyy/hh:mm:ss"
+						});
 
 					var sBegin = sdateFormat.format(new Date(data.W4_DATA.BEGDA));
 					var sEnd = sdateFormat.format(new Date(data.W4_DATA.ENDDA));
@@ -203,11 +213,19 @@ sap.ui.define([
 				}
 			});
 		},
+		/**
+		 * This function is called for the going back to overview page. 
+		 * @function onPrevToMain
+		 */
 		onPrevToMain: function (oEvent) {
 			_oRouter.navTo("RouteOverview");
 		},
+		/**
+		 * This function is for user confirmation about SAVE. 
+		 * @function onConfirm
+		 */
 		onConfirm: function (oEvent) {
-			if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDate").getValue() ===
+			if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDateSave").getValue() ===
 				"") {
 				MessageBox.error("Please fill all the mandatory fields", {
 					actions: ["OK"],
@@ -218,13 +236,13 @@ sap.ui.define([
 
 					onClose: function (sAction) {
 						if (sAction === "OK") {
-							if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDate").getValue() ===
+							if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDateSave").getValue() ===
 								"") {
 								if (_oController.getView().byId("idDeclare").getSelected() === false) {
 									_oController.getView().byId("idDeclare").addStyleClass("checkBoxdeclare");
 								}
-								if (_oController.getView().byId("idbegDate").getValue() === "") {
-									_oController.getView().byId("idbegDate").setValueState("Error");
+								if (_oController.getView().byId("idbegDateSave").getValue() === "") {
+									_oController.getView().byId("idbegDateSave").setValueState("Error");
 								}
 
 							}
@@ -250,11 +268,16 @@ sap.ui.define([
 				});
 			}
 		},
+
 		onDeclareSelect: function (oEvent) {
 
 			_oController.getView().byId("idDeclare").removeStyleClass("checkBoxdeclare");
 
 		},
+		/**
+		 * This function is for saving Record. 
+		 * @function onSaveRecord
+		 */
 		onSaveRecord: function (oEvent) {
 			_oController.dialog.open();
 			var w4Data = _oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4Data;
@@ -270,9 +293,11 @@ sap.ui.define([
 			} else {
 				sNameCheck = "";
 			}
-			var beginDate = new Date(_oController.getView().byId("idbegDate").getValue());
+			var beginDate = new Date(_oController.getView().byId("idbegDateSave").getValue());
+			beginDate.setUTCHours(0, 0, 0);
 			var millisecondsBegin = beginDate.getTime();
-			var endDate = new Date(_oController.getView().byId("idendDate").getValue());
+			var endDate = new Date(_oController.getView().byId("idendDateSave").getValue());
+			endDate.setUTCHours(0, 0, 0);
 			var millisecondsEnd = endDate.getTime();
 
 			var sNewW4DataPayload = {
@@ -481,12 +506,20 @@ sap.ui.define([
 
 			});
 		},
+		/**
+		 * This function is called when Date is changed. 
+		 * @function handleDateChange
+		 */
 		handleDateChange: function (oEvt) {
 			oEvt.getSource().setValueState("None");
 		},
+		/**
+		 * This function is called when logout is pressed. 
+		 * @function logoutPress
+		 */
 		logoutPress: function () {
 			sap.m.URLHelper.redirect("/do/logout", false);
-		},
+		}
 
 	});
 });

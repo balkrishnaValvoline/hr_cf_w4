@@ -5,20 +5,14 @@
 		<VBox class="reusable-footer-section">
 			<!--Valvoline-->
 			<Label class="footer__label" text="{i18n>FTRText7LK}"></Label>
-			<!--<Link id="otherSitesFooterD" class="footer__link" text="{i18n>FTRText4LK}" press="goToPageFooter" app:url="otherSites" app:page="OtherSites"></Link>
-			<Link id="aboutVLVDashFooterD" class="footer__link" wrapping="true" text="{i18n>FTRText1LK}" press="goToPageFooter"
-				app:url="aboutValvolineDash" app:page="AboutValvolineDash"></Link>-->
 		</VBox>
 		<VBox class="reusable-footer-section">
 			<!--Quick Links -->
 			<Label class="footer__label" text="{i18n>FTRText8LK}"></Label>
-			<!--	<Link id="SDSFooterD" class="footer__link footer__social-links" wrapping="true" text="{i18n>FTRText9LB}" press="quickLinks"></Link>-->
 		</VBox>
 		<VBox class="reusable-footer-section">
 			<!--Let us Help You -->
 			<Label class="footer__label" text="{i18n>FTRText9LK}"></Label>
-			<!--<Link id="ContactUSFooterD" class="footer__link" text="{i18n>FTRText3LK}" press="goToPageFooter" app:url="contacts" app:page="Contacts"></Link>
-			<Link id="FAQFooterD" class="footer__link" text="{i18n>FTRText2LK}" press="goToPageFooter" app:url="faqs" app:page="FAQs"></Link>-->
 		</VBox>
 		<VBox class="reusable-footer-section" renderType="Bare">
 			<!--Combo and Social Media -->
@@ -38,11 +32,6 @@
 	</HBox>
 	<!--Common to All Versions-->
 	<HBox justifyContent="Center" wrap="Wrap" class="footerText1padding sapUiLargeMarginTop print-center notPrintable">
-		<!--Terms of Use, Policy, Copyright-->
-		<!--<Link id="ToUFooter" class="footer__link sapUiTinyMarginEnd sapUiSmallMarginEnd" text="{i18n>FTRText5LK}" press="goToPageFooter"
-			app:url="termsOfUse" app:page="TermsOfUse"></Link>
-		<Link id="PPFooter" class="footer__link sapUiTinyMarginEnd" text="{i18n>FTRText6LK}" press="goToPageFooter" app:url="privacyPolicy"
-			app:page="PrivacyPolicy"></Link>-->
 		<Label class="bodyCopy sapUiSmallMarginBegin marginTopFixLCC" text="{i18n>FTRcopyrightLB} {appConfigModel>/year} {i18n>FTRvalvolineLLCLB}"></Label>
 	</HBox>
 	<HBox class="footerText1padding centerJustify print-display-flex notPrintable">

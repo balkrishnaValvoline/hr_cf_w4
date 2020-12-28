@@ -8,12 +8,19 @@ sap.ui.define([
 	var _oController;
 	var _oRouter;
 	return Controller.extend("valvoline.ui.hrw4.controller.Overview", {
+		/**
+		 * This function is called when the app is loaded
+		 * @function onInit
+		 */
 		onInit: function () {
 			_oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			_oRouter.getRoute("RouteOverview").attachPatternMatched(this._onObjectMatched, this);
 			_oController = this;
 		},
-		onAfterRendering: function () {},
+		/**
+		 * This function is called everytime the page is loaded
+		 * @function _onObjectMatched
+		 */
 		_onObjectMatched: function (oEvent) {
 			_oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			if (!_oController.dialog) {
@@ -53,7 +60,10 @@ sap.ui.define([
 
 			_oController.loginSvc();
 		},
-
+		/**
+		 * This function is used for calling the login service, to check if user is authorized or not
+		 * @function loginSvc
+		 */
 		loginSvc: function () {
 
 			$.ajax({
@@ -80,6 +90,10 @@ sap.ui.define([
 			});
 
 		},
+		/**
+		 * This function is called for getting the table records on overview tab
+		 * @function getTableRecords
+		 */
 		getTableRecords: function (oEvent) {
 			if (_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.length === 0) {
 				$.ajax({
@@ -97,7 +111,7 @@ sap.ui.define([
 						} else {
 							_oController.getView().byId("idCreate").setEnabled(false);
 							for (var i = 0; i < data.length; i++) {
-								var sCurrentDate = sdateFormat.format(new Date());
+
 								var sBeginDate = sdateFormat.format(new Date(data[i].BEGDA));
 								var sBeginDateDisplay = sdateFormatDisplay.format(new Date(data[i].BEGDA));
 								var sEndDate = sdateFormat.format(new Date(data[i].ENDDA));
@@ -106,14 +120,18 @@ sap.ui.define([
 
 								var sValid = "";
 								var sDelete = false;
-								if (sBeginDate > sCurrentDate) {
+								var today = new Date();
+								var sBeginDatey = new Date(data[i].BEGDA);
+								var myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
+								var backendBeginDate = new Date(sBeginDatey.getFullYear(), sBeginDatey.getMonth(), sBeginDatey.getDate(), 0, 0, 0);
+								if (backendBeginDate > myToday) {
 
 									sDelete = true;
 
-								} else if (sEndDate <= sCurrentDate) {
-
+								} else {
 									sDelete = false;
 								}
+
 								_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords.push({
 
 									oldData: data[i]
@@ -123,6 +141,7 @@ sap.ui.define([
 									newData: data[i]
 								});
 								var recordBeginDateDisplayEdit;
+								// for backdated rcords set the begdate as curret date
 								if ((data[i].BEGDA) < new Date()) {
 									recordBeginDateDisplayEdit = sdateFormat.format(new Date());
 								} else {
@@ -199,6 +218,10 @@ sap.ui.define([
 				});
 			}
 		},
+		/**
+		 * This function is called when delete button is pressed 
+		 * @function handleDeleteClick
+		 */
 		handleDeleteClick: function (oEvent) {
 
 			_oController.sKey = oEvent.getSource().getBindingContext("w4DataModel").getPath().split("/")[2];
@@ -211,7 +234,10 @@ sap.ui.define([
 			_oController.getView().byId("idEditTab").setEnabled(true);
 
 		},
-
+		/**
+		 * This function is called when edit button is pressed 
+		 * @function handleEditClick
+		 */
 		handleEditClick: function (oEvent) {
 			_oController.sKeyEdit = oEvent.getSource().getBindingContext("w4DataModel").getPath().split("/")[2];
 
@@ -237,43 +263,24 @@ sap.ui.define([
 			_oController.handleEditOverview(oEvent, _oController.sKeyEdit);
 
 		},
-
+		/**
+		 * This function is called when previous button is pressed on edit fragment
+		 * @function handlePrevEdit
+		 */
 		handlePrevEdit: function (oEvent) {
-			/*	_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.newDeleteRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.addressData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.messages = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.personalData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4Data = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4oldRecord = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editExemptionData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editFilingStatusData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteTabRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editTabRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords = [];*/
+
 			_oController.handleEmptyData();
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 			_oController.getTableRecords();
 			_oController.getView().byId("idIconTabBar").setSelectedKey("1");
 			_oController.getView().byId("idEditTab").setEnabled(false);
 		},
+		/**
+		 * This function is called when previous button is pressed on delete fragment
+		 * @function handlePrevDelete
+		 */
 		handlePrevDelete: function (oEvent) {
-			/*	_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.newDeleteRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.addressData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.messages = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.personalData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4Data = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4oldRecord = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editExemptionData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editFilingStatusData = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteTabRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editTabRecords = [];
-				_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords = [];*/
+
 			_oController.handleEmptyData();
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 			_oController.getTableRecords();
@@ -281,7 +288,10 @@ sap.ui.define([
 			_oController.getView().byId("idEditTab").setEnabled(false);
 
 		},
-
+		/**
+		 * This function is called when delete is pressed for any record 
+		 * @function handleDelete
+		 */
 		handleDelete: function (oEvent) {
 			var sKey = _oController.sKey;
 
@@ -303,6 +313,10 @@ sap.ui.define([
 
 			});
 		},
+		/**
+		 * This function is called for editing the record. 
+		 * @function handleEditOverview
+		 */
 		handleEditOverview: function (oEvent, sKey) {
 			var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "MM/dd/yyyy"
@@ -310,7 +324,7 @@ sap.ui.define([
 			var sdateStr = sdateFormat.format(new Date());
 			this.getView().byId("idDate").setText(sdateStr);
 			var sData = _oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords[sKey];
-			//	var sData = _oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords[sKey].oldData;
+
 			var sEditData = JSON.stringify(sData);
 			$.ajax({
 				data: sEditData,
@@ -320,12 +334,7 @@ sap.ui.define([
 				dataType: "json",
 				async: true,
 				success: function (data) {
-					/*	if (_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.length === 0) {
-							_oController.getView().byId("idCreate").setEnabled(true);
-						}
-						if (_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.length !== 0) {
-							_oController.getView().byId("idCreate").setEnabled(false);
-						}*/
+
 					_oController.handleNullData();
 					_oController.getView().byId("idIconTabBar").setSelectedKey("2");
 					_oController.getView().byId("idEditRecord").setVisible(true);
@@ -429,6 +438,10 @@ sap.ui.define([
 
 			});
 		},
+		/**
+		 * This function is called for clearing the model data. 
+		 * @function handleNullData
+		 */
 		handleNullData: function (oEvent) {
 
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords = [];
@@ -445,6 +458,10 @@ sap.ui.define([
 
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 		},
+		/**
+		 * This function is called for clearing the model nodes. 
+		 * @function handleEmptyData
+		 */
 		handleEmptyData: function () {
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords = [];
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords = [];
@@ -466,6 +483,10 @@ sap.ui.define([
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindingsExemptionData = [];
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 		},
+		/**
+		 * This function is called for deleting a record. 
+		 * @function handleDeleteOverview
+		 */
 		handleDeleteOverview: function (oEvent, sKey) {
 			var sData = _oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords[sKey].oldData;
 			var sDeleteData = JSON.stringify(sData);
@@ -552,7 +573,10 @@ sap.ui.define([
 
 			});
 		},
-
+		/**
+		 * This function is called on click of messge checkbox. 
+		 * @function onCheckChange 
+		 */
 		onCheckChange: function (oEvent) {
 			if (oEvent.getSource().getSelected() === true) {
 				this.getView().byId("idMessageCall").setVisible(true);
@@ -560,6 +584,10 @@ sap.ui.define([
 				this.getView().byId("idMessageCall").setVisible(false);
 			}
 		},
+		/**
+		 * This function is called whenever edit is pressed on any record. 
+		 * @function onCheckChangeEdit 
+		 */
 		onCheckChangeEdit: function (oEvent) {
 			if (oEvent.getSource().getSelected() === true) {
 				this.getView().byId("idMessageCallEdit").setVisible(true);
@@ -567,6 +595,10 @@ sap.ui.define([
 				this.getView().byId("idMessageCallEdit").setVisible(false);
 			}
 		},
+		/**
+		 * This function is called when Next button is clicked. 
+		 * @function onNextToSave
+		 */
 		onNextToSave: function (oEvent) {
 			this.getView().byId("saveTab").setEnabled(true);
 			this.getView().byId("idIconTabBar").setSelectedKey("3");
@@ -576,11 +608,18 @@ sap.ui.define([
 			var sdateStr = sdateFormat.format(new Date());
 			this.getView().byId("idDateSave").setText(sdateStr);
 		},
+		/**
+		 * This function is called for enabling second tab. 
+		 * @function onPrevToSave
+		 */
 		onPrevToSave: function (oEvent) {
 			this.getView().byId("idIconTabBar").setSelectedKey("2");
 			this.getView().byId("saveTab").setEnabled(false);
 		},
-
+		/**
+		 * This function is called for any action on icontabbar. 
+		 * @function onFilterSelect
+		 */
 		onFilterSelect: function (oEvent) {
 			if (this.getView().byId("idIconTabBar").getSelectedKey() === "1") {
 				this.getView().byId("idEditTab").setEnabled(false);
@@ -588,9 +627,17 @@ sap.ui.define([
 
 			}
 		},
+		/**
+		 * This function is called for getting i18n text. 
+		 * @function getResourceBundle
+		 */
 		getResourceBundle: function () {
 			return _oController.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
+		/**
+		 * This function is called when logout is pressed. 
+		 * @function logoutPress
+		 */
 		logoutPress: function () {
 			sap.m.URLHelper.redirect("/do/logout", false);
 		},
@@ -669,11 +716,14 @@ sap.ui.define([
 			} else {
 				sNameCheck = "";
 			}
+
 			var beginDate = new Date(_oController.getView().byId("idbegDate").getValue());
+			beginDate.setUTCHours(0, 0, 0);
 			var millisecondsBegin = beginDate.getTime();
 			var endDate = new Date(_oController.getView().byId("idendDate").getValue());
+			endDate.setUTCHours(0, 0, 0);
 			var millisecondsEnd = endDate.getTime();
-			var millisecondsBegin, millisecondsEnd;
+
 			var sNewW4DataPayload = {
 				"ADEXA": parseFloat(w4Data[0].recordADEXA),
 				"ADEXN": w4Data[0].recordADEXN,

@@ -2,10 +2,6 @@
 	<OverflowToolbar>
 		<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
 		<ToolbarSpacer></ToolbarSpacer>
-		<!--	<HBox>
-			<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDelete" tooltip="{i18n>deleteText}" class="grabbing"/>
-			<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
-		</HBox>-->
 		<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="handlePrevDelete"></Button>
 		<Button type="Reject" text="{i18n>deleteText}" icon="sap-icon://delete" class="customFontHeadingTable" press="handleDelete"></Button>
 	</OverflowToolbar>
@@ -89,14 +85,10 @@
 				<f:FormContainer>
 					<f:formElements>
 						<f:FormElement label="">
-							<f:fields>
-								<!--<MessageStrip id="idMessageCallu" type="Success" visible="true" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>-->
-							</f:fields>
+							<f:fields></f:fields>
 						</f:FormElement>
 						<f:FormElement label="">
-							<f:fields>
-								<!--<Button text="Delete"></Button>-->
-							</f:fields>
+							<f:fields></f:fields>
 						</f:FormElement>
 						<f:FormElement label="">
 							<f:fields>
@@ -107,25 +99,5 @@
 				</f:FormContainer>
 			</f:formContainers>
 		</f:Form>
-		<!--<f:SimpleForm id="SimpleFormDisplay354" editable="false" layout="ResponsiveGridLayout" title="{i18n>W4WText}" labelSpanXL="3" labelSpanL="3"
-			labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
-			columnsL="1" columnsM="1" singleContainerFullSize="false">
-			<f:content>
-				<Label text="{i18n>TaxText}"/>
-				<Text text=""></Text>
-				<Label text="{i18n>ExemptionsText}"/>
-				<Text text=""></Text>
-				<Label text="{i18n>AdditionalText}"/>
-				<Text text=""></Text>
-				<Label text="{i18n>TaxExText}"/>
-				<Text text=""></Text>
-				<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
-				<CheckBox></CheckBox>
-				<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
-				<CheckBox></CheckBox>
-				<Label text="{i18n>Check1Text}" class="sapUiTinyMarginTop"></Label>
-				<CheckBox select="onCheckChange"></CheckBox>
-			</f:content>
-		</f:SimpleForm>-->
 	</VBox>
 </core:FragmentDefinition>

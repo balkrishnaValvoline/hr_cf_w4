@@ -1,29 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
-	<!--	<FlexBox alignItems="Start">
-		<HBox>
-			<Panel headerText="{i18n>PersonalText}" class="customFontHeaderTable">
-				<HBox>
-					<Label text="{i18n>FText}"/>
-					<Text text=""></Text>
-				</HBox>
-			</Panel>
-		</HBox>
-		<HBox>
-			<Panel headerText="{i18n>AddressText}" class="customFontHeaderTable AddressMargin"/>
-		</HBox>
-	</FlexBox>
-	<FlexBox alignItems="Start">
-		<HBox>
-			<Panel headerText="{i18n>W4WText}" class="customFontHeaderTable"/>
-		</HBox>
-	</FlexBox>-->
 	<OverflowToolbar>
 		<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
 		<ToolbarSpacer></ToolbarSpacer>
-		<!--	<HBox>
-			<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDelete" tooltip="{i18n>deleteText}" class="grabbing"/>
-			<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
-		</HBox>-->
 		<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="onPrevToSave"></Button>
 		<Button type="Accept" text="{i18n>SaveConText}" icon="sap-icon://accept" class="customFontHeadingTable" press="onConfirm"></Button>
 	</OverflowToolbar>
@@ -42,25 +20,6 @@
 			<Text text=""></Text>
 			<Label text="{i18n>SSNText}"/>
 			<Text text=""></Text>
-			<!--
-			<Label text="{i18n>W4WText}" class="customFontItemTable"></Label>
-			<Label text="{i18n>TaxText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>ExemptionsText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>AdditionalText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>TaxExText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
-			<CheckBox></CheckBox>
-			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
-			<CheckBox></CheckBox>
-				<Label text="{i18n>Check1Text}" class="sapUiTinyMarginTop"></Label>
-			<HBox>
-				<CheckBox select="onCheckChangeEdit"></CheckBox>
-				<MessageStrip id="idMessageCallEdit" type="Success" visible="false" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>
-			</HBox>-->
 			<core:Title text="{i18n>AddressText}" class="customFontItemTable"/>
 			<Label text="{i18n>StreetText}"/>
 			<Text text=""></Text>
@@ -70,19 +29,6 @@
 			<Text text=""></Text>
 			<Label text="{i18n>ZIPText}"/>
 			<Text text=""></Text>
-			<!--<core:Title text="{i18n>W4WText}" class="customFontItemTable"/>
-			<Label text="{i18n>TaxText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>ExemptionsText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>AdditionalText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>TaxExText}"/>
-			<Text text=""></Text>
-			<Label text="{i18n>StatusText}" class="sapUiTinyMarginTop"/>
-			<CheckBox></CheckBox>
-			<Label text="{i18n>Status1Text}" class="sapUiTinyMarginTop"></Label>
-			<CheckBox></CheckBox>-->
 		</f:content>
 	</f:SimpleForm>
 	<VBox>
