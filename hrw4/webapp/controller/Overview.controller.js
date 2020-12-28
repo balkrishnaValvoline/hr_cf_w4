@@ -48,6 +48,8 @@ sap.ui.define([
 				"editBindings": []
 			};
 			_oController.getOwnerComponent().getModel("w4DataModel").setData(w4Data);
+			_oController.getView().byId("idbegDate").setMinDate(new Date());
+			_oController.getView().byId("idendDate").setMinDate(new Date());
 
 			_oController.loginSvc();
 		},
@@ -85,37 +87,32 @@ sap.ui.define([
 					async: false,
 					success: function (data) {
 						var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+							pattern: "MM/dd/yyyy/hh:mm:ss"
+						});
+						var sdateFormatDisplay = sap.ui.core.format.DateFormat.getDateInstance({
 							pattern: "MM/dd/yyyy"
 						});
 						if (data.length === 0) {
 							_oController.getView().byId("idCreate").setEnabled(true);
 						} else {
-							_oController.getView().byId("idCreate").setEnabled(true);
+							_oController.getView().byId("idCreate").setEnabled(false);
 							for (var i = 0; i < data.length; i++) {
 								var sCurrentDate = sdateFormat.format(new Date());
 								var sBeginDate = sdateFormat.format(new Date(data[i].BEGDA));
-								var sEnd = new Date(data[i].ENDDA);
-								var sEndYear = sEnd.getFullYear();
+								var sBeginDateDisplay = sdateFormatDisplay.format(new Date(data[i].BEGDA));
 								var sEndDate = sdateFormat.format(new Date(data[i].ENDDA));
-								var sLastChangedDate = sdateFormat.format(new Date(data[i].AEDTM));
-								var sTableDateValue = "";
+								var sEndDateDisplay = sdateFormatDisplay.format(new Date(data[i].ENDDA));
+								var sLastChangedDate = sdateFormatDisplay.format(new Date(data[i].AEDTM));
+
 								var sValid = "";
 								var sDelete = false;
-								if (sBeginDate < sCurrentDate) {
-									if (sEndYear === 9999) {
-										sValid = "Valid From";
-										sTableDateValue = sBeginDate;
-										sDelete = true;
-									} else {
-										sValid = "Valid Until";
-										sTableDateValue = sEndDate;
-										sDelete = false;
-									}
+								if (sBeginDate > sCurrentDate) {
 
-								} else if (sBeginDate > sCurrentDate) {
-									sValid = "Valid From";
-									sTableDateValue = sBeginDate;
 									sDelete = true;
+
+								} else if (sEndDate <= sCurrentDate) {
+
+									sDelete = false;
 								}
 								_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords.push({
 
@@ -125,14 +122,24 @@ sap.ui.define([
 
 									newData: data[i]
 								});
+								var recordBeginDateDisplayEdit;
+								if ((data[i].BEGDA) < new Date()) {
+									recordBeginDateDisplayEdit = sdateFormat.format(new Date());
+								} else {
+									recordBeginDateDisplayEdit = sdateFormat.format(new Date(data[i].BEGDA));
+								}
 								_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords.push(data[i]);
 								_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.push({
+									recordBeginDateDisplayEdit: recordBeginDateDisplayEdit,
+									recordBeginDate: sBeginDate,
+									recordEndDate: sEndDate,
 									recordAEDTM: data[i].AEDTM,
 									recordBEGDA: data[i].BEGDA,
 									recordENDDA: data[i].ENDDA,
 									recordDelete: sDelete,
 									recordValid: sValid,
-									recordDate: sTableDateValue,
+									recordValidTo: sEndDateDisplay,
+									recordValidFrom: sBeginDateDisplay,
 									recordFilingStatus: data[i].LTEXT02,
 									recordExemption: data[i].NBREX,
 									recordLast: sLastChangedDate,
@@ -577,8 +584,8 @@ sap.ui.define([
 		onFilterSelect: function (oEvent) {
 			if (this.getView().byId("idIconTabBar").getSelectedKey() === "1") {
 				this.getView().byId("idEditTab").setEnabled(false);
-				this.getView().byId("saveTab").setEnabled(false);
-				_oController.overViewPressed(oEvent);
+				_oController.handlePrevEdit(oEvent);
+
 			}
 		},
 		getResourceBundle: function () {
@@ -662,13 +669,17 @@ sap.ui.define([
 			} else {
 				sNameCheck = "";
 			}
-
+			var beginDate = new Date(_oController.getView().byId("idbegDate").getValue());
+			var millisecondsBegin = beginDate.getTime();
+			var endDate = new Date(_oController.getView().byId("idendDate").getValue());
+			var millisecondsEnd = endDate.getTime();
+			var millisecondsBegin, millisecondsEnd;
 			var sNewW4DataPayload = {
 				"ADEXA": parseFloat(w4Data[0].recordADEXA),
 				"ADEXN": w4Data[0].recordADEXN,
 				"AEDTM": w4DataOld[0].recordAEDTM,
 				"AMTEX": w4Data[0].recordAMTEX,
-				"BEGDA": w4DataOld[0].recordBEGDA,
+				"BEGDA": millisecondsBegin,
 				"CURR1": w4Data[0].recordCURR1,
 				"CURR2": w4Data[0].recordCURR2,
 				"CURR3": w4Data[0].recordCURR3,
@@ -677,7 +688,7 @@ sap.ui.define([
 				"DEPS_TOTAL_AMT": parseFloat(_oController.getView().byId("totalCredits").getValue()),
 				"EICST": w4Data[0].recordEICST,
 				"EICST01": w4Data[0].recordEICST01,
-				"ENDDA": w4DataOld[0].recordENDDA,
+				"ENDDA": millisecondsEnd,
 				"EXAMT": parseFloat(_oController.getView().byId("idAdditional").getValue()),
 				"EXIND": _oController.getView().byId("idExemption").getSelectedKey(),
 				"EXPCT": parseFloat(w4Data[0].recordEXPCT),

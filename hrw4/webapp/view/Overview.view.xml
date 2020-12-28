@@ -40,7 +40,10 @@
 										<Table id="idCustomJobTable" inset="false" items="{w4DataModel>/tableRecords}">
 											<columns>
 												<Column>
-													<Text text="{i18n>DateText}" class="customFontHeadingTable"/>
+													<Text text="{i18n>validFrom}" class="customFontHeadingTable"/>
+												</Column>
+												<Column>
+													<Text text="{i18n>validTo}" class="customFontHeadingTable"/>
 												</Column>
 												<Column>
 													<Text text="{i18n>FilingStatusText}" class="customFontHeadingTable"/>
@@ -65,14 +68,8 @@
 											<items>
 												<ColumnListItem vAlign="Middle">
 													<cells>
-														<!--	<Text text="Valid until 12/9/2020" class="customFontItemTable"/>
-														<Text text="Single" class="customFontItemTable"/>
-														<Text text="06" class="customFontItemTable"/>
-														<core:Icon src="sap-icon://edit" color="#00FF00" press="handleEditOverview" tooltip="{i18n>editText}" class="grabbing"/>-->
-														<HBox>
-															<Text text="{w4DataModel>recordValid}" class="customFontItemTable"/>
-															<Text text="{w4DataModel>recordDate}" class="customFontItemTable ValidDate"/>
-														</HBox>
+														<Text text="{w4DataModel>recordValidFrom}" class="customFontItemTable"/>
+														<Text text="{w4DataModel>recordValidTo}" class="customFontItemTable ValidDate"/>
 														<Text text="{w4DataModel>recordFilingStatus}" class="customFontItemTable"/>
 														<Text text="{w4DataModel>recordExemption}" class="customFontItemTable"/>
 														<Text text="{w4DataModel>recordLast}" class="customFontItemTable"/>
@@ -95,8 +92,8 @@
 											<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.EditRecord" type="XML"/>
 										</VBox>
 									</IconTabFilter>
-								<!--	<IconTabSeparator icon="sap-icon://open-command-field" class="sapUiLargeMargin"/>-->
-	<!--								<IconTabFilter icon="sap-icon://save" iconColor="Positive" design="Horizontal"
+									<!--	<IconTabSeparator icon="sap-icon://open-command-field" class="sapUiLargeMargin"/>-->
+									<!--								<IconTabFilter icon="sap-icon://save" iconColor="Positive" design="Horizontal"
 										count="{/ProductCollectionStats/Counts/Weight/Overweight} of {/ProductCollectionStats/Counts/Total}" text="{i18n>SaveConText}" key="3"
 										class="sapUiLargeMargin" enabled="false" id="saveTab">
 										<VBox visible="true" id="idSaveRecord">

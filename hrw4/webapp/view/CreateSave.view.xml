@@ -63,7 +63,7 @@
 									<f:FormElement label="{i18n>begText}">
 										<f:fields>
 											<DatePicker id="idbegDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-												value="{w4DataModel>/editRecords/W4Data/0/beginDate}"/>
+												value="{w4DataModel>/editRecords/W4Data/0/beginDate}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="">
@@ -74,7 +74,7 @@
 									<f:FormElement label="{i18n>endText}">
 										<f:fields>
 											<DatePicker id="idendDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-												value="{w4DataModel>/editRecords/W4Data/0/endDate}"/>
+												value="{w4DataModel>/editRecords/W4Data/0/endDate}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="{i18n>TotalText}">

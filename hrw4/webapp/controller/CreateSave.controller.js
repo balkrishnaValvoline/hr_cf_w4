@@ -483,7 +483,10 @@ sap.ui.define([
 		},
 		handleDateChange: function (oEvt) {
 			oEvt.getSource().setValueState("None");
-		}
+		},
+		logoutPress: function () {
+			sap.m.URLHelper.redirect("/do/logout", false);
+		},
 
 	});
 });

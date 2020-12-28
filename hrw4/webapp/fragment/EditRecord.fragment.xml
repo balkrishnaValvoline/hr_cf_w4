@@ -1,29 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
-	<!--	<FlexBox alignItems="Start">
-		<HBox>
-			<Panel headerText="{i18n>PersonalText}" class="customFontHeaderTable">
-				<HBox>
-					<Label text="{i18n>FText}"/>
-					<Input></Input>
-				</HBox>
-			</Panel>
-		</HBox>
-		<HBox>
-			<Panel headerText="{i18n>AddressText}" class="customFontHeaderTable AddressMargin"/>
-		</HBox>
-	</FlexBox>
-	<FlexBox alignItems="Start">
-		<HBox>
-			<Panel headerText="{i18n>W4WText}" class="customFontHeaderTable"/>
-		</HBox>
-	</FlexBox>-->
 	<OverflowToolbar>
 		<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
 		<ToolbarSpacer></ToolbarSpacer>
-		<!--	<HBox>
-			<core:Icon src="sap-icon://delete" color="#FF0000" press="handleDelete" tooltip="{i18n>deleteText}" class="grabbing"/>
-			<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
-		</HBox>-->
 		<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="handlePrevEdit"></Button>
 		<Button type="Accept" text="{i18n>SaveConText}" icon="sap-icon://accept" class="customFontHeadingTable" press="onConfirm"></Button>
 	</OverflowToolbar>
@@ -62,6 +40,23 @@
 			<f:formContainers>
 				<f:FormContainer title="{i18n>W4WTextInfo}">
 					<f:formElements>
+						<f:FormElement label="{i18n>begText}">
+							<f:fields>
+								<DatePicker id="idbegDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
+									value="{w4DataModel>/editSaveRecords/0/recordBeginDateDisplayEdit}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="">
+							<f:fields>
+								<MessageStrip type="Warning" visible="true" text="{i18n>warningDate}" showIcon="false" showCloseButton="false" class="sapUiSmallMarginLeft"></MessageStrip>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>endText}">
+							<f:fields>
+								<DatePicker id="idendDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
+									value="{w4DataModel>/editSaveRecords/0/recordEndDate}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
+							</f:fields>
+						</f:FormElement>
 						<f:FormElement label="{i18n>TotalText}">
 							<f:fields>
 								<HBox>
