@@ -58,6 +58,19 @@ public class HRUser {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "HRUser [firstName=" + firstName
+			+ ", lastName="
+			+ lastName
+			+ ", userId="
+			+ userId
+			+ ", frID="
+			+ frID
+			+ ", userEmail="
+			+ userEmail
+			+ "]";
+	}
 	
 }

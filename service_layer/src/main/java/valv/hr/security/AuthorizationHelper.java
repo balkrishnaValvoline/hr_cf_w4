@@ -29,11 +29,6 @@ public final class AuthorizationHelper {
 	
 	
 	public boolean checkCountryAuthorisation(HttpServletRequest httpRequest, String userName) {
-		
-		if(userName.equalsIgnoreCase("a539000")) {
-			userName = "a535396";
-		}
-		
 		logger.trace("[ENTER] checkCountryAuthorisation");
 		logger.debug("Checking Authorisation for : {} ", userName);
 		
