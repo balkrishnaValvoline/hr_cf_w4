@@ -81,10 +81,10 @@
 											</items>
 										</Table>
 									</IconTabFilter>
-									<IconTabSeparator icon="sap-icon://open-command-field" class="sapUiLargeMargin"/>
+									<IconTabSeparator icon="sap-icon://open-command-field" class="sapUiLargeMargin" id="toEdit" visible="false"/>
 									<IconTabFilter icon="sap-icon://edit" iconColor="Positive" design="Horizontal"
 										count="{/ProductCollectionStats/Counts/Weight/Heavy} of {/ProductCollectionStats/Counts/Total}" text="{i18n>EditText}" key="2"
-										class="sapUiLargeMargin customFontItemTable iconTabBarSize" id="idEditTab" enabled="false">
+										class="sapUiLargeMargin customFontItemTable iconTabBarSize" id="idEditTab" visible="false">
 										<VBox visible="false" id="idDelRecord">
 											<core:Fragment fragmentName="valvoline.ui.hrw4.fragment.DeleteRecord" type="XML"/>
 										</VBox>

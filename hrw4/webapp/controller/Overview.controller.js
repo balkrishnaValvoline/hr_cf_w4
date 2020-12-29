@@ -231,7 +231,8 @@ sap.ui.define([
 			_oController.getView().byId("idIconTabBar").setSelectedKey("2");
 			_oController.getView().byId("idDelRecord").setVisible(true);
 			_oController.getView().byId("idEditRecord").setVisible(false);
-			_oController.getView().byId("idEditTab").setEnabled(true);
+			_oController.getView().byId("idEditTab").setVisible(true);
+			_oController.getView().byId("toEdit").setVisible(true);
 
 		},
 		/**
@@ -273,7 +274,8 @@ sap.ui.define([
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 			_oController.getTableRecords();
 			_oController.getView().byId("idIconTabBar").setSelectedKey("1");
-			_oController.getView().byId("idEditTab").setEnabled(false);
+			_oController.getView().byId("idEditTab").setVisible(false);
+			_oController.getView().byId("toEdit").setVisible(false);
 		},
 		/**
 		 * This function is called when previous button is pressed on delete fragment
@@ -285,7 +287,8 @@ sap.ui.define([
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 			_oController.getTableRecords();
 			_oController.getView().byId("idIconTabBar").setSelectedKey("1");
-			_oController.getView().byId("idEditTab").setEnabled(false);
+			_oController.getView().byId("idEditTab").setVisible(false);
+			_oController.getView().byId("toEdit").setVisible(false);
 
 		},
 		/**
@@ -339,7 +342,8 @@ sap.ui.define([
 					_oController.getView().byId("idIconTabBar").setSelectedKey("2");
 					_oController.getView().byId("idEditRecord").setVisible(true);
 					_oController.getView().byId("idDelRecord").setVisible(false);
-					_oController.getView().byId("idEditTab").setEnabled(true);
+					_oController.getView().byId("idEditTab").setVisible(true);
+					_oController.getView().byId("toEdit").setVisible(true);
 					var message = "";
 					_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindings.push(data);
 					_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindingsFilingStatusData.push(data.F4_HELP.TXSTA);
