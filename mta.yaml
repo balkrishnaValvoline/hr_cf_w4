@@ -14,7 +14,14 @@ modules:
     requires:
       - name: hr_ui_runtime
       - name: hr_xsuaa
-      - name: hr_destinations
+      - name: valvoline_hr_w4_ui_deployer
+      - name: JAVA_LAYER
+        group: destinations
+        properties:
+          name: JAVA_LAYER
+          url: '~{url}'
+          forwardAuthToken: true
+          timeout: 180000
   - name: valvoline_hr_w4_ui_deployer
     type: com.sap.html5.application-content
     path: valvoline_hr_w4_ui_deployer
@@ -33,12 +40,45 @@ modules:
       builder: grunt
       supported-platforms: []
       build-result: dist
+  - name: hrjava
+    type: java.tomee
+    path: service_layer
+    parameters:
+      memory: 1024M
+      disk_quota: 1024M
+      host: 'hrjava-${space}'
+      buildpack: sap_java_buildpack
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests
+      build-result: 'target/*.war'
+    properties:
+      TARGET_RUNTIME: tomee7
+      JAVA_OPTS: '-Xss349k'
+      ENABLE_SECURITY_JAVA_API_V2: true
+      JBP_CONFIG_DEBUG: '{enabled: true}'
+      DISABLE_LOCAL_SCOPE_AS_AUTHORITIES: false
+      USE_JCO: true
+      SET_LOGGING_LEVEL: '{ROOT: ERROR}'
+      xsuaa_connectivity_instance_name: hr_xsuaa
+      SAP_JWT_TRUST_ACL: '[{"clientid":"*","identityzone":"*"}]'
+    requires:
+      - name: hr_destinations
+      - name: hr_xsuaa
+      - name: hr_connectivity
+      - name: java-logger
+    provides:
+      - name: JAVA_LAYER
+        properties:
+          url: '${default-url}'
+          protocol: https
 resources:
   - name: hr_ui_runtime
     parameters:
       service-plan: app-runtime
       service: html5-apps-repo
-    type: org.cloudfoundry.existing-service
+    type: org.cloudfoundry.managed-service
   - name: w4ui_host
     parameters:
       service-plan: app-host
@@ -48,10 +88,23 @@ resources:
     parameters:
       service-plan: lite
       service: destination
-    type: org.cloudfoundry.existing-service
+    type: destination
   - name: hr_xsuaa
     parameters:
-      service-name: hr_xsuaa
+      path: xs-security.json
+      service-name: dash-xsuaa
       service: xsuaa
       service-plan: application
-    type: org.cloudfoundry.existing-service
+    type: com.sap.xs.uaa-application
+  - name: java-logger
+    parameters:
+      service-name: java-logger
+      service: application-logs
+      service-plan: lite
+    type: application-logs
+  - name: hr_connectivity
+    parameters:
+      service-name: hr_connectivity
+      service: connectivity
+      service-plan: lite
+    type: connectivity

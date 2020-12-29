@@ -1,11 +1,20 @@
 {
-  "welcomeFile": "index.html",
-  "authenticationMethod": "route",
-  "routes": [
-  		{
-		"source":"/backend/(.*)$",
-		"target":"/$1",
-		"destination":"HR_SERVICE_LAYER",
+	"welcomeFile": "valvhrw4_ui/index.html",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout",
+		"logoutPage": "/index.html"
+	},
+	"routes": [{
+		"source": "/backend/(.*)$",
+		"target": "/$1",
+		"destination": "JAVA_LAYER",
 		"csrfProtection": false
-	}]
+	}],
+	"destinations": {
+		"JAVA_LAYER": {
+			"logoutPath": "/hrservices/w4/userLogout",
+			"logoutMethod": "GET"
+		}
+	}
 }
