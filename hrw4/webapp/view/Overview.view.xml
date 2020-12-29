@@ -31,12 +31,12 @@
 								<items>
 									<IconTabFilter icon="sap-icon://activity-items" iconColor="Positive" design="Horizontal" text="{i18n>OverviewText}" key="1"
 										class="sapUiLargeMargin customFontItemTable" id="idOverViewTab">
-										<!-- Table to display the details -->
 										<Toolbar>
 											<ToolbarSpacer></ToolbarSpacer>
 											<Button id="idCreate" type="Accept" text="{i18n>CreateText}" icon="sap-icon://add" class="customFontHeadingTable" press="onCreate"
 												enabled="false"></Button>
 										</Toolbar>
+										<!-- Table to display the details -->
 										<Table id="idCustomJobTable" inset="false" items="{w4DataModel>/tableRecords}">
 											<columns>
 												<Column>

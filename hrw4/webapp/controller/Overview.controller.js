@@ -125,13 +125,10 @@ sap.ui.define([
 								var myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
 								var backendBeginDate = new Date(sBeginDatey.getFullYear(), sBeginDatey.getMonth(), sBeginDatey.getDate(), 0, 0, 0);
 								if (backendBeginDate > myToday) {
-
 									sDelete = true;
-
 								} else {
 									sDelete = false;
 								}
-
 								_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords.push({
 
 									oldData: data[i]
