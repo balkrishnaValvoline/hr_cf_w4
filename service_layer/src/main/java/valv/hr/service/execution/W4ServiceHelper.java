@@ -45,7 +45,7 @@ public class W4ServiceHelper {
 	 * @throws IntrospectionException
 	 */
 	public Map<String, Object> setImportParameters(Object classObj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IntrospectionException {
-	
+		logger.trace("[ENTER] setImportParameters");
 		ObjectMapper objMapper = new ObjectMapper();
 		JavaType javaType = objMapper.getTypeFactory().constructType(classObj.getClass());
 		

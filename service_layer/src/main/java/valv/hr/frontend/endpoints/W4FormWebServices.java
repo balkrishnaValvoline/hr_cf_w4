@@ -2,6 +2,7 @@ package valv.hr.frontend.endpoints;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +90,12 @@ public class W4FormWebServices {
 		return Response.ok().entity(exportParam.toJSON()).build();
 	}
 
+	/**
+	 * User Login Service
+	 * @param request
+	 * @return
+	 * @throws URISyntaxException
+	 */
 	@GET
 	@Path("/loginSvc")
 	public Response loginService(@Context HttpServletRequest request) throws URISyntaxException {
@@ -100,6 +109,28 @@ public class W4FormWebServices {
 		logonData.put("FNAME", user.getFirstName());
 		logonData.put("LNAME", user.getLastName());
 		return Response.ok().entity(logonData).build();
+	}
+	
+	/**
+	 * Logout Service
+	 * @param request
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	@GET
+	@Path("/userLogout")
+	public ResponseBuilder logOutUser(@Context HttpServletRequest request) throws URISyntaxException {
+		logger.info("[ENTER] logout Service");
+		System.out.println("[ENTER] logout Service");
+		HttpSession session = request.getSession(false);
+		if(session !=null) {
+			if(session.getAttribute("IM_USER") !=null) {
+				logger.info("User Session : {}", ((HRUser) session.getAttribute("HR_USER")).toString());
+			}
+			session.removeAttribute("IM_USER");
+			logger.info("Removed User Session : {}",session.getAttribute("HR_USER"));
+		}
+		return Response.ok().location(new URI(request.getRequestURI()));
 	}
 
 	@Inject
@@ -131,9 +162,6 @@ public class W4FormWebServices {
 
 		logger.trace("[ENTER] getRecords");
 		String userId = AuthenticationHelper.getInstance().getAuthenticatedUser(request).getUserId();
-		if (userId.equalsIgnoreCase("a539000")) {
-			userId = "a535396";
-		}
 		READ_P0210_US readImportParam = new READ_P0210_US();
 		readImportParam.setPI_EFF_DATE(new Date());
 		readImportParam.setPI_EMP_LID(userId);

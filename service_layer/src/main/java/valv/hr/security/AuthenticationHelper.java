@@ -21,7 +21,7 @@ public final class AuthenticationHelper {
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationHelper.class);
 	
 	private static AuthenticationHelper instance;
-	//private static final String SESSION_HR_USER = "HR_USER";
+	private static final String SESSION_HR_USER = "HR_USER";
 	
 	public static synchronized AuthenticationHelper getInstance() {
 		if (instance == null) {
@@ -41,18 +41,16 @@ public final class AuthenticationHelper {
 			logger.trace("[USER Login]: {}", request.getUserPrincipal().getName());
 			
 			try {
-				//logger.trace("SESSION_HR_USER: {}", request.getSession().getAttribute(SESSION_HR_USER));
+				logger.trace("SESSION_HR_USER: {}", request.getSession().getAttribute(SESSION_HR_USER)!=null?request.getSession().getAttribute(SESSION_HR_USER).toString():null);
 				
 				// retrieve the user from session
-				//hrUser = (HRUser) request.getSession().getAttribute(SESSION_HR_USER);
+				hrUser = (HRUser) request.getSession().getAttribute(SESSION_HR_USER);
 				
 				if (hrUser == null) {
-					logger.trace("[DashUser] Create and initialize the session user");
+					logger.trace("[HR User] Create and initialize the session user");
 					hrUser = this.getUserFromSession(request);
-					// save the dash user in session
-				//	request.getSession().setAttribute(SESSION_HR_USER, hrUser);
 				}
-				logger.trace("[HRUser]: {}", hrUser);
+				logger.trace("[HRUser]: {}", hrUser.toString());
 			}finally {
 				logger.trace("[EXIT] getAuthenticatedUser");
 			}
@@ -70,9 +68,9 @@ public final class AuthenticationHelper {
 		if (accessToken != null && !accessToken.equals("")) {
 			logger.trace("[HRUser] Create and initialize the session user");
 			hrUser = this.getHRUser(accessToken);
-			logger.trace("[HRUser] Logged user: {}", hrUser);
-			// save the dash user in session
-		//	request.getSession().setAttribute(SESSION_HR_USER, hrUser);
+			logger.trace("[HRUser] Logged user: {}", hrUser.toString());
+			// save the user in session
+			request.getSession().setAttribute(SESSION_HR_USER, hrUser);
 		}else {
 			logger.error("[JWT token null]");
 			logger.info("[Authentication Failed]");
