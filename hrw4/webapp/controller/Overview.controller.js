@@ -224,6 +224,12 @@ sap.ui.define([
 			_oController.sKey = oEvent.getSource().getBindingContext("w4DataModel").getPath().split("/")[2];
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteTabRecords.push(_oController.getOwnerComponent().getModel(
 				"w4DataModel").getData().tableRecords[_oController.sKey]);
+			if (_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteTabRecords[0].recordLNMCH === "X") {
+				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteTabRecords[0].recordLNMCH = true;
+			}
+			if (_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteTabRecords[0].recordLNMCH === "") {
+				_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteTabRecords[0].recordLNMCH = false;
+			}
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 			_oController.getView().byId("idIconTabBar").setSelectedKey("2");
 			_oController.getView().byId("idDelRecord").setVisible(true);
@@ -258,6 +264,7 @@ sap.ui.define([
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords[0].recordDeclare = true;
 
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
+			_oController.dialog.open();
 			_oController.handleEditOverview(oEvent, _oController.sKeyEdit);
 
 		},

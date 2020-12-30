@@ -67,15 +67,15 @@
 								<Text text="{w4DataModel>/deleteTabRecords/0/recordFilingStatus}"/>
 							</f:fields>
 						</f:FormElement>
-						<f:FormElement label="{i18n>Status1Text}" class="sapUiLargeMarginTop">
+						<!--<f:FormElement label="{i18n>Status1Text}" class="sapUiLargeMarginTop">
 							<f:fields>
 								<CheckBox editable="false"></CheckBox>
 							</f:fields>
-						</f:FormElement>
+						</f:FormElement>-->
 						<f:FormElement label="{i18n>Check1Text}" class="sapUiLargeMarginTop">
 							<f:fields>
 								<HBox>
-									<CheckBox select="onCheckChange" editable="false"></CheckBox>
+									<CheckBox select="onCheckChange" editable="false" selected="{w4DataModel>/deleteTabRecords/0/recordLNMCH}"></CheckBox>
 									<MessageStrip id="idMessageCall" type="Success" visible="true" text="{i18n>Check2Text}" showIcon="false" showCloseButton="false"></MessageStrip>
 								</HBox>
 							</f:fields>
