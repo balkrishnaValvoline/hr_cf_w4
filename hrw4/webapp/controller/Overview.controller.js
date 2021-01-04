@@ -630,7 +630,7 @@ sap.ui.define([
 		 */
 		onFilterSelect: function (oEvent) {
 			if (this.getView().byId("idIconTabBar").getSelectedKey() === "1") {
-				this.getView().byId("idEditTab").setEnabled(false);
+				this.getView().byId("idEditTab").setVisible(false);
 				_oController.handlePrevEdit(oEvent);
 
 			}
