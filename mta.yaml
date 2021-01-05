@@ -92,7 +92,7 @@ resources:
   - name: hr_xsuaa
     parameters:
       path: xs-security.json
-      service-name: dash-xsuaa
+      service-name: hr_xsuaa
       service: xsuaa
       service-plan: application
     type: com.sap.xs.uaa-application
