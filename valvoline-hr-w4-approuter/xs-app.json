@@ -3,7 +3,7 @@
 	"authenticationMethod": "route",
 	"logout": {
 		"logoutEndpoint": "/do/logout",
-		"logoutPage": "/index.html"
+		"logoutPage": "/valvhrw4_ui/index.html"
 	},
 	"routes": [{
 		"source": "/backend/(.*)$",
