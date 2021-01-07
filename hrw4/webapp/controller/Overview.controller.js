@@ -55,8 +55,11 @@ sap.ui.define([
 				"editBindings": []
 			};
 			_oController.getOwnerComponent().getModel("w4DataModel").setData(w4Data);
-			_oController.getView().byId("idbegDate").setMinDate(new Date());
-			_oController.getView().byId("idendDate").setMinDate(new Date());
+			var stoday = new Date();
+			stoday.setUTCHours(0, 0, 0);
+			var dateToday = new Date(stoday.getUTCFullYear(), stoday.getUTCMonth(), stoday.getUTCDate(), 0, 0, 0);
+			_oController.getView().byId("idbegDate").setMinDate(dateToday);
+			_oController.getView().byId("idendDate").setMinDate(dateToday);
 
 			_oController.loginSvc();
 		},
@@ -100,12 +103,11 @@ sap.ui.define([
 					url: "/backend/hrservices/w4/fedRecords",
 					async: false,
 					success: function (data) {
+
 						var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-							pattern: "MM/dd/yyyy/hh:mm:ss"
-						});
-						var sdateFormatDisplay = sap.ui.core.format.DateFormat.getDateInstance({
 							pattern: "MM/dd/yyyy"
 						});
+
 						if (data.length === 0) {
 							_oController.getView().byId("idCreate").setEnabled(true);
 						} else {
@@ -113,17 +115,26 @@ sap.ui.define([
 							for (var i = 0; i < data.length; i++) {
 
 								var sBeginDate = sdateFormat.format(new Date(data[i].BEGDA));
-								var sBeginDateDisplay = sdateFormatDisplay.format(new Date(data[i].BEGDA));
-								var sEndDate = sdateFormat.format(new Date(data[i].ENDDA));
-								var sEndDateDisplay = sdateFormatDisplay.format(new Date(data[i].ENDDA));
-								var sLastChangedDate = sdateFormatDisplay.format(new Date(data[i].AEDTM));
+								var sEstBegin = new Date(data[i].BEGDA);
+								var sBeginDateDisplay = (sEstBegin.getUTCMonth() <= 9 ? ("0" + (sEstBegin.getUTCMonth() + 1)) : (sEstBegin.getUTCMonth() +
+									1)) + "/" + (sEstBegin.getUTCDate() <= 9 ? "0" + sEstBegin.getUTCDate() : sEstBegin.getUTCDate()) + "/" + sEstBegin.getUTCFullYear();
+
+								var sEstEnd = new Date(data[i].ENDDA);
+								var sEndDateDisplay = (sEstEnd.getUTCMonth() <= 9 ? ("0" + (sEstEnd.getUTCMonth() + 1)) : (sEstEnd.getUTCMonth() +
+									1)) + "/" + (sEstEnd.getUTCDate() <= 9 ? "0" + sEstEnd.getUTCDate() : sEstEnd.getUTCDate()) + "/" + sEstEnd.getUTCFullYear();
+								var sEstLast = new Date(data[i].AEDTM);
+								var sLastChangedDate = (sEstLast.getUTCMonth() <= 9 ? ("0" + (sEstLast.getUTCMonth() + 1)) : (sEstLast.getUTCMonth() +
+									1)) + "/" + (sEstLast.getUTCDate() <= 9 ? "0" + sEstLast.getUTCDate() : sEstLast.getUTCDate()) + "/" + sEstLast.getUTCFullYear();
 
 								var sValid = "";
 								var sDelete = false;
 								var today = new Date();
+								today.setUTCHours(0, 0, 0, 0);
 								var sBeginDatey = new Date(data[i].BEGDA);
-								var myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
-								var backendBeginDate = new Date(sBeginDatey.getFullYear(), sBeginDatey.getMonth(), sBeginDatey.getDate(), 0, 0, 0);
+								sBeginDatey.setUTCHours(0, 0, 0, 0);
+								var myToday = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 0, 0, 0);
+								var backendBeginDate = new Date(sBeginDatey.getUTCFullYear(), sBeginDatey.getUTCMonth(), sBeginDatey.getUTCDate(), 0, 0,
+									0);
 								if (backendBeginDate > myToday) {
 									sDelete = true;
 								} else {
@@ -137,18 +148,23 @@ sap.ui.define([
 
 									newData: data[i]
 								});
+								var sEndDatey = new Date(data[i].ENDDA);
+								sEndDatey.setUTCHours(0, 0, 0, 0);
+								var sEndDate = new Date(sEndDatey.getUTCFullYear(), sEndDatey.getUTCMonth(), sEndDatey.getUTCDate(), 0, 0, 0);
+
 								var recordBeginDateDisplayEdit;
-								// for backdated rcords set the begdate as curret date
-								if ((data[i].BEGDA) < new Date()) {
-									recordBeginDateDisplayEdit = sdateFormat.format(new Date());
+								// for backdated rcords set the begdate as current date
+
+								if (backendBeginDate < myToday) {
+									recordBeginDateDisplayEdit = sdateFormat.format(myToday);
 								} else {
-									recordBeginDateDisplayEdit = sdateFormat.format(new Date(data[i].BEGDA));
+									recordBeginDateDisplayEdit = sdateFormat.format(backendBeginDate);
 								}
 								_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords.push(data[i]);
 								_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.push({
 									recordBeginDateDisplayEdit: recordBeginDateDisplayEdit,
 									recordBeginDate: sBeginDate,
-									recordEndDate: sEndDate,
+									recordEndDate: sdateFormat.format(sEndDate),
 									recordAEDTM: data[i].AEDTM,
 									recordBEGDA: data[i].BEGDA,
 									recordENDDA: data[i].ENDDA,
@@ -669,7 +685,9 @@ sap.ui.define([
 
 		},
 		onConfirm: function (oEvent) {
-			if (_oController.getView().byId("idDeclare").getSelected() === false) {
+			if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDate").getValue() ===
+				"" || _oController.getView().byId("filingStatus").getValue() ===
+				"") {
 				MessageBox.error("Please fill all the mandatory fields", {
 					actions: ["OK"],
 					emphasizedAction: "OK",
@@ -679,9 +697,17 @@ sap.ui.define([
 
 					onClose: function (sAction) {
 						if (sAction === "OK") {
-							if (_oController.getView().byId("idDeclare").getSelected() === false) {
+							if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDate").getValue() ===
+								"" || _oController.getView().byId("filingStatus").getValue() ===
+								"") {
 								if (_oController.getView().byId("idDeclare").getSelected() === false) {
 									_oController.getView().byId("idDeclare").addStyleClass("checkBoxdeclare");
+								}
+								if (_oController.getView().byId("idbegDate").getValue() === "") {
+									_oController.getView().byId("idbegDate").setValueState("Error");
+								}
+								if (_oController.getView().byId("filingStatus").getValue() === "") {
+									_oController.getView().byId("filingStatus").setValueState("Error");
 								}
 
 							}
@@ -724,13 +750,20 @@ sap.ui.define([
 			} else {
 				sNameCheck = "";
 			}
+			var sFiling = _oController.getView().byId("filingStatus").getValue();
+			var sFilingValue;
+			if (sFiling === "") {
+				sFilingValue = "";
+			} else {
+				sFilingValue = _oController.getView().byId("filingStatus").getSelectedKey();
+			}
 
 			var beginDate = new Date(_oController.getView().byId("idbegDate").getValue());
-			beginDate.setUTCHours(0, 0, 0);
-			var millisecondsBegin = beginDate.getTime();
+
+			var millisecondsBegin = Date.UTC(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate(), 0, 0, 0, 0);
 			var endDate = new Date(_oController.getView().byId("idendDate").getValue());
-			endDate.setUTCHours(0, 0, 0);
-			var millisecondsEnd = endDate.getTime();
+
+			var millisecondsEnd = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0, 0);
 
 			var sNewW4DataPayload = {
 				"ADEXA": parseFloat(w4Data[0].recordADEXA),
@@ -774,7 +807,7 @@ sap.ui.define([
 				"TAURT": w4Data[0].recordTAURT,
 				"TAXLV01": w4Data[0].recordTAXLV01,
 				"TAXLV02": w4Data[0].recordTAXLV02,
-				"TXSTA": _oController.getView().byId("filingStatus").getSelectedKey(),
+				"TXSTA": sFilingValue,
 				"UNAME": w4Data[0].recordUNAME
 			};
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().editTabRecords[0].AEDTM = null;
@@ -984,8 +1017,28 @@ sap.ui.define([
 
 			});
 		},
+		/**
+		 * This function is called when Date is changed. 
+		 * @function handleDateChange
+		 */
 		handleDateChange: function (oEvt) {
 			oEvt.getSource().setValueState("None");
+		},
+		/**
+		 * This function is called when Declaration is changed. 
+		 * @function onDeclareSelect
+		 */
+		onDeclareSelect: function (oEvent) {
+
+			_oController.getView().byId("idDeclare").removeStyleClass("checkBoxdeclare");
+
+		},
+		/**
+		 * This function is called when Filing is changed. 
+		 * @function onFilingChang
+		 */
+		onFilingChange: function (oEvent) {
+			oEvent.getSource().setValueState("None");
 		}
 
 	});

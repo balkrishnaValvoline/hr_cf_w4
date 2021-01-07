@@ -63,7 +63,7 @@
 									<f:FormElement label="{i18n>begText}">
 										<f:fields>
 											<DatePicker id="idbegDateSave" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-												value="{w4DataModel>/editRecords/W4Data/0/beginDate}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
+												value="{w4DataModel>/editRecords/W4Data/0/beginDate}" valueFormat="MM/dd/yyyy"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="">
@@ -74,7 +74,7 @@
 									<f:FormElement label="{i18n>endText}">
 										<f:fields>
 											<DatePicker id="idendDateSave" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-												value="{w4DataModel>/editRecords/W4Data/0/endDate}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
+												value="{w4DataModel>/editRecords/W4Data/0/endDate}" valueFormat="MM/dd/yyyy"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="{i18n>TotalText}">
@@ -104,7 +104,7 @@
 									<f:FormElement label="{i18n>StatusText}">
 										<f:fields>
 											<HBox>
-												<ComboBox width="290px" items="{w4DataModel>/editFilingStatusData}" id="filingStatus" visible="true">
+												<ComboBox width="290px" items="{w4DataModel>/editFilingStatusData}" id="filingStatus" visible="true" change="onFilingChange">
 													<core:Item key="{w4DataModel>filingKey}" text="{w4DataModel>filingValue}"/>
 												</ComboBox>
 											</HBox>

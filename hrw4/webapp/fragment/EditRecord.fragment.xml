@@ -43,7 +43,7 @@
 						<f:FormElement label="{i18n>begText}">
 							<f:fields>
 								<DatePicker id="idbegDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-									value="{w4DataModel>/editSaveRecords/0/recordBeginDateDisplayEdit}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
+									value="{w4DataModel>/editSaveRecords/0/recordBeginDateDisplayEdit}" valueFormat="MM/dd/yyyy"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="">
@@ -54,7 +54,7 @@
 						<f:FormElement label="{i18n>endText}">
 							<f:fields>
 								<DatePicker id="idendDate" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-									value="{w4DataModel>/editSaveRecords/0/recordEndDate}" valueFormat="MM/dd/yyyy/hh:mm:ss"/>
+									value="{w4DataModel>/editSaveRecords/0/recordEndDate}" valueFormat="MM/dd/yyyy"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>TotalText}">
@@ -84,7 +84,7 @@
 						<f:FormElement label="{i18n>StatusText}">
 							<f:fields>
 								<HBox>
-									<ComboBox width="290px" items="{w4DataModel>/editBindingsFilingStatusData/0}" id="filingStatus" visible="true">
+									<ComboBox width="290px" items="{w4DataModel>/editBindingsFilingStatusData/0}" id="filingStatus" visible="true" change="onFilingChange">
 										<core:Item key="{w4DataModel>VALUEKEY}" text="{w4DataModel>VALUETEXT}"/>
 									</ComboBox>
 								</HBox>
@@ -113,7 +113,7 @@
 						</f:FormElement>
 						<f:FormElement label="{i18n>Check1Text}" class="sapUiSmallMarginTop">
 							<f:fields>
-								<CheckBox id="idNamediffer" class="sapUiTinyMargin" selected="{w4DataModel>/editRecords/W4Data/0/lnmch}"></CheckBox>
+								<CheckBox id="idNamediffer" class="sapUiTinyMargin" selected="{w4DataModel>/editSaveRecords/0/recordLNMCH}"></CheckBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="">
@@ -161,7 +161,7 @@
 		<HBox>
 			<Label text="" required="true" class="sapUiSmallMarginTop"></Label>
 			<Label text="{i18n>declareText}" class="sapUiSmallMarginTop"></Label>
-			<CheckBox id="idDeclare" class="sapUiTinyMargin" selected="{w4DataModel>/editSaveRecords/0/recordDeclare}"></CheckBox>
+			<CheckBox id="idDeclare" class="sapUiTinyMargin" selected="{w4DataModel>/editSaveRecords/0/recordDeclare}" select="onDeclareSelect"></CheckBox>
 			<Label text="{i18n>declareNextText}" class="sapUiSmallMarginTop"></Label>
 		</HBox>
 		<HBox>

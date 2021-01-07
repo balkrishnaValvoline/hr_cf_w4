@@ -28,8 +28,11 @@ sap.ui.define([
 			if (!_oController.dialog) {
 				_oController.dialog = sap.ui.xmlfragment("valvoline.ui.hrw4.fragment.BusyDialog", this);
 			}
-			_oController.getView().byId("idbegDateSave").setMinDate(new Date());
-			_oController.getView().byId("idendDateSave").setMinDate(new Date());
+			var stoday = new Date();
+			stoday.setUTCHours(0, 0, 0);
+			var dateToday = new Date(stoday.getUTCFullYear(), stoday.getUTCMonth(), stoday.getUTCDate(), 0, 0, 0);
+			_oController.getView().byId("idbegDateSave").setMinDate(dateToday);
+			_oController.getView().byId("idendDateSave").setMinDate(dateToday);
 			_oController.dialog.open();
 			_oController.getEditDetails();
 
@@ -134,20 +137,23 @@ sap.ui.define([
 					_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4oldRecord.push({
 						oldRec: data.W4_DATA
 					});
-			
-						var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-							pattern: "MM/dd/yyyy/hh:mm:ss"
-						});
 
-					var sBegin = sdateFormat.format(new Date(data.W4_DATA.BEGDA));
-					var sEnd = sdateFormat.format(new Date(data.W4_DATA.ENDDA));
+					var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+						pattern: "MM/dd/yyyy"
+					});
+					var sEndDatey = new Date(data.W4_DATA.ENDDA);
+					sEndDatey.setUTCHours(0, 0, 0, 0);
+					var sEnd = new Date(sEndDatey.getUTCFullYear(), sEndDatey.getUTCMonth(), sEndDatey.getUTCDate(), 0, 0, 0);
+					var sBeginDatey = new Date(data.W4_DATA.BEGDA);
+					sBeginDatey.setUTCHours(0, 0, 0, 0);
+					var sBegin = new Date(sBeginDatey.getUTCFullYear(), sBeginDatey.getUTCMonth(), sBeginDatey.getUTCDate(), 0, 0, 0);
 					_oController.getOwnerComponent().getModel("w4DataModel").getData()
 						.editRecords.W4Data.push({
 							adexa: data.W4_DATA.ADEXA,
 							adexn: data.W4_DATA.ADEXN,
 							lastChanged: data.W4_DATA.AEDTM,
 							amtex: data.W4_DATA.AMTEX,
-							beginDate: sBegin,
+							beginDate: sdateFormat.format(sBegin),
 							currency1: data.W4_DATA.CURR1,
 							currency2: data.W4_DATA.CURR2,
 							currency3: data.W4_DATA.CURR3,
@@ -156,7 +162,7 @@ sap.ui.define([
 							totalCredits: data.W4_DATA.DEPS_TOTAL_AMT,
 							eicst: data.W4_DATA.EICST,
 							eicst1: data.W4_DATA.EICST01,
-							endDate: sEnd,
+							endDate: sdateFormat.format(sEnd),
 							examt: data.W4_DATA.EXAMT,
 							exind: data.W4_DATA.EXIND,
 							expct: data.W4_DATA.EXPCT,
@@ -226,6 +232,7 @@ sap.ui.define([
 		 */
 		onConfirm: function (oEvent) {
 			if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDateSave").getValue() ===
+				"" || _oController.getView().byId("filingStatus").getValue() ===
 				"") {
 				MessageBox.error("Please fill all the mandatory fields", {
 					actions: ["OK"],
@@ -237,12 +244,16 @@ sap.ui.define([
 					onClose: function (sAction) {
 						if (sAction === "OK") {
 							if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDateSave").getValue() ===
+								"" || _oController.getView().byId("filingStatus").getValue() ===
 								"") {
 								if (_oController.getView().byId("idDeclare").getSelected() === false) {
 									_oController.getView().byId("idDeclare").addStyleClass("checkBoxdeclare");
 								}
 								if (_oController.getView().byId("idbegDateSave").getValue() === "") {
 									_oController.getView().byId("idbegDateSave").setValueState("Error");
+								}
+								if (_oController.getView().byId("filingStatus").getValue() === "") {
+									_oController.getView().byId("filingStatus").setValueState("Error");
 								}
 
 							}
@@ -293,12 +304,20 @@ sap.ui.define([
 			} else {
 				sNameCheck = "";
 			}
+			var sFiling = _oController.getView().byId("filingStatus").getValue();
+			var sFilingValue;
+			if (sFiling === "") {
+				sFilingValue = "";
+			} else {
+				sFilingValue = _oController.getView().byId("filingStatus").getSelectedKey();
+			}
+
 			var beginDate = new Date(_oController.getView().byId("idbegDateSave").getValue());
-			beginDate.setUTCHours(0, 0, 0);
-			var millisecondsBegin = beginDate.getTime();
+
+			var millisecondsBegin = Date.UTC(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate(), 0, 0, 0, 0);
 			var endDate = new Date(_oController.getView().byId("idendDateSave").getValue());
-			endDate.setUTCHours(0, 0, 0);
-			var millisecondsEnd = endDate.getTime();
+
+			var millisecondsEnd = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0, 0);
 
 			var sNewW4DataPayload = {
 				"ADEXA": parseFloat(w4Data[0].adexa),
@@ -342,7 +361,7 @@ sap.ui.define([
 				"TAURT": w4Data[0].taurt,
 				"TAXLV01": w4Data[0].taxlv1,
 				"TAXLV02": w4Data[0].taxlv2,
-				"TXSTA": _oController.getView().byId("filingStatus").getSelectedKey(),
+				"TXSTA": sFilingValue,
 				"UNAME": w4Data[0].uname
 			};
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4oldRecord[0].oldRec.AEDTM = null;
@@ -512,6 +531,13 @@ sap.ui.define([
 		 */
 		handleDateChange: function (oEvt) {
 			oEvt.getSource().setValueState("None");
+		},
+		/**
+		 * This function is called when Filing is changed. 
+		 * @function onFilingChang
+		 */
+		onFilingChange: function (oEvent) {
+			oEvent.getSource().setValueState("None");
 		},
 		/**
 		 * This function is called when logout is pressed. 
