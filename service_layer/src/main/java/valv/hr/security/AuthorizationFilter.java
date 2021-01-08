@@ -17,10 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import com.sap.cloud.security.token.AccessToken;
 
-@WebFilter(urlPatterns = {
-	"/*"
-})
-public class AuthorizationFilter implements Filter{
+@WebFilter(urlPatterns = { "/*" })
+public class AuthorizationFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
 
 	@Override
@@ -33,39 +31,32 @@ public class AuthorizationFilter implements Filter{
 		throws IOException,
 			ServletException
 	{
-		System.out.println("Filter Encountered");
-		if(request instanceof HttpServletRequest) {
+		logger.debug("Filter Encountered");
+		if (request instanceof HttpServletRequest) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
-			
-			if(isUserAuthorized(httpRequest)) {
+
+			if (isUserAuthorized(httpRequest)) {
 				chain.doFilter(httpRequest, httpResponse);
-			}else {
+			} else {
 				httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 		}
-		
+
 	}
 
 	private boolean isUserAuthorized(HttpServletRequest httpRequest) {
 		logger.trace("[ENTER] isUserAuthorized");
 		HRUser hrUser = AuthenticationHelper.getInstance().getAuthenticatedUser(httpRequest);
 		String requestUri = httpRequest.getRequestURI().toString();
-		if(requestUri.contains("/devadmin")) {
-			if(hrUser.getUserId().equalsIgnoreCase("a535396")) {
-				logger.trace("[AUTHORIZED] - Dev Admin Service");
-				return true;
-			}else {
-				logger.trace("[UNAUTHORIZED ATTEMPT] - Dev Admin Service : {} ", hrUser.getUserId());
-				return false;
-			}
+		boolean countryCheck = false;
+		if (requestUri.contains("/devadmin") && hrUser.getUserId().equalsIgnoreCase("a535396")) {
+			logger.trace("[AUTHORIZED] - Dev Admin Service");
+			countryCheck = true;
+		} else {
+			countryCheck = AuthorizationHelper.getInstance().checkCountryAuthorisation(httpRequest);
 		}
-		boolean countryCheck = AuthorizationHelper.getInstance().checkCountryAuthorisation(httpRequest,hrUser.getUserId());
-		if(countryCheck) {
-			return true;
-		}
-		logger.info("User : {} unauthorized",hrUser.getUserId());
-		return false;
+		return countryCheck;
 	}
 
 	@Override

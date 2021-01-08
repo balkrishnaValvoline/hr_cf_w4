@@ -36,7 +36,6 @@ public final class AuthenticationHelper {
 		HRUser hrUser = null;
 		if(request.getUserPrincipal() == null) {
 			logger.info("Authentication Failed - No User Principal Found");
-			return hrUser;
 		}else {
 			logger.trace("[USER Login]: {}", request.getUserPrincipal().getName());
 			

@@ -60,6 +60,7 @@ import valv.hr.utility.MESSAGE_PROCESS_OBJ;
 public class W4FormWebServices {
 
 	private static final Logger logger = LoggerFactory.getLogger(W4FormWebServices.class);
+	private static final String AUTHORIZED_SESSION_HR_USER = "AUTHORIZED_HR_USER";
 
 	@Inject
 	UserManagement userMgmt;
@@ -121,14 +122,13 @@ public class W4FormWebServices {
 	@Path("/userLogout")
 	public ResponseBuilder logOutUser(@Context HttpServletRequest request) throws URISyntaxException {
 		logger.info("[ENTER] logout Service");
-		System.out.println("[ENTER] logout Service");
 		HttpSession session = request.getSession(false);
 		if(session !=null) {
-			if(session.getAttribute("IM_USER") !=null) {
-				logger.info("User Session : {}", ((HRUser) session.getAttribute("HR_USER")).toString());
+			if(session.getAttribute(AUTHORIZED_SESSION_HR_USER) !=null) {
+				logger.info("User Session : {}", ((HRUser) session.getAttribute(AUTHORIZED_SESSION_HR_USER)).toString());
 			}
-			session.removeAttribute("IM_USER");
-			logger.info("Removed User Session : {}",session.getAttribute("HR_USER"));
+			session.removeAttribute(AUTHORIZED_SESSION_HR_USER);
+			logger.debug("Removed User Session : {}",session.getAttribute(AUTHORIZED_SESSION_HR_USER));
 		}
 		return Response.ok().location(new URI(request.getRequestURI()));
 	}
