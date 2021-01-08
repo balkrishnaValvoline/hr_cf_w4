@@ -16,6 +16,12 @@ sap.ui.define([
 			_oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			_oRouter.getRoute("RouteOverview").attachPatternMatched(this._onObjectMatched, this);
 			_oController = this;
+			if (!_oController.dialog) {
+				_oController.dialog = sap.ui.xmlfragment("valvoline.ui.hrw4.fragment.BusyDialog", this);
+			}
+			sap.ui.getCore().sLoginFlag = true;
+			sap.ui.getCore().sCreateSaveFlag = false;
+
 		},
 		/**
 		 * This function is called everytime the page is loaded
@@ -26,42 +32,49 @@ sap.ui.define([
 			if (!_oController.dialog) {
 				_oController.dialog = sap.ui.xmlfragment("valvoline.ui.hrw4.fragment.BusyDialog", this);
 			}
-
-			var editRecords = {
-				"addressData": [],
-				"messages": [],
-				"personalData": [],
-				"W4Data": [],
-				"W4oldRecord": []
-			};
-
-			var deleteRecords = {
-				"oldDeleteRecords": [],
-				"newDeleteRecords": []
-
-			};
-			var w4Data = {
-				"tableRecords": [],
-				"tableEditRecords": [],
-				"deleteTabRecords": [],
-				"editTabRecords": [],
-				"editSaveRecords": [],
-				"deleteRecords": deleteRecords,
-				"editFilingStatusData": [],
-				"editExemptionData": [],
-				"editBindingsFilingStatusData": [],
-				"editBindingsExemptionData": [],
-				"editRecords": editRecords,
-				"editBindings": []
-			};
-			_oController.getOwnerComponent().getModel("w4DataModel").setData(w4Data);
 			var stoday = new Date();
 			stoday.setUTCHours(0, 0, 0);
 			var dateToday = new Date(stoday.getUTCFullYear(), stoday.getUTCMonth(), stoday.getUTCDate(), 0, 0, 0);
 			_oController.getView().byId("idbegDate").setMinDate(dateToday);
 			_oController.getView().byId("idendDate").setMinDate(dateToday);
+			if (sap.ui.getCore().sLoginFlag === true) {
+				var editRecords = {
+					"addressData": [],
+					"messages": [],
+					"personalData": [],
+					"W4Data": [],
+					"W4oldRecord": []
+				};
 
-			_oController.loginSvc();
+				var deleteRecords = {
+					"oldDeleteRecords": [],
+					"newDeleteRecords": []
+
+				};
+				var w4Data = {
+					"tableRecords": [],
+					"tableEditRecords": [],
+					"deleteTabRecords": [],
+					"editTabRecords": [],
+					"editSaveRecords": [],
+					"deleteRecords": deleteRecords,
+					"editFilingStatusData": [],
+					"editExemptionData": [],
+					"editBindingsFilingStatusData": [],
+					"editBindingsExemptionData": [],
+					"editRecords": editRecords,
+					"editBindings": []
+				};
+				_oController.getOwnerComponent().getModel("w4DataModel").setData(w4Data);
+				if (sap.ui.getCore().sCreateSaveFlag === false) {
+					_oController.loginSvc();
+				} else {
+					_oController.getTableRecords();
+					sap.ui.getCore().sCreateSaveFlag = true;
+				}
+				sap.ui.getCore().sLoginFlag = false;
+			}
+
 		},
 		/**
 		 * This function is used for calling the login service, to check if user is authorized or not
@@ -76,6 +89,7 @@ sap.ui.define([
 					_oController.dialog.open();
 					_oController.getView().byId("idUserFName").setText(data.FNAME);
 					_oController.getView().byId("idUserLName").setText(data.LNAME);
+					sap.ui.getCore().PERNER = data.EMPLNO;
 					_oController.getTableRecords();
 
 				},
@@ -305,7 +319,9 @@ sap.ui.define([
 
 			_oController.handleEmptyData();
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
+
 			_oController.getTableRecords();
+
 			_oController.getView().byId("idIconTabBar").setSelectedKey("1");
 			_oController.getView().byId("idEditTab").setVisible(false);
 			_oController.getView().byId("toEdit").setVisible(false);
@@ -536,7 +552,6 @@ sap.ui.define([
 
 									oEvent.getSource().close();
 									_oController.handleEmptyData();
-									_oController.getTableRecords();
 									_oController.handlePrevDelete(oEvent);
 								}
 							}
@@ -556,7 +571,6 @@ sap.ui.define([
 								if (sAction === "OK") {
 									oEvent.getSource().close();
 									_oController.handleEmptyData();
-									_oController.getTableRecords();
 									_oController.handlePrevDelete(oEvent);
 								}
 							}
@@ -842,7 +856,6 @@ sap.ui.define([
 									if (sAction === "OK") {
 										oEvent.getSource().close();
 										_oController.handleEmptyData();
-										_oController.getTableRecords();
 										_oController.handlePrevEdit(oEvent);
 									}
 								}
@@ -881,7 +894,6 @@ sap.ui.define([
 												if (sAction === "OK") {
 													oEvent.getSource().close();
 													_oController.handleEmptyData();
-													_oController.getTableRecords();
 													_oController.handlePrevEdit(oEvent);
 												}
 											}
@@ -933,7 +945,6 @@ sap.ui.define([
 								if (sAction === "OK") {
 									oEvent.getSource().close();
 									_oController.handleEmptyData();
-									_oController.getTableRecords();
 									_oController.handlePrevEdit(oEvent);
 								}
 							}

@@ -35,7 +35,8 @@ sap.ui.define([
 			_oController.getView().byId("idendDateSave").setMinDate(dateToday);
 			_oController.dialog.open();
 			_oController.getEditDetails();
-
+			sap.ui.getCore().sLoginFlag = true;
+			sap.ui.getCore().sCreateSaveFlag = true;
 		},
 		/**
 		 * This function is called for the createNew Service. 
@@ -44,7 +45,7 @@ sap.ui.define([
 		getEditDetails: function (oEvent) {
 
 			$.ajax({
-				url: "/backend/hrservices/w4/createNew",
+				url: "/backend/hrservices/w4/createNew/" + sap.ui.getCore().PERNER,
 
 				success: function (data) {
 
