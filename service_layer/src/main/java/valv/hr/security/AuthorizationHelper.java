@@ -55,7 +55,7 @@ public final class AuthorizationHelper {
 				
 				if (countryGrouping.equals("10")) {
 					logger.trace("Authorized HR User : {}", hrUser.toString());
-					httpRequest.setAttribute("PERNR",
+					httpRequest.getSession().setAttribute("PERNR",
 						funcResp.getExportParameterList().getField("EMPLOYEENUMBER").getValue().toString());
 					httpRequest.getSession().setAttribute(AUTHORIZED_SESSION_HR_USER, hrUser);
 					return true;

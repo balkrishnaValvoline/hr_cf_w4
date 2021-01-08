@@ -18,6 +18,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -106,7 +107,9 @@ public class W4FormWebServices {
 		HRUser user = AuthenticationHelper.getInstance().getAuthenticatedUser(request);
 		Map<String, String> logonData = new HashMap<>();
 		logonData.put("USERID", user.getUserId());
-		logonData.put("EMPLNO", request.getAttribute("PERNR").toString());
+		
+		logonData.put("EMPLNO", request.getSession().getAttribute("PERNR")!=null?request.getSession().getAttribute("PERNR").toString():null);
+		
 		logonData.put("FNAME", user.getFirstName());
 		logonData.put("LNAME", user.getLastName());
 		return Response.ok().entity(logonData).build();
@@ -128,6 +131,7 @@ public class W4FormWebServices {
 				logger.info("User Session : {}", ((HRUser) session.getAttribute(AUTHORIZED_SESSION_HR_USER)).toString());
 			}
 			session.removeAttribute(AUTHORIZED_SESSION_HR_USER);
+			session.removeAttribute("PERNR");
 			logger.debug("Removed User Session : {}",session.getAttribute(AUTHORIZED_SESSION_HR_USER));
 		}
 		return Response.ok().location(new URI(request.getRequestURI()));
@@ -213,17 +217,16 @@ public class W4FormWebServices {
 	 * @throws JSONException
 	 */
 	@GET
-	@Path("/createNew")
+	@Path("/createNew/{pernr}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createNewRecord(@Context HttpServletRequest request)
+	public Response createNewRecord(@Context HttpServletRequest request, @PathParam("pernr") String pernr)
 		throws JsonMappingException,
 			JsonProcessingException,
 			JSONException
 	{
 
 		logger.trace("ENTER createNewRecord");
-		String pernr = request.getAttribute("PERNR").toString();
-
+		pernr = request.getSession().getAttribute("PERNR") != null?request.getSession().getAttribute("PERNR").toString():pernr;
 		NEW_P0210_US newRecParams = new NEW_P0210_US();
 		newRecParams.setPI_PERNR(pernr);
 		newRecParams.setPI_EFF_DATE(new Date());
