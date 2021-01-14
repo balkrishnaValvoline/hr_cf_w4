@@ -126,111 +126,133 @@ sap.ui.define([
 							_oController.getView().byId("idCreate").setEnabled(true);
 						} else {
 							_oController.getView().byId("idCreate").setEnabled(false);
-							for (var i = 0; i < data.length; i++) {
+							if (data[0].TYPE === undefined)
 
-								var sBeginDate = sdateFormat.format(new Date(data[i].BEGDA));
-								var sEstBegin = new Date(data[i].BEGDA);
-								var sBeginDateDisplay = (sEstBegin.getUTCMonth() <= 9 ? ("0" + (sEstBegin.getUTCMonth() + 1)) : (sEstBegin.getUTCMonth() +
-									1)) + "/" + (sEstBegin.getUTCDate() <= 9 ? "0" + sEstBegin.getUTCDate() : sEstBegin.getUTCDate()) + "/" + sEstBegin.getUTCFullYear();
+							{
+								for (var i = 0; i < data.length; i++) {
 
-								var sEstEnd = new Date(data[i].ENDDA);
-								var sEndDateDisplay = (sEstEnd.getUTCMonth() <= 9 ? ("0" + (sEstEnd.getUTCMonth() + 1)) : (sEstEnd.getUTCMonth() +
-									1)) + "/" + (sEstEnd.getUTCDate() <= 9 ? "0" + sEstEnd.getUTCDate() : sEstEnd.getUTCDate()) + "/" + sEstEnd.getUTCFullYear();
-								var sEstLast = new Date(data[i].AEDTM);
-								var sLastChangedDate = (sEstLast.getUTCMonth() <= 9 ? ("0" + (sEstLast.getUTCMonth() + 1)) : (sEstLast.getUTCMonth() +
-									1)) + "/" + (sEstLast.getUTCDate() <= 9 ? "0" + sEstLast.getUTCDate() : sEstLast.getUTCDate()) + "/" + sEstLast.getUTCFullYear();
+									var sBeginDate = sdateFormat.format(new Date(data[i].BEGDA));
+									var sEstBegin = new Date(data[i].BEGDA);
+									var sBeginDateDisplay = (sEstBegin.getUTCMonth() <= 9 ? ("0" + (sEstBegin.getUTCMonth() + 1)) : (sEstBegin.getUTCMonth() +
+										1)) + "/" + (sEstBegin.getUTCDate() <= 9 ? "0" + sEstBegin.getUTCDate() : sEstBegin.getUTCDate()) + "/" + sEstBegin.getUTCFullYear();
 
-								var sValid = "";
-								var sDelete = false;
-								var today = new Date();
-								today.setUTCHours(0, 0, 0, 0);
-								var sBeginDatey = new Date(data[i].BEGDA);
-								sBeginDatey.setUTCHours(0, 0, 0, 0);
-								var myToday = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 0, 0, 0);
-								var backendBeginDate = new Date(sBeginDatey.getUTCFullYear(), sBeginDatey.getUTCMonth(), sBeginDatey.getUTCDate(), 0, 0,
-									0);
-								if (backendBeginDate > myToday) {
-									sDelete = true;
-								} else {
-									sDelete = false;
+									var sEstEnd = new Date(data[i].ENDDA);
+									var sEndDateDisplay = (sEstEnd.getUTCMonth() <= 9 ? ("0" + (sEstEnd.getUTCMonth() + 1)) : (sEstEnd.getUTCMonth() +
+										1)) + "/" + (sEstEnd.getUTCDate() <= 9 ? "0" + sEstEnd.getUTCDate() : sEstEnd.getUTCDate()) + "/" + sEstEnd.getUTCFullYear();
+									var sEstLast = new Date(data[i].AEDTM);
+									var sLastChangedDate = (sEstLast.getUTCMonth() <= 9 ? ("0" + (sEstLast.getUTCMonth() + 1)) : (sEstLast.getUTCMonth() +
+										1)) + "/" + (sEstLast.getUTCDate() <= 9 ? "0" + sEstLast.getUTCDate() : sEstLast.getUTCDate()) + "/" + sEstLast.getUTCFullYear();
+
+									var sValid = "";
+									var sDelete = false;
+									var today = new Date();
+									today.setUTCHours(0, 0, 0, 0);
+									var sBeginDatey = new Date(data[i].BEGDA);
+									sBeginDatey.setUTCHours(0, 0, 0, 0);
+									var myToday = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 0, 0, 0);
+									var backendBeginDate = new Date(sBeginDatey.getUTCFullYear(), sBeginDatey.getUTCMonth(), sBeginDatey.getUTCDate(), 0, 0,
+										0);
+									if (backendBeginDate > myToday) {
+										sDelete = true;
+									} else {
+										sDelete = false;
+									}
+									_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords.push({
+
+										oldData: data[i]
+									});
+									_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.newDeleteRecords.push({
+
+										newData: data[i]
+									});
+									var sEndDatey = new Date(data[i].ENDDA);
+									sEndDatey.setUTCHours(0, 0, 0, 0);
+									var sEndDate = new Date(sEndDatey.getUTCFullYear(), sEndDatey.getUTCMonth(), sEndDatey.getUTCDate(), 0, 0, 0);
+
+									var recordBeginDateDisplayEdit;
+									// for backdated rcords set the begdate as current date
+
+									if (backendBeginDate < myToday) {
+										recordBeginDateDisplayEdit = sdateFormat.format(myToday);
+									} else {
+										recordBeginDateDisplayEdit = sdateFormat.format(backendBeginDate);
+									}
+									_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords.push(data[i]);
+									_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.push({
+										recordBeginDateDisplayEdit: recordBeginDateDisplayEdit,
+										recordBeginDate: sBeginDate,
+										recordEndDate: sdateFormat.format(sEndDate),
+										recordAEDTM: data[i].AEDTM,
+										recordBEGDA: data[i].BEGDA,
+										recordENDDA: data[i].ENDDA,
+										recordDelete: sDelete,
+										recordValid: sValid,
+										recordValidTo: sEndDateDisplay,
+										recordValidFrom: sBeginDateDisplay,
+										recordFilingStatus: data[i].LTEXT02,
+										recordExemption: data[i].NBREX,
+										recordLast: sLastChangedDate,
+										recordADEXA: data[i].ADEXA,
+										recordADEXN: data[i].ADEXN,
+										recordAMTEX: data[i].AMTEX,
+										recordCURR1: data[i].CURR1,
+										recordCURR2: data[i].CURR2,
+										recordCURR3: data[i].CURR3,
+										recordDEDUCT_AMT: data[i].DEDUCT_AMT,
+										recordDEPEX: data[i].DEPEX,
+										recordDEPS_TOTAL_AMT: data[i].DEPS_TOTAL_AMT,
+										recordEICST: data[i].EICT,
+										recordEICST01: data[i].EICST01,
+										recordEXAMT: data[i].EXAMT,
+										recordEXIND: data[i].EXIND,
+										recordEXPCT: data[i].EXPCT,
+										recordFRMDT: data[i].FRMDT,
+										recordFRMND: data[i].FRMND,
+										recordFRMNR: data[i].FRMNR,
+										recordFRMNT: data[i].FRMNT,
+										recordIRSLI: data[i].IRSLI,
+										recordITBLD: data[i].ITBLD,
+										recordLNMCH: data[i].LNMCH,
+										recordLTEXT01: data[i].LTEXT01,
+										recordLTEXT02: data[i].LTEXT02,
+										recordMULT_JOBS_IND: data[i].MULT_JOBS_IND,
+										recordNBQLC: data[i].NBQLC,
+										recordNBREX: data[i].NBREX,
+										recordNRATX: data[i].NRATX,
+										recordOBJECT_KEY: data[i].OBJECT_KEY,
+										recordOTHER_INC_AMT: data[i].OTHER_INC_AMT,
+										recordPEREX: data[i].PEREX,
+										recordPERNR: data[i].PERNR,
+										recordRWAMT: data[i].RWAMT,
+										recordRWAMT_CURR: data[i].RWAMT_CURR,
+										recordSPRPS: data[i].SPRPS,
+										recordSPRTX: data[i].SPRTX,
+										recordTAURT: data[i].TAURT,
+										recordTAXLV01: data[i].TAXLV01,
+										recordTAXLV02: data[i].TAXLV02,
+										recordTXSTA: data[i].TXSTA,
+										recordUNAME: data[i].UNAME,
+									});
+
 								}
-								_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords.push({
+							}
+							if (data[0].TYPE === "E") {
+								_oController.dialog.close();
+								MessageBox.error(data[0].MESSAGE, {
+									actions: ["OK"],
+									emphasizedAction: "OK",
+									width: "150%",
+									height: "150%",
+									title: "Fetching Unsuccessful",
 
-									oldData: data[i]
+									onClose: function (sAction) {
+										if (sAction === "OK") {
+											oEvent.getSource().close();
+
+										}
+									}
+
 								});
-								_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.newDeleteRecords.push({
-
-									newData: data[i]
-								});
-								var sEndDatey = new Date(data[i].ENDDA);
-								sEndDatey.setUTCHours(0, 0, 0, 0);
-								var sEndDate = new Date(sEndDatey.getUTCFullYear(), sEndDatey.getUTCMonth(), sEndDatey.getUTCDate(), 0, 0, 0);
-
-								var recordBeginDateDisplayEdit;
-								// for backdated rcords set the begdate as current date
-
-								if (backendBeginDate < myToday) {
-									recordBeginDateDisplayEdit = sdateFormat.format(myToday);
-								} else {
-									recordBeginDateDisplayEdit = sdateFormat.format(backendBeginDate);
-								}
-								_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords.push(data[i]);
-								_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.push({
-									recordBeginDateDisplayEdit: recordBeginDateDisplayEdit,
-									recordBeginDate: sBeginDate,
-									recordEndDate: sdateFormat.format(sEndDate),
-									recordAEDTM: data[i].AEDTM,
-									recordBEGDA: data[i].BEGDA,
-									recordENDDA: data[i].ENDDA,
-									recordDelete: sDelete,
-									recordValid: sValid,
-									recordValidTo: sEndDateDisplay,
-									recordValidFrom: sBeginDateDisplay,
-									recordFilingStatus: data[i].LTEXT02,
-									recordExemption: data[i].NBREX,
-									recordLast: sLastChangedDate,
-									recordADEXA: data[i].ADEXA,
-									recordADEXN: data[i].ADEXN,
-									recordAMTEX: data[i].AMTEX,
-									recordCURR1: data[i].CURR1,
-									recordCURR2: data[i].CURR2,
-									recordCURR3: data[i].CURR3,
-									recordDEDUCT_AMT: data[i].DEDUCT_AMT,
-									recordDEPEX: data[i].DEPEX,
-									recordDEPS_TOTAL_AMT: data[i].DEPS_TOTAL_AMT,
-									recordEICST: data[i].EICT,
-									recordEICST01: data[i].EICST01,
-									recordEXAMT: data[i].EXAMT,
-									recordEXIND: data[i].EXIND,
-									recordEXPCT: data[i].EXPCT,
-									recordFRMDT: data[i].FRMDT,
-									recordFRMND: data[i].FRMND,
-									recordFRMNR: data[i].FRMNR,
-									recordFRMNT: data[i].FRMNT,
-									recordIRSLI: data[i].IRSLI,
-									recordITBLD: data[i].ITBLD,
-									recordLNMCH: data[i].LNMCH,
-									recordLTEXT01: data[i].LTEXT01,
-									recordLTEXT02: data[i].LTEXT02,
-									recordMULT_JOBS_IND: data[i].MULT_JOBS_IND,
-									recordNBQLC: data[i].NBQLC,
-									recordNBREX: data[i].NBREX,
-									recordNRATX: data[i].NRATX,
-									recordOBJECT_KEY: data[i].OBJECT_KEY,
-									recordOTHER_INC_AMT: data[i].OTHER_INC_AMT,
-									recordPEREX: data[i].PEREX,
-									recordPERNR: data[i].PERNR,
-									recordRWAMT: data[i].RWAMT,
-									recordRWAMT_CURR: data[i].RWAMT_CURR,
-									recordSPRPS: data[i].SPRPS,
-									recordSPRTX: data[i].SPRTX,
-									recordTAURT: data[i].TAURT,
-									recordTAXLV01: data[i].TAXLV01,
-									recordTAXLV02: data[i].TAXLV02,
-									recordTXSTA: data[i].TXSTA,
-									recordUNAME: data[i].UNAME,
-								});
-
 							}
 						}
 						_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
@@ -373,77 +395,133 @@ sap.ui.define([
 				dataType: "json",
 				async: true,
 				success: function (data) {
+					if (data[0] === undefined)
 
-					_oController.handleNullData();
-					_oController.getView().byId("idIconTabBar").setSelectedKey("2");
-					_oController.getView().byId("idEditRecord").setVisible(true);
-					_oController.getView().byId("idDelRecord").setVisible(false);
-					_oController.getView().byId("idEditTab").setVisible(true);
-					_oController.getView().byId("toEdit").setVisible(true);
-					var message = "";
-					_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindings.push(data);
-					_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindingsFilingStatusData.push(data.F4_HELP.TXSTA);
-					_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindingsExemptionData.push(data.F4_HELP.EXIND);
-					_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
-					_oController.dialog.close();
-					if (data.MESSAGES !== null) {
-						var errorDetails = "<ul>";
-						for (var k = 0; k < data.MESSAGES.length; k++) {
-							errorDetails += "<li>" + data.MESSAGES[k].MESSAGE + "</li>";
+					{
+						_oController.handleNullData();
+						_oController.getView().byId("idIconTabBar").setSelectedKey("2");
+						_oController.getView().byId("idEditRecord").setVisible(true);
+						_oController.getView().byId("idDelRecord").setVisible(false);
+						_oController.getView().byId("idEditTab").setVisible(true);
+						_oController.getView().byId("toEdit").setVisible(true);
+						var message = "";
+						_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindings.push(data);
+						_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindingsFilingStatusData.push(data.F4_HELP.TXSTA);
+						_oController.getOwnerComponent().getModel("w4DataModel").getData().editBindingsExemptionData.push(data.F4_HELP.EXIND);
+						_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
+						_oController.dialog.close();
+						if (data.MESSAGES !== null) {
+							var errorDetails = "<ul>";
+							for (var k = 0; k < data.MESSAGES.length; k++) {
+								errorDetails += "<li>" + data.MESSAGES[k].MESSAGE + "</li>";
+							}
+							message = errorDetails;
 						}
-						message = errorDetails;
-					}
 
-					if (data.MESSAGES !== null) {
+						if (data.MESSAGES !== null) {
+							if (message === "<ul>") {
+								MessageBox.success("Record ready for Edit", {
+									actions: ["OK"],
+									emphasizedAction: "OK",
+									width: "150%",
+									height: "150%",
+									title: "Messages:",
 
-						MessageBox.success("Record ready for Edit", {
-							actions: ["OK"],
-							emphasizedAction: "OK",
-							width: "150%",
-							height: "150%",
-							title: "Messages:",
-							errorDetails: message,
+									onClose: function (sAction) {
+										if (sAction === "OK") {
+											//				_oController.handleEmptyData();
+											oEvent.getSource().close();
+											var sExempt = _oController.getOwnerComponent().getModel(
+													"w4DataModel").getData()
+												.editSaveRecords[0].recordEXIND;
+											var sFiling = _oController.getOwnerComponent().getModel(
+													"w4DataModel").getData()
+												.editSaveRecords[0].recordTXSTA;
 
-							onClose: function (sAction) {
-								if (sAction === "OK") {
-									//				_oController.handleEmptyData();
-									oEvent.getSource().close();
-									var sExempt = _oController.getOwnerComponent().getModel(
-											"w4DataModel").getData()
-										.editSaveRecords[0].recordEXIND;
-									var sFiling = _oController.getOwnerComponent().getModel(
-											"w4DataModel").getData()
-										.editSaveRecords[0].recordTXSTA;
+											_oController.getView().byId("idExemption").setSelectedKey(sExempt);
+											if (sFiling === "00") {
+												_oController.getView().byId("filingStatus").setValue();
 
-									_oController.getView().byId("idExemption").setSelectedKey(sExempt);
-									if (sFiling === "00") {
-										_oController.getView().byId("filingStatus").setValue();
+											} else {
+												_oController.getView().byId("filingStatus").setSelectedKey(sFiling);
+											}
+										}
+									}
 
-									} else {
-										_oController.getView().byId("filingStatus").setSelectedKey(sFiling);
+								});
+							} else {
+								MessageBox.success("Record ready for Edit", {
+									actions: ["OK"],
+									emphasizedAction: "OK",
+									width: "150%",
+									height: "150%",
+									title: "Messages:",
+									errorDetails: message,
+
+									onClose: function (sAction) {
+										if (sAction === "OK") {
+											//				_oController.handleEmptyData();
+											oEvent.getSource().close();
+											var sExempt = _oController.getOwnerComponent().getModel(
+													"w4DataModel").getData()
+												.editSaveRecords[0].recordEXIND;
+											var sFiling = _oController.getOwnerComponent().getModel(
+													"w4DataModel").getData()
+												.editSaveRecords[0].recordTXSTA;
+
+											_oController.getView().byId("idExemption").setSelectedKey(sExempt);
+											if (sFiling === "00") {
+												_oController.getView().byId("filingStatus").setValue();
+
+											} else {
+												_oController.getView().byId("filingStatus").setSelectedKey(sFiling);
+											}
+										}
+									}
+
+								});
+							}
+						}
+						if (data.MESSAGES === undefined) {
+
+							MessageBox.error("Edit Unsuccessful", {
+								actions: ["OK"],
+								emphasizedAction: "OK",
+								width: "150%",
+								height: "150%",
+								title: "Edit Unsuccessful",
+
+								onClose: function (sAction) {
+									if (sAction === "OK") {
+										oEvent.getSource().close();
+
 									}
 								}
-							}
 
-						});
+							});
+						}
 					}
-					if (data.MESSAGES === undefined) {
+					if (data[0] !== undefined) {
+						_oController.dialog.close();
+						if (data[0].TYPE !== undefined) {
+							if (data[0].TYPE === "E") {
+								MessageBox.error(data[0].MESSAGE, {
+									actions: ["OK"],
+									emphasizedAction: "OK",
+									width: "150%",
+									height: "150%",
+									title: "Edit Unsuccessful",
+									details: errorDetails,
+									onClose: function (sAction) {
+										if (sAction === "OK") {
+											oEvent.getSource().close();
 
-						MessageBox.error("Edit Unsuccessful", {
-							actions: ["OK"],
-							emphasizedAction: "OK",
-							width: "150%",
-							height: "150%",
-							title: "Edit Unsuccessful",
+										}
+									}
 
-							onClose: function (sAction) {
-								if (sAction === "OK") {
-									oEvent.getSource().close();
-
-								}
+								});
 							}
-
-						});
+						}
 					}
 
 				},
@@ -845,22 +923,41 @@ sap.ui.define([
 							"</li>";
 
 						if (data[0].TYPE !== "E") {
-							MessageBox.success("Successful creation of new record", {
-								actions: ["OK"],
-								emphasizedAction: "OK",
-								width: "150%",
-								height: "150%",
-								title: "Successful Creation",
-								details: errorDetails,
-								onClose: function (sAction) {
-									if (sAction === "OK") {
-										oEvent.getSource().close();
-										_oController.handleEmptyData();
-										_oController.handlePrevEdit(oEvent);
-									}
-								}
+							if (errorDetails === "<ul>") {
+								MessageBox.success("Successful creation of new record", {
+									actions: ["OK"],
+									emphasizedAction: "OK",
+									width: "150%",
+									height: "150%",
+									title: "Successful Creation",
 
-							});
+									onClose: function (sAction) {
+										if (sAction === "OK") {
+											oEvent.getSource().close();
+											_oController.handleEmptyData();
+											_oController.handlePrevEdit(oEvent);
+										}
+									}
+
+								});
+							} else {
+								MessageBox.success("Successful creation of new record", {
+									actions: ["OK"],
+									emphasizedAction: "OK",
+									width: "150%",
+									height: "150%",
+									title: "Successful Creation",
+									details: errorDetails,
+									onClose: function (sAction) {
+										if (sAction === "OK") {
+											oEvent.getSource().close();
+											_oController.handleEmptyData();
+											_oController.handlePrevEdit(oEvent);
+										}
+									}
+
+								});
+							}
 						} else {
 
 							if (data) {
@@ -883,22 +980,41 @@ sap.ui.define([
 										});
 									}
 									if (data[0].TYPE !== "E") {
-										MessageBox.success("Successful creation of new record", {
-											actions: ["OK"],
-											emphasizedAction: "OK",
-											width: "150%",
-											height: "150%",
-											title: "Successful Creation",
-											details: errorDetails,
-											onClose: function (sAction) {
-												if (sAction === "OK") {
-													oEvent.getSource().close();
-													_oController.handleEmptyData();
-													_oController.handlePrevEdit(oEvent);
-												}
-											}
+										if (errorDetails === "<ul>") {
+											MessageBox.success("Successful creation of new record", {
+												actions: ["OK"],
+												emphasizedAction: "OK",
+												width: "150%",
+												height: "150%",
+												title: "Successful Creation",
 
-										});
+												onClose: function (sAction) {
+													if (sAction === "OK") {
+														oEvent.getSource().close();
+														_oController.handleEmptyData();
+														_oController.handlePrevEdit(oEvent);
+													}
+												}
+
+											});
+										} else {
+											MessageBox.success("Successful creation of new record", {
+												actions: ["OK"],
+												emphasizedAction: "OK",
+												width: "150%",
+												height: "150%",
+												title: "Successful Creation",
+												details: errorDetails,
+												onClose: function (sAction) {
+													if (sAction === "OK") {
+														oEvent.getSource().close();
+														_oController.handleEmptyData();
+														_oController.handlePrevEdit(oEvent);
+													}
+												}
+
+											});
+										}
 									}
 								}
 							} else {
@@ -934,22 +1050,41 @@ sap.ui.define([
 									"</li>";
 							}
 						}
-						MessageBox.success("Successful creation of new record", {
-							actions: ["OK"],
-							emphasizedAction: "OK",
-							width: "150%",
-							height: "150%",
-							title: "Successful Creation",
-							details: errorDetails,
-							onClose: function (sAction) {
-								if (sAction === "OK") {
-									oEvent.getSource().close();
-									_oController.handleEmptyData();
-									_oController.handlePrevEdit(oEvent);
-								}
-							}
+						if (errorDetails === "<ul>") {
+							MessageBox.success("Successful creation of new record", {
+								actions: ["OK"],
+								emphasizedAction: "OK",
+								width: "150%",
+								height: "150%",
+								title: "Successful Creation",
 
-						});
+								onClose: function (sAction) {
+									if (sAction === "OK") {
+										oEvent.getSource().close();
+										_oController.handleEmptyData();
+										_oController.handlePrevEdit(oEvent);
+									}
+								}
+
+							});
+						} else {
+							MessageBox.success("Successful creation of new record", {
+								actions: ["OK"],
+								emphasizedAction: "OK",
+								width: "150%",
+								height: "150%",
+								title: "Successful Creation",
+								details: errorDetails,
+								onClose: function (sAction) {
+									if (sAction === "OK") {
+										oEvent.getSource().close();
+										_oController.handleEmptyData();
+										_oController.handlePrevEdit(oEvent);
+									}
+								}
+
+							});
+						}
 					} else if (data.MESSAGE !== undefined) {
 						sMessage.push(data[0].MESSAGE);
 						sMessage.push(data[0].MESSAGE_V1);
