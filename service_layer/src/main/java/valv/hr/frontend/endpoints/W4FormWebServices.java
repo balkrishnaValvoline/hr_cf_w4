@@ -25,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.annotation.JacksonFeatures;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sap.cloud.security.token.AccessToken;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
@@ -123,6 +125,7 @@ public class W4FormWebServices {
 	 */
 	@GET
 	@Path("/userLogout")
+	@JacksonFeatures(serializationDisable = {SerializationFeature.FAIL_ON_EMPTY_BEANS})
 	public ResponseBuilder logOutUser(@Context HttpServletRequest request) throws URISyntaxException {
 		logger.info("[ENTER] logout Service");
 		HttpSession session = request.getSession(false);
@@ -132,7 +135,8 @@ public class W4FormWebServices {
 			}
 			session.removeAttribute(AUTHORIZED_SESSION_HR_USER);
 			session.removeAttribute("PERNR");
-			logger.debug("Removed User Session : {}",session.getAttribute(AUTHORIZED_SESSION_HR_USER));
+			session.invalidate();
+			logger.debug("Session Invalidated");
 		}
 		return Response.ok().location(new URI(request.getRequestURI()));
 	}
