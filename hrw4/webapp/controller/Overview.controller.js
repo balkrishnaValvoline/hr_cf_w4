@@ -131,7 +131,7 @@ sap.ui.define([
 						if (data.length === 0) {
 							_oController.getView().byId("idCreate").setEnabled(true);
 						} else {
-							_oController.getView().byId("idCreate").setEnabled(true);
+							_oController.getView().byId("idCreate").setEnabled(false);
 							if (data[0].TYPE === undefined)
 
 							{
