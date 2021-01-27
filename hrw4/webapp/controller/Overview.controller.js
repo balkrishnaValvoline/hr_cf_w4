@@ -1202,7 +1202,7 @@ sap.ui.define([
 
 		},
 		//Number Validation
-		handleNumber: function (event) {
+		handleNumberChange: function (event) {
 			var result;
 
 			var value = event.getSource().getValue().split('');

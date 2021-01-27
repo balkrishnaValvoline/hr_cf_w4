@@ -604,9 +604,8 @@ sap.ui.define([
 			oEvent.getSource().setValueState("None");
 		},
 		//Number Validation
-		handleNumber: function (event) {
+		handleNumberChange: function (event) {
 			var result;
-
 			var value = event.getSource().getValue().split('');
 
 			var value1 = event.getSource().getValue();
