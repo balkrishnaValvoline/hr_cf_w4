@@ -80,7 +80,7 @@
 									<f:FormElement label="{i18n>TotalText}">
 										<f:fields>
 											<HBox>
-												<Input id="totalCredits" value="{w4DataModel>/editRecords/W4Data/0/totalCredits}"></Input>
+												<Input id="totalCredits" value="{w4DataModel>/editRecords/W4Data/0/totalCredits}" liveChange="handleNumber"></Input>
 												<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
 											</HBox>
 										</f:fields>
@@ -88,7 +88,7 @@
 									<f:FormElement label="{i18n>OtherText}">
 										<f:fields>
 											<HBox>
-												<Input id="otherCredits" value="{w4DataModel>/editRecords/W4Data/0/otherCredits}"></Input>
+												<Input id="otherCredits" value="{w4DataModel>/editRecords/W4Data/0/otherCredits}" liveChange="handleNumber"></Input>
 												<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
 											</HBox>
 										</f:fields>
@@ -96,7 +96,7 @@
 									<f:FormElement label="{i18n>DeductionsText}">
 										<f:fields>
 											<HBox>
-												<Input id="deductionCredits" value="{w4DataModel>/editRecords/W4Data/0/deductionAmt}"></Input>
+												<Input id="deductionCredits" value="{w4DataModel>/editRecords/W4Data/0/deductionAmt}" liveChange="handleNumber"></Input>
 												<Text text="{i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
 											</HBox>
 										</f:fields>
@@ -121,7 +121,7 @@
 									<f:FormElement label="{i18n>AdditionalAmountText}">
 										<f:fields>
 											<HBox>
-												<Input id="idAdditional" value="{w4DataModel>/editRecords/W4Data/0/examt}"></Input>
+												<Input id="idAdditional" value="{w4DataModel>/editRecords/W4Data/0/examt}" liveChange="handleNumber"></Input>
 												<Text text=" {i18n>usdText}" class="sapUiTinyMarginTop sapUiLargeMarginLeft"></Text>
 											</HBox>
 										</f:fields>

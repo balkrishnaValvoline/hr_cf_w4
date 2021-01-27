@@ -60,7 +60,7 @@
 						<f:FormElement label="{i18n>TotalText}">
 							<f:fields>
 								<HBox>
-									<Input id="totalCredits" value="{w4DataModel>/editSaveRecords/0/recordDEPS_TOTAL_AMT}"></Input>
+									<Input id="totalCredits" value="{w4DataModel>/editSaveRecords/0/recordDEPS_TOTAL_AMT}" liveChange="handleNumber"></Input>
 									<Text text="{i18n>usdText}" class="ValidDate"></Text>
 								</HBox>
 							</f:fields>
@@ -68,7 +68,7 @@
 						<f:FormElement label="{i18n>OtherText}">
 							<f:fields>
 								<HBox>
-									<Input id="otherCredits" value="{w4DataModel>/editSaveRecords/0/recordOTHER_INC_AMT}"></Input>
+									<Input id="otherCredits" value="{w4DataModel>/editSaveRecords/0/recordOTHER_INC_AMT}" liveChange="handleNumber"></Input>
 									<Text text="{i18n>usdText}" class="ValidDate"></Text>
 								</HBox>
 							</f:fields>
@@ -76,7 +76,7 @@
 						<f:FormElement label="{i18n>DeductionsText}">
 							<f:fields>
 								<HBox>
-									<Input id="deductionCredits" value="{w4DataModel>/editSaveRecords/0/recordDEDUCT_AMT}"></Input>
+									<Input id="deductionCredits" value="{w4DataModel>/editSaveRecords/0/recordDEDUCT_AMT}" liveChange="handleNumber"></Input>
 									<Text text="{i18n>usdText}" class="ValidDate"></Text>
 								</HBox>
 							</f:fields>
@@ -101,7 +101,7 @@
 						<f:FormElement label="{i18n>AdditionalAmountText}">
 							<f:fields>
 								<HBox>
-									<Input value="{w4DataModel>/editSaveRecords/0/recordEXAMT}" id="idAdditional"></Input>
+									<Input value="{w4DataModel>/editSaveRecords/0/recordEXAMT}" id="idAdditional" liveChange="handleNumber"></Input>
 									<Text text="{i18n>usdText}" class="ValidDate"></Text>
 								</HBox>
 							</f:fields>

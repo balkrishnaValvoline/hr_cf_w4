@@ -17,7 +17,6 @@ sap.ui.define([
 			_oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			_oRouter.getRoute("RouteCreateSave").attachPatternMatched(this._onObjectMatched, this);
 			_oController = this;
-
 		},
 		/**
 		 * This function is called everytime this page is called. 
@@ -37,6 +36,12 @@ sap.ui.define([
 			_oController.getEditDetails();
 			sap.ui.getCore().sLoginFlag = true;
 			sap.ui.getCore().sCreateSaveFlag = true;
+			var oComboBox = _oController.getView().byId("filingStatus");
+			oComboBox.addEventDelegate({
+				onAfterRendering: function () {
+					oComboBox.$().find("input").attr("readonly", true);
+				}
+			});
 		},
 		/**
 		 * This function is called for the createNew Service. 
@@ -48,7 +53,7 @@ sap.ui.define([
 				url: "/backend/hrservices/w4/createNew/" + sap.ui.getCore().PERNER,
 
 				success: function (data) {
-					if (data[0]===undefined) {
+					if (data[0] === undefined) {
 						for (var i = 0; i < data.F4_HELP.TXSTA.length; i++) {
 							_oController.getOwnerComponent().getModel("w4DataModel").getData().editFilingStatusData.push({
 								filingKey: data.F4_HELP.TXSTA[i].VALUEKEY,
@@ -216,24 +221,25 @@ sap.ui.define([
 						_oController.dialog.close();
 					}
 
-					if (data[0]!==undefined) {
+					if (data[0] !== undefined) {
 						_oController.dialog.close();
-						if(data[0].TYPE==="E")
-					{	MessageBox.error(data[0].MESSAGE, {
-							actions: ["OK"],
-							emphasizedAction: "OK",
-							width: "150%",
-							height: "150%",
-							title: "Creation Unsuccessful",
+						if (data[0].TYPE === "E") {
+							MessageBox.error(data[0].MESSAGE, {
+								actions: ["OK"],
+								emphasizedAction: "OK",
+								width: "150%",
+								height: "150%",
+								title: "Creation Unsuccessful",
 
-							onClose: function (sAction) {
-								if (sAction === "OK") {
-									oEvent.getSource().close();
+								onClose: function (sAction) {
+									if (sAction === "OK") {
+										oEvent.getSource().close();
 
+									}
 								}
-							}
 
-						});}
+							});
+						}
 					}
 
 				},
@@ -284,7 +290,7 @@ sap.ui.define([
 					}
 				});
 			} else {
-				MessageBox.success("Do you want to save this entry", {
+				MessageBox.success("Do you want to save this entry ?", {
 					actions: ["YES", "NO"],
 					emphasizedAction: "YES",
 					width: "150%",
@@ -408,7 +414,7 @@ sap.ui.define([
 							"</li>";
 
 						if (data[0].TYPE !== "E") {
-							if (errorDetails==="<ul>") {
+							if (errorDetails === "<ul>") {
 								MessageBox.success("Successful creation of new record", {
 									actions: ["OK"],
 									emphasizedAction: "OK",
@@ -472,7 +478,7 @@ sap.ui.define([
 									"</li>";
 							}
 						}
-						if (errorDetails==="<ul>") {
+						if (errorDetails === "<ul>") {
 							MessageBox.success("Successful creation of new record", {
 								actions: ["OK"],
 								emphasizedAction: "OK",
@@ -596,6 +602,84 @@ sap.ui.define([
 		 */
 		onFilingChange: function (oEvent) {
 			oEvent.getSource().setValueState("None");
+		},
+		//Number Validation
+		handleNumber: function (event) {
+			var result;
+
+			var value = event.getSource().getValue().split('');
+
+			var value1 = event.getSource().getValue();
+			if (value1 !== "") {
+				event.getSource().setValueState("None");
+			}
+			for (var i = 0; i < value.length; i++) {
+
+				var bNotnumber = isNaN(value[i]);
+				if (bNotnumber === false) {
+					//	sNumber = value;
+				} else {
+					if (value[i] === ".") {
+						//value = value.join("");
+						for (var k = 0; k < value.length; k++) {
+							for (var x = 0; x < value.length; x++) {
+								if (value[k] === value[x] && k !== x) {
+									if (value[x] === ".") {
+										if (k > x) {
+											value[k] = "";
+											value = value.join("");
+											event.getSource().setValue(value);
+
+										}
+										if (x > k) {
+											value[x] = "";
+											value = value.join("");
+											event.getSource().setValue(value);
+
+										}
+
+									}
+								}
+							}
+						}
+
+					} else {
+						value[i] = "";
+						value = value.join("");
+
+						event.getSource().setValue(value);
+					}
+
+				}
+			}
+
+			if (value1.indexOf(".") !== -1) {
+				var decimalValue1 = event.getSource().getValue().split(".");
+				var deciamlValue = event.getSource().getValue().split(".")[1].split("");
+				for (var ij = 0; ij < deciamlValue.length; ij++) {
+					if (ij === 0 || ij === 1) {
+						var bNotnumber1 = isNaN(deciamlValue[ij]);
+						if (bNotnumber1 === false) {
+							//	sNumber = deciamlValue;
+						} else {
+							deciamlValue[ij] = "";
+							deciamlValue = deciamlValue.join("");
+							result = decimalValue1[0].concat(".").concat(deciamlValue);
+
+							event.getSource().setValue(result);
+
+						}
+					} else if (ij > 1) {
+						deciamlValue[ij] = "";
+						deciamlValue = deciamlValue.join("");
+						result = decimalValue1[0].concat(".").concat(deciamlValue);
+						event.getSource().setValue(result);
+
+					}
+
+				}
+			}
+
 		},
 		/**
 		 * This function is called when logout is pressed. 

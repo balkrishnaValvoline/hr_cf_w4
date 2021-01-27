@@ -39,27 +39,27 @@
 										<!-- Table to display the details -->
 										<Table id="idCustomJobTable" inset="false" items="{w4DataModel>/tableRecords}">
 											<columns>
-												<Column>
+												<Column hAlign="Center">
 													<Text text="{i18n>validFrom}" class="customFontHeadingTable"/>
 												</Column>
-												<Column>
+												<Column hAlign="Center">
 													<Text text="{i18n>validTo}" class="customFontHeadingTable"/>
 												</Column>
-												<Column>
+												<Column hAlign="Center">
 													<Text text="{i18n>FilingStatusText}" class="customFontHeadingTable"/>
 												</Column>
-												<Column>
+												<Column hAlign="Center">
 													<Text text="{i18n>ExemptionsText}" class="customFontHeadingTable"/>
 												</Column>
-												<Column>
+												<Column hAlign="Center">
 													<Text text="{i18n>LastDateText}" class="customFontHeadingTable"/>
 												</Column>
-												<Column>
+												<Column hAlign="Center">
 													<HBox>
 														<Text text="{i18n>editText}" class="customFontHeadingTable"></Text>
 													</HBox>
 												</Column>
-												<Column>
+												<Column hAlign="Center">
 													<HBox>
 														<Text text="{i18n>deleteText}" class="customFontHeadingTable"></Text>
 													</HBox>

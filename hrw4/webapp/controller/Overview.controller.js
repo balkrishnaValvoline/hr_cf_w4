@@ -74,6 +74,12 @@ sap.ui.define([
 				}
 				sap.ui.getCore().sLoginFlag = false;
 			}
+			var oComboBox = _oController.getView().byId("filingStatus");
+			oComboBox.addEventDelegate({
+				onAfterRendering: function () {
+					oComboBox.$().find("input").attr("readonly", true);
+				}
+			});
 
 		},
 		/**
@@ -125,7 +131,7 @@ sap.ui.define([
 						if (data.length === 0) {
 							_oController.getView().byId("idCreate").setEnabled(true);
 						} else {
-							_oController.getView().byId("idCreate").setEnabled(false);
+							_oController.getView().byId("idCreate").setEnabled(true);
 							if (data[0].TYPE === undefined)
 
 							{
@@ -356,12 +362,13 @@ sap.ui.define([
 		handleDelete: function (oEvent) {
 			var sKey = _oController.sKey;
 
-			MessageBox.success("Do you want to delete this record", {
+			MessageBox.success("Do you want to delete this record?", {
 				actions: ["YES", "NO"],
+				icon: sap.m.MessageBox.Icon.WARNING,
 				emphasizedAction: "NO",
 				width: "150%",
 				height: "150%",
-				title: "Delete Record?",
+				title: "Delete Record",
 
 				onClose: function (sAction) {
 					if (sAction === "YES") {
@@ -425,7 +432,7 @@ sap.ui.define([
 									emphasizedAction: "OK",
 									width: "150%",
 									height: "150%",
-									title: "Messages:",
+									title: "Messages",
 
 									onClose: function (sAction) {
 										if (sAction === "OK") {
@@ -455,7 +462,7 @@ sap.ui.define([
 									emphasizedAction: "OK",
 									width: "150%",
 									height: "150%",
-									title: "Messages:",
+									title: "Messages",
 									errorDetails: message,
 
 									onClose: function (sAction) {
@@ -483,7 +490,6 @@ sap.ui.define([
 							}
 						}
 						if (data.MESSAGES === undefined) {
-
 							MessageBox.error("Edit Unsuccessful", {
 								actions: ["OK"],
 								emphasizedAction: "OK",
@@ -608,6 +614,7 @@ sap.ui.define([
 		handleDeleteOverview: function (oEvent, sKey) {
 			var sData = _oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords[sKey].oldData;
 			var sDeleteData = JSON.stringify(sData);
+
 			$.ajax({
 				data: sDeleteData,
 				url: "/backend/hrservices/w4/deleteRecord",
@@ -631,6 +638,7 @@ sap.ui.define([
 									oEvent.getSource().close();
 									_oController.handleEmptyData();
 									_oController.handlePrevDelete(oEvent);
+									_oController.dialog.close();
 								}
 							}
 
@@ -650,6 +658,7 @@ sap.ui.define([
 									oEvent.getSource().close();
 									_oController.handleEmptyData();
 									_oController.handlePrevDelete(oEvent);
+									_oController.dialog.close();
 								}
 							}
 
@@ -679,6 +688,7 @@ sap.ui.define([
 									_oController.handleEmptyData();
 									_oController.getTableRecords();
 									_oController.handlePrevDelete(oEvent);
+									_oController.dialog.close();
 								}
 							}
 
@@ -807,7 +817,7 @@ sap.ui.define([
 					}
 				});
 			} else {
-				MessageBox.success("Do you want to save this entry", {
+				MessageBox.success("Do you want to save this entry ?", {
 					actions: ["YES", "NO"],
 					emphasizedAction: "YES",
 					width: "150%",
@@ -1185,6 +1195,89 @@ sap.ui.define([
 		 */
 		onFilingChange: function (oEvent) {
 			oEvent.getSource().setValueState("None");
+
+		},
+		handleFiling: function (oEvent) {
+			oEvent.getSource().setValue("");
+
+		},
+		//Number Validation
+		handleNumber: function (event) {
+			var result;
+
+			var value = event.getSource().getValue().split('');
+
+			var value1 = event.getSource().getValue();
+			if (value1 !== "") {
+				event.getSource().setValueState("None");
+			}
+			for (var i = 0; i < value.length; i++) {
+
+				var bNotnumber = isNaN(value[i]);
+				if (bNotnumber === false) {
+					//	sNumber = value;
+				} else {
+					if (value[i] === ".") {
+						//value = value.join("");
+						for (var k = 0; k < value.length; k++) {
+							for (var x = 0; x < value.length; x++) {
+								if (value[k] === value[x] && k !== x) {
+									if (value[x] === ".") {
+										if (k > x) {
+											value[k] = "";
+											value = value.join("");
+											event.getSource().setValue(value);
+
+										}
+										if (x > k) {
+											value[x] = "";
+											value = value.join("");
+											event.getSource().setValue(value);
+
+										}
+
+									}
+								}
+							}
+						}
+
+					} else {
+						value[i] = "";
+						value = value.join("");
+
+						event.getSource().setValue(value);
+					}
+
+				}
+			}
+
+			if (value1.indexOf(".") !== -1) {
+				var decimalValue1 = event.getSource().getValue().split(".");
+				var deciamlValue = event.getSource().getValue().split(".")[1].split("");
+				for (var ij = 0; ij < deciamlValue.length; ij++) {
+					if (ij === 0 || ij === 1) {
+						var bNotnumber1 = isNaN(deciamlValue[ij]);
+						if (bNotnumber1 === false) {
+							//	sNumber = deciamlValue;
+						} else {
+							deciamlValue[ij] = "";
+							deciamlValue = deciamlValue.join("");
+							result = decimalValue1[0].concat(".").concat(deciamlValue);
+
+							event.getSource().setValue(result);
+
+						}
+					} else if (ij > 1) {
+						deciamlValue[ij] = "";
+						deciamlValue = deciamlValue.join("");
+						result = decimalValue1[0].concat(".").concat(deciamlValue);
+						event.getSource().setValue(result);
+
+					}
+
+				}
+			}
+
 		}
 
 	});
