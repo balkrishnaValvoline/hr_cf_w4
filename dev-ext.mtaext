@@ -1,7 +1,6 @@
 _schema-version: '3.1' 
 ID: valvoline_hr_w4-dev-ext 
 extends: valvoline_hr_w4
-
 modules:
   - name: w4-approuter
     parameters:
