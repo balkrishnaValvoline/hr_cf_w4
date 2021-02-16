@@ -49,7 +49,7 @@ public class AppConstants {
 	/**
 	 * HR Destination
 	 */
-	public static final String RFC_DEST_NAME = "HR_DEV_RFC_SNC";
+	public static final String RFC_DEST_NAME = "HR_RFC_SNC";
 	
 	/**
 	 * Function to Authorise User - Check for NON-US User

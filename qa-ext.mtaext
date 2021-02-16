@@ -1,0 +1,22 @@
+_schema-version: '3.1' 
+ID: valvoline_hr_w4-qa-ext 
+extends: valvoline_hr_w4
+
+modules:
+  - name: w4-approuter
+    parameters:
+      host: 'w4-qa'
+    requires:
+      - name: JAVA_LAYER
+        group: destinations
+        properties:
+          name: JAVA_LAYER
+          url: ~{url}
+  - name: hrjava
+    parameters:
+      host: hrjava-${space}
+    provides:
+      - name: JAVA_LAYER
+        properties:
+          url: ${default-url}
+          protocol: https
