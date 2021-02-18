@@ -7,7 +7,7 @@ sap.ui.define([
 	"use strict";
 	var _oController;
 	var _oRouter;
-
+	var _isSessionTimeOut = false;
 	return Controller.extend("valvoline.ui.hrw4.controller.CreateSave", {
 		/**
 		 * This function is called on the initial load of page. 
@@ -17,6 +17,7 @@ sap.ui.define([
 			_oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			_oRouter.getRoute("RouteCreateSave").attachPatternMatched(this._onObjectMatched, this);
 			_oController = this;
+			_oController.idleTimeSetup();
 		},
 		/**
 		 * This function is called everytime this page is called. 
@@ -31,7 +32,7 @@ sap.ui.define([
 			stoday.setUTCHours(0, 0, 0);
 			var dateToday = new Date(stoday.getUTCFullYear(), stoday.getUTCMonth(), stoday.getUTCDate(), 0, 0, 0);
 			_oController.getView().byId("idbegDateSave").setMinDate(dateToday);
-			_oController.getView().byId("idendDateSave").setMinDate(dateToday);
+
 			_oController.dialog.open();
 			_oController.getEditDetails();
 			sap.ui.getCore().sLoginFlag = true;
@@ -42,6 +43,8 @@ sap.ui.define([
 					oComboBox.$().find("input").attr("readonly", true);
 				}
 			});
+			_oController.getView().byId("idUserFName").setText(sap.ui.getCore().sFname);
+			_oController.getView().byId("idUserLName").setText(sap.ui.getCore().sLname);
 		},
 		/**
 		 * This function is called for the createNew Service. 
@@ -253,6 +256,7 @@ sap.ui.define([
 		 * @function onPrevToMain
 		 */
 		onPrevToMain: function (oEvent) {
+
 			_oRouter.navTo("RouteOverview");
 		},
 		/**
@@ -260,6 +264,7 @@ sap.ui.define([
 		 * @function onConfirm
 		 */
 		onConfirm: function (oEvent) {
+
 			if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDateSave").getValue() ===
 				"" || _oController.getView().byId("filingStatus").getValue() ===
 				"") {
@@ -319,6 +324,7 @@ sap.ui.define([
 		 * @function onSaveRecord
 		 */
 		onSaveRecord: function (oEvent) {
+
 			_oController.dialog.open();
 			var w4Data = _oController.getOwnerComponent().getModel("w4DataModel").getData().editRecords.W4Data;
 			var sUseCheck = "";
@@ -344,7 +350,7 @@ sap.ui.define([
 			var beginDate = new Date(_oController.getView().byId("idbegDateSave").getValue());
 
 			var millisecondsBegin = Date.UTC(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate(), 0, 0, 0, 0);
-			var endDate = new Date(_oController.getView().byId("idendDateSave").getValue());
+			var endDate = new Date("12/31/9999");
 
 			var millisecondsEnd = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0, 0);
 
@@ -686,6 +692,58 @@ sap.ui.define([
 		 */
 		logoutPress: function () {
 			sap.m.URLHelper.redirect("/do/logout", false);
+		},
+		/**
+		 * Setup for timeout validation
+		 * @function idleTimeSetup
+		 **/
+		idleTimeSetup: function () {
+			//Initialize idle time values
+			window.nIdleTime = 0;
+			window.nServiceIdleTime = 0;
+			$(document).ready(function () {
+				//Increment the idle time counter every minute.
+				setInterval(_oController.timerIncrement, 60000); // 1 minute
+				//Zero the idle timer on mouse click.
+				$(this).click(function (e) {
+					//Reset the idle time
+					window.nIdleTime = 0;
+
+				});
+				//Zero the idle timer on mouse movement.
+				$(this).mousemove(function (e) {
+					window.nIdleTime = 0;
+				});
+				$(this).keypress(function (e) {
+					window.nIdleTime = 0;
+				});
+
+			});
+		},
+		/**
+		 * Handle time increments, service pings and trigger timeout
+		 * @function timerIncrement
+		 **/
+		timerIncrement: function () {
+			//increments the user idle time
+			window.nIdleTime = window.nIdleTime + 60000;
+			//increments the service call idle time
+			window.nServiceIdleTime = window.nServiceIdleTime + 60000;
+			if (window.nIdleTime >= 600000) { // 10+ minute
+				if (!_isSessionTimeOut) {
+					sap.m.MessageBox.show(
+						"Session is expired, page will be reloaded!", {
+							icon: sap.m.MessageBox.Icon.INFORMATION,
+							title: "Information",
+							actions: [sap.m.MessageBox.Action.CLOSE],
+							onClose: function () {
+								_oController.logoutPress();
+							}
+						}
+					);
+					_isSessionTimeOut = true;
+				}
+			}
 		}
 
 	});

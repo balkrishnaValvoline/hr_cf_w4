@@ -7,6 +7,7 @@ sap.ui.define([
 	"use strict";
 	var _oController;
 	var _oRouter;
+	var _isSessionTimeOut = false;
 	return Controller.extend("valvoline.ui.hrw4.controller.Overview", {
 		/**
 		 * This function is called when the app is loaded
@@ -21,6 +22,7 @@ sap.ui.define([
 			}
 			sap.ui.getCore().sLoginFlag = true;
 			sap.ui.getCore().sCreateSaveFlag = false;
+			_oController.idleTimeSetup();
 
 		},
 		/**
@@ -28,6 +30,7 @@ sap.ui.define([
 		 * @function _onObjectMatched
 		 */
 		_onObjectMatched: function (oEvent) {
+
 			_oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			if (!_oController.dialog) {
 				_oController.dialog = sap.ui.xmlfragment("valvoline.ui.hrw4.fragment.BusyDialog", this);
@@ -36,7 +39,7 @@ sap.ui.define([
 			stoday.setUTCHours(0, 0, 0);
 			var dateToday = new Date(stoday.getUTCFullYear(), stoday.getUTCMonth(), stoday.getUTCDate(), 0, 0, 0);
 			_oController.getView().byId("idbegDate").setMinDate(dateToday);
-			_oController.getView().byId("idendDate").setMinDate(dateToday);
+
 			if (sap.ui.getCore().sLoginFlag === true) {
 				var editRecords = {
 					"addressData": [],
@@ -93,6 +96,8 @@ sap.ui.define([
 				async: false,
 				success: function (data) {
 					_oController.dialog.open();
+					sap.ui.getCore().sFname = data.FNAME;
+					sap.ui.getCore().sLname = data.LNAME;
 					_oController.getView().byId("idUserFName").setText(data.FNAME);
 					_oController.getView().byId("idUserLName").setText(data.LNAME);
 					sap.ui.getCore().PERNER = data.EMPLNO;
@@ -118,6 +123,7 @@ sap.ui.define([
 		 * @function getTableRecords
 		 */
 		getTableRecords: function (oEvent) {
+
 			if (_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords.length === 0) {
 				$.ajax({
 					url: "/backend/hrservices/w4/fedRecords",
@@ -301,6 +307,7 @@ sap.ui.define([
 		 * @function handleEditClick
 		 */
 		handleEditClick: function (oEvent) {
+
 			_oController.sKeyEdit = oEvent.getSource().getBindingContext("w4DataModel").getPath().split("/")[2];
 
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().editTabRecords.push(_oController.getOwnerComponent().getModel(
@@ -319,11 +326,12 @@ sap.ui.define([
 			if (_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords[0].recordMULT_JOBS_IND === "") {
 				_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords[0].recordMULT_JOBS_IND = false;
 			}
-			_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords[0].recordDeclare = true;
+			_oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords[0].recordDeclare = false;
 
 			_oController.getOwnerComponent().getModel("w4DataModel").updateBindings();
 			_oController.dialog.open();
 			_oController.handleEditOverview(oEvent, _oController.sKeyEdit);
+			_oController.getView().byId("idDeclare").setSelected(false);
 
 		},
 		/**
@@ -360,6 +368,7 @@ sap.ui.define([
 		 * @function handleDelete
 		 */
 		handleDelete: function (oEvent) {
+
 			var sKey = _oController.sKey;
 
 			MessageBox.success("Do you want to delete this record?", {
@@ -386,6 +395,7 @@ sap.ui.define([
 		 * @function handleEditOverview
 		 */
 		handleEditOverview: function (oEvent, sKey) {
+
 			var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "MM/dd/yyyy"
 			});
@@ -427,37 +437,51 @@ sap.ui.define([
 
 						if (data.MESSAGES !== null) {
 							if (message === "<ul>") {
-								MessageBox.success("Record ready for Edit", {
-									actions: ["OK"],
-									emphasizedAction: "OK",
-									width: "150%",
-									height: "150%",
-									title: "Messages",
+								var sExempt = _oController.getOwnerComponent().getModel(
+										"w4DataModel").getData()
+									.editSaveRecords[0].recordEXIND;
+								var sFiling = _oController.getOwnerComponent().getModel(
+										"w4DataModel").getData()
+									.editSaveRecords[0].recordTXSTA;
 
-									onClose: function (sAction) {
-										if (sAction === "OK") {
-											//				_oController.handleEmptyData();
-											oEvent.getSource().close();
-											var sExempt = _oController.getOwnerComponent().getModel(
-													"w4DataModel").getData()
-												.editSaveRecords[0].recordEXIND;
-											var sFiling = _oController.getOwnerComponent().getModel(
-													"w4DataModel").getData()
-												.editSaveRecords[0].recordTXSTA;
+								_oController.getView().byId("idExemption").setSelectedKey(sExempt);
+								if (sFiling === "00") {
+									_oController.getView().byId("filingStatus").setValue();
 
-											_oController.getView().byId("idExemption").setSelectedKey(sExempt);
-											if (sFiling === "00") {
-												_oController.getView().byId("filingStatus").setValue();
+								} else {
+									_oController.getView().byId("filingStatus").setSelectedKey(sFiling);
+								}
+								/*	MessageBox.success("Record ready for Edit", {
+										actions: ["OK"],
+										emphasizedAction: "OK",
+										width: "150%",
+										height: "150%",
+										title: "Messages",
 
-											} else {
-												_oController.getView().byId("filingStatus").setSelectedKey(sFiling);
+										onClose: function (sAction) {
+											if (sAction === "OK") {
+											
+												oEvent.getSource().close();
+												var sExempt = _oController.getOwnerComponent().getModel(
+														"w4DataModel").getData()
+													.editSaveRecords[0].recordEXIND;
+												var sFiling = _oController.getOwnerComponent().getModel(
+														"w4DataModel").getData()
+													.editSaveRecords[0].recordTXSTA;
+
+												_oController.getView().byId("idExemption").setSelectedKey(sExempt);
+												if (sFiling === "00") {
+													_oController.getView().byId("filingStatus").setValue();
+
+												} else {
+													_oController.getView().byId("filingStatus").setSelectedKey(sFiling);
+												}
 											}
 										}
-									}
 
-								});
+									});*/
 							} else {
-								MessageBox.success("Record ready for Edit", {
+								/*MessageBox.success("Record ready for Edit", {
 									actions: ["OK"],
 									emphasizedAction: "OK",
 									width: "150%",
@@ -467,7 +491,7 @@ sap.ui.define([
 
 									onClose: function (sAction) {
 										if (sAction === "OK") {
-											//				_oController.handleEmptyData();
+										
 											oEvent.getSource().close();
 											var sExempt = _oController.getOwnerComponent().getModel(
 													"w4DataModel").getData()
@@ -486,7 +510,22 @@ sap.ui.define([
 										}
 									}
 
-								});
+								});*/
+
+								var sExempts = _oController.getOwnerComponent().getModel(
+										"w4DataModel").getData()
+									.editSaveRecords[0].recordEXIND;
+								var sFilings = _oController.getOwnerComponent().getModel(
+										"w4DataModel").getData()
+									.editSaveRecords[0].recordTXSTA;
+
+								_oController.getView().byId("idExemption").setSelectedKey(sExempts);
+								if (sFiling === "00") {
+									_oController.getView().byId("filingStatus").setValue();
+
+								} else {
+									_oController.getView().byId("filingStatus").setSelectedKey(sFilings);
+								}
 							}
 						}
 						if (data.MESSAGES === undefined) {
@@ -587,6 +626,7 @@ sap.ui.define([
 		 * @function handleEmptyData
 		 */
 		handleEmptyData: function () {
+
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().tableEditRecords = [];
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().tableRecords = [];
 			_oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords = [];
@@ -612,6 +652,7 @@ sap.ui.define([
 		 * @function handleDeleteOverview
 		 */
 		handleDeleteOverview: function (oEvent, sKey) {
+
 			var sData = _oController.getOwnerComponent().getModel("w4DataModel").getData().deleteRecords.oldDeleteRecords[sKey].oldData;
 			var sDeleteData = JSON.stringify(sData);
 
@@ -704,6 +745,7 @@ sap.ui.define([
 		 * @function onCheckChange 
 		 */
 		onCheckChange: function (oEvent) {
+
 			if (oEvent.getSource().getSelected() === true) {
 				this.getView().byId("idMessageCall").setVisible(true);
 			} else {
@@ -715,6 +757,7 @@ sap.ui.define([
 		 * @function onCheckChangeEdit 
 		 */
 		onCheckChangeEdit: function (oEvent) {
+
 			if (oEvent.getSource().getSelected() === true) {
 				this.getView().byId("idMessageCallEdit").setVisible(true);
 			} else {
@@ -726,6 +769,7 @@ sap.ui.define([
 		 * @function onNextToSave
 		 */
 		onNextToSave: function (oEvent) {
+
 			this.getView().byId("saveTab").setEnabled(true);
 			this.getView().byId("idIconTabBar").setSelectedKey("3");
 			var sdateFormat = sap.ui.core.format.DateFormat.getDateInstance({
@@ -739,6 +783,7 @@ sap.ui.define([
 		 * @function onPrevToSave
 		 */
 		onPrevToSave: function (oEvent) {
+
 			this.getView().byId("idIconTabBar").setSelectedKey("2");
 			this.getView().byId("saveTab").setEnabled(false);
 		},
@@ -747,6 +792,7 @@ sap.ui.define([
 		 * @function onFilterSelect
 		 */
 		onFilterSelect: function (oEvent) {
+
 			if (this.getView().byId("idIconTabBar").getSelectedKey() === "1") {
 				this.getView().byId("idEditTab").setVisible(false);
 				_oController.handlePrevEdit(oEvent);
@@ -765,13 +811,15 @@ sap.ui.define([
 		 * @function logoutPress
 		 */
 		logoutPress: function () {
+
 			sap.m.URLHelper.redirect("/do/logout", false);
 		},
 		onCreate: function (oEvent) {
-			MessageBox.success("Do you want to create a New Record?", {
+
+			MessageBox.information("Do you want to create a New Record?", {
 				actions: ["Yes", MessageBox.Action.CLOSE],
 				emphasizedAction: "Yes",
-				width: "150%",
+				width: "180%",
 				height: "150%",
 				title: "Confirm",
 
@@ -787,6 +835,7 @@ sap.ui.define([
 
 		},
 		onConfirm: function (oEvent) {
+
 			if (_oController.getView().byId("idDeclare").getSelected() === false || _oController.getView().byId("idbegDate").getValue() ===
 				"" || _oController.getView().byId("filingStatus").getValue() ===
 				"") {
@@ -836,6 +885,7 @@ sap.ui.define([
 			}
 		},
 		onSaveRecord: function (oEvent) {
+
 			var sKey = _oController.sKeyEdit;
 			_oController.dialog.open();
 			var w4Data = _oController.getOwnerComponent().getModel("w4DataModel").getData().editSaveRecords;
@@ -863,7 +913,7 @@ sap.ui.define([
 			var beginDate = new Date(_oController.getView().byId("idbegDate").getValue());
 
 			var millisecondsBegin = Date.UTC(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate(), 0, 0, 0, 0);
-			var endDate = new Date(_oController.getView().byId("idendDate").getValue());
+			var endDate = new Date("12/31/9999");
 
 			var millisecondsEnd = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0, 0);
 
@@ -1178,6 +1228,7 @@ sap.ui.define([
 		 * @function handleDateChange
 		 */
 		handleDateChange: function (oEvt) {
+
 			oEvt.getSource().setValueState("None");
 		},
 		/**
@@ -1278,7 +1329,57 @@ sap.ui.define([
 				}
 			}
 
-		}
+		},
+		/**
+		 * Setup for timeout validation
+		 * @function idleTimeSetup
+		 **/
+		idleTimeSetup: function () {
+			//Initialize idle time values
+			window.nIdleTime = 0;
+			window.nServiceIdleTime = 0;
+			$(document).ready(function () {
+				//Increment the idle time counter every minute.
+				setInterval(_oController.timerIncrement, 60000); // 1 minute
+				//Zero the idle timer on mouse click.
+				$(this).click(function (e) {
+					//Reset the idle time
+					window.nIdleTime = 0;
 
+				});
+				//Zero the idle timer on mouse movement.
+				$(this).mousemove(function (e) {
+					window.nIdleTime = 0;
+				});
+				$(this).keypress(function (e) {
+					window.nIdleTime = 0;
+				});
+
+			});
+		},
+		/**
+		 * Handle time increments, service pings and trigger timeout
+		 * @function timerIncrement
+		 **/
+		timerIncrement: function () {
+
+			window.nIdleTime = window.nIdleTime + 60000;
+
+			if (window.nIdleTime >= 600000) { // 10+ minute
+				if (!_isSessionTimeOut) {
+					sap.m.MessageBox.show(
+						"Session is expired, page will be reloaded!", {
+							icon: sap.m.MessageBox.Icon.INFORMATION,
+							title: "Information",
+							actions: [sap.m.MessageBox.Action.CLOSE],
+							onClose: function () {
+								_oController.logoutPress();
+							}
+						}
+					);
+					_isSessionTimeOut = true;
+				}
+			}
+		}
 	});
 });

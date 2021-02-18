@@ -33,8 +33,8 @@
 										class="sapUiLargeMargin customFontItemTable" id="idOverViewTab">
 										<Toolbar>
 											<ToolbarSpacer></ToolbarSpacer>
-											<Button id="idCreate" type="Accept" text="{i18n>CreateText}" icon="sap-icon://add" class="customFontHeadingTable" press="onCreate"
-												enabled="false"></Button>
+											<Button id="idCreate" text="{i18n>CreateText}" icon="sap-icon://add"
+												class="customFontHeadingTable valvolineButton insightsCardGraphButtonMargin" press="onCreate" enabled="false"></Button>
 										</Toolbar>
 										<!-- Table to display the details -->
 										<Table id="idCustomJobTable" inset="false" items="{w4DataModel>/tableRecords}">

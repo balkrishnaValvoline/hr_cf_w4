@@ -22,8 +22,10 @@
 				<OverflowToolbar>
 					<Title text="{i18n>VerifyText}" class="customFontHeadingTable"></Title>
 					<ToolbarSpacer></ToolbarSpacer>
-					<Button type="Accept" text="{i18n>PrevText}" icon="sap-icon://close-command-field" class="customFontHeadingTable" press="onPrevToMain"></Button>
-					<Button type="Accept" text="{i18n>SaveConText}" icon="sap-icon://accept" class="customFontHeadingTable" press="onConfirm"></Button>
+					<Button text="{i18n>PrevText}" icon="sap-icon://close-command-field"
+						class="customFontHeadingTable valvolineButton insightsCardGraphButtonMargin" press="onPrevToMain"></Button>
+					<Button text="{i18n>SaveConText}" icon="sap-icon://accept" class="customFontHeadingTable valvolineButton insightsCardGraphButtonMargin"
+						press="onConfirm"></Button>
 				</OverflowToolbar>
 				<f:SimpleForm id="EditRecord" editable="fa " layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
 					adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="2" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
@@ -60,21 +62,21 @@
 						<f:formContainers>
 							<f:FormContainer title="{i18n>W4WTextInfo}">
 								<f:formElements>
-									<f:FormElement label="{i18n>begText}">
+									<f:FormElement>
 										<f:fields>
-											<DatePicker id="idbegDateSave" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-												value="{w4DataModel>/editRecords/W4Data/0/beginDate}" valueFormat="MM/dd/yyyy"/>
+											<HBox width="120%">
+												<HBox class="required">
+													<Label required="true"></Label>
+													<Label text="{i18n>begText}"></Label>
+												</HBox>
+												<DatePicker id="idbegDateSave" displayFormat="MM/dd/yyyy" change="handleDateChange" value="{w4DataModel>/editRecords/W4Data/0/beginDate}"
+													valueFormat="MM/dd/yyyy" class="dateRequired"/>
+											</HBox>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="">
 										<f:fields>
 											<MessageStrip type="Warning" visible="true" text="{i18n>warningDate}" showIcon="false" showCloseButton="false" class="sapUiSmallMarginLeft"></MessageStrip>
-										</f:fields>
-									</f:FormElement>
-									<f:FormElement label="{i18n>endText}">
-										<f:fields>
-											<DatePicker id="idendDateSave" displayFormat="MM/dd/yyyy" width="50%" change="handleDateChange"
-												value="{w4DataModel>/editRecords/W4Data/0/endDate}" valueFormat="MM/dd/yyyy"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="{i18n>TotalText}">
@@ -101,10 +103,15 @@
 											</HBox>
 										</f:fields>
 									</f:FormElement>
-									<f:FormElement label="{i18n>StatusText}">
+									<f:FormElement>
 										<f:fields>
-											<HBox>
-												<ComboBox width="290px" items="{w4DataModel>/editFilingStatusData}" id="filingStatus" visible="true" change="onFilingChange">
+											<HBox width="120%">
+												<HBox class="required">
+													<Label required="true"></Label>
+													<Label text="{i18n>StatusText}"></Label>
+												</HBox>
+												<ComboBox width="290px" items="{w4DataModel>/editFilingStatusData}" id="filingStatus" visible="true" change="onFilingChange"
+													class="filingRequired">
 													<core:Item key="{w4DataModel>filingKey}" text="{w4DataModel>filingValue}"/>
 												</ComboBox>
 											</HBox>
