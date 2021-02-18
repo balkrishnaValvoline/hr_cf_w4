@@ -139,7 +139,6 @@ sap.ui.define([
 						} else {
 							_oController.getView().byId("idCreate").setEnabled(false);
 							if (data[0].TYPE === undefined)
-
 							{
 								for (var i = 0; i < data.length; i++) {
 
