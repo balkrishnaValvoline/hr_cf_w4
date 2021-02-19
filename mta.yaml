@@ -10,7 +10,7 @@ modules:
     parameters:
       disk-quota: 256M
       memory: 256M
-      host: 'w4-qa'
+      host: 'w4form-${space}'
     requires:
       - name: hr_ui_runtime
       - name: hr_xsuaa
