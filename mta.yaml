@@ -22,6 +22,8 @@ modules:
           url: '~{url}'
           forwardAuthToken: true
           timeout: 180000
+    properties:
+      SESSION_TIMEOUT: 10
   - name: valvoline_hr_w4_ui_deployer
     type: com.sap.html5.application-content
     path: valvoline_hr_w4_ui_deployer
