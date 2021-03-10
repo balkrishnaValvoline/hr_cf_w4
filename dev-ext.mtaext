@@ -4,7 +4,7 @@ extends: valvoline_hr_w4
 modules:
   - name: w4-approuter
     parameters:
-      host: 'w4form-${space}'
+      host: 'w4-${space}'
     requires:
       - name: JAVA_LAYER
         group: destinations
