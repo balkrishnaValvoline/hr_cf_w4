@@ -1,0 +1,10 @@
+steps:
+  tmsUpload:
+    credentialsId: TMSCredPRDID
+    nodeName: dev-hr
+    mtaPath: temp/hr_cf_w4.mtar
+    customDescription: HR W4 module
+    verbose: true
+    cloudFoundry/org: Valvoline_LLC_cf-dev-valvoline
+    cloudFoundry/space: dev-hr
+    collectTelemetryData: false
