@@ -1,10 +1,11 @@
 _schema-version: '3.1' 
-ID: valvoline_hr_w4-dev-ext 
+ID: valvoline_hr_w4-prd-ext 
 extends: valvoline_hr_w4
+
 modules:
   - name: w4-approuter
     parameters:
-      host: 'w4-${space}'
+      host: 'w4'
     requires:
       - name: JAVA_LAYER
         group: destinations
