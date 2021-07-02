@@ -55,6 +55,13 @@ public class DevAdmin {
 	}
 	
 	@GET
+	@Path("/userToken")
+	public String getUserToken(@Context HttpServletRequest request) {
+		AccessToken token = (AccessToken) request.getUserPrincipal();
+		return token.getTokenValue();
+	}
+	
+	@GET
 	@Path("/test")
 	public Response userLogin(@Context HttpServletRequest request) throws URISyntaxException {
 		request.setAttribute("attr", "Test Successful");
