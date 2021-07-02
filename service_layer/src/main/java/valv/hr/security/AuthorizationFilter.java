@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sap.cloud.security.token.AccessToken;
-
 @WebFilter(urlPatterns = { "/*" })
 public class AuthorizationFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
