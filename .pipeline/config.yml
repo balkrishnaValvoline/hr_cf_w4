@@ -8,3 +8,4 @@ steps:
     cloudFoundry/org: Valvoline_LLC_cf-dev-valvoline
     cloudFoundry/space: dev-hr
     collectTelemetryData: false
+    testtag: true
