@@ -49,7 +49,7 @@ modules:
       memory: 1024M
       disk_quota: 1024M
       host: 'hrjava-${space}'
-      buildpack: sap_java_buildpack_1_31
+      buildpack: sap_java_buildpack_1_34
     build-parameters:
       builder: custom
       commands:
